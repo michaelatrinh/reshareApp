@@ -1,0 +1,9 @@
+/* easy routing for files within project */
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        }
+    }
+}
