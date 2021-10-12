@@ -104,8 +104,15 @@ export default function StoreHomeScreen({ route, navigation }) {
     });
   };
 
+  const goToDashboard = () => {
+    navigation.navigate("RestaurantDashboard");
+  }
+
   return (
     <ContainerUI>
+      {/* michael test */}
+      <GoToDash title="Go To Dashboard" onPress={goToDashboard} />
+
       <ButtonUI title="Sign Out" onPress={handleSignOut} />
       <Text>Hello {displayName}</Text>
       <Text>Your Location: {displayLocation}</Text>
@@ -121,3 +128,15 @@ export default function StoreHomeScreen({ route, navigation }) {
     </ContainerUI>
   );
 }
+
+// michael testing
+const GoToDash = styled.Button`
+  flex: 1;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 50px;
+  text-align: center;
+  margin: 10px 0;
+`;

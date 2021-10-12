@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  produce, //may cause errors -Michael
 } from "firebase/auth";
 
 //firebase configuration
