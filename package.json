@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "expo": "~42.0.1",
@@ -18,7 +19,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-screens": "^3.8.0",
     "react-native-web": "~0.13.12",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.1",
+    "expo-font": "~9.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
