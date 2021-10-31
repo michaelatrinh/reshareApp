@@ -1,18 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { initializeApp } from "firebase/app";
+import React, { useState, useContext } from "react";
+import { Text } from "react-native";
+
 import styled from "styled-components/native";
 
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import {
-  getAuth,
-  onAuthStateChanged,
-  FacebookAuthProvider,
-  signInWithCredential,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
 } from "firebase/auth";
 import { db } from "../config/firebase";
 import { auth } from "../config/firebase";
@@ -60,8 +54,8 @@ const ButtonTextUI = styled.Text`
 `;
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("juliantmayes@gmail.com");
+  const [password, setPassword] = useState("Hello123!");
 
   const { currentUser } = useContext(AuthContext);
 
@@ -84,7 +78,7 @@ export default function LoginScreen({ navigation }) {
               email: user.email,
             });
           } else {
-            navigation.navigate("Home", {
+            navigation.navigate("Customer", {
               uid: user.uid,
               email: user.email,
             });

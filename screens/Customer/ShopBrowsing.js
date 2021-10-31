@@ -17,70 +17,21 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
+import ShopCard from "../../comps/Customer/ShopCard";
+
+const ScreenUI = styled.View`
+  align-items: center;
+  justify-content: flex-start;
+`;
 
 const ContainerUI = styled.View`
-  flex: 1;
   background-color: #fff;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const InputUI = styled.TextInput`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  max-height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
-
-const GreetingUI = styled.Text`
-  font-size: 32px;
-  font-weight: bold;
-  width: 90%;
-  margin: 0 0 10px 0;
-`;
-
-const HeadingUI = styled.Text`
-  font-size: 24px;
-  font-weight: bold;
-  width: 90%;
-  margin: 0 0 10px 0;
-`;
-
-const UserDetailsUI = styled.Text`
-  width: 90%;
-  margin: 0 0 10px 0;
-`;
-
-const StoreDetailsUI = styled.Text``;
-
-const StoreContainerUI = styled.Pressable`
-  width: 90%;
-  justify-content: flex-start;
   align-items: flex-start;
-  flex-direction: column;
-  background: white;
-  border: 3px solid black;
-  border-radius: 10px;
-  margin: 0 0 10px 0;
-  padding: 25px;
-`;
-
-const ButtonUI = styled.Button`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 90%;
-  height: 50px;
-  text-align: center;
-  margin: 10px 0;
 `;
 
-export default function CustomerHomeScreen({ route, navigation }) {
+export default function ShopBrowsing({ route, navigation }) {
   //display states
   const [displayName, setDisplayName] = useState("");
   const [displayLocation, setDisplayLocation] = useState("");
@@ -127,39 +78,15 @@ export default function CustomerHomeScreen({ route, navigation }) {
     });
   }
 
-  //firebase update user data (name, location, type)
-  const handleUpdateInfo = () => {
-    update(ref(db, "users/" + uid), {
-      email: email,
-      location: inputLocation,
-      username: inputName,
-    });
-  };
-
   console.log(displayStores);
   console.log(currentUser.uid);
   return (
-    <ContainerUI>
-      <GreetingUI>Hello {displayName}</GreetingUI>
-      <UserDetailsUI>Your Location: {displayLocation}</UserDetailsUI>
-      <UserDetailsUI>User Type: {displayType}</UserDetailsUI>
-
-      <HeadingUI> Available Stores</HeadingUI>
-      {Object.entries(displayStores).map(([key, v]) => {
-        return (
-          <StoreContainerUI
-            key={key}
-            onPress={() => {
-              navigation.navigate("Menu", {
-                store: v,
-              });
-            }}
-          >
-            <StoreDetailsUI>{v.username}</StoreDetailsUI>
-            <StoreDetailsUI>{v.location}</StoreDetailsUI>
-          </StoreContainerUI>
-        );
-      })}
-    </ContainerUI>
+    <ScreenUI>
+      <ContainerUI>
+        {Object.entries(displayStores).map(([key, v]) => {
+          return <ShopCard key={key} v={v} navigation={navigation}/>;
+        })}
+      </ContainerUI>
+    </ScreenUI>
   );
 }

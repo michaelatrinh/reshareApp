@@ -1,36 +1,36 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import LoginScreen from "./screens/LoginScreen";
+import React, { useState, useContext } from "react";
+
+import Login from "./screens/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/Store/StoreHomeScreen";
-import CustomerHomeScreen from "./screens/Customer/CustomerHomeScreen";
+
 import StoreHomeScreen from "./screens/Store/StoreHomeScreen";
-import StoreMenu from "./screens/Customer/StoreMenu";
-import { db } from "./config/firebase";
-import { auth } from "./config/firebase";
-import { AuthContext, AuthProvider } from "./comps/auth";
-import SignoutButton from "./comps/SignoutButton";
+
+import { AuthProvider } from "./comps/auth";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Customer from "./screens/Customer/Navigation/CustomerStack";
+import { useFonts } from 'expo-font';
+
 
 //Stack navigator to navigate through screens
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
+
+
+
   return (
     <AuthProvider>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen
-            options={({ navigation }) => ({
-              headerRight: () => <SignoutButton navigation={navigation} />,
-              headerLeft: null,
-            })}
-            name="Home"
-            component={CustomerHomeScreen}
-          />
-          <Stack.Screen name="Menu" component={StoreMenu} />
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Customer" component={Customer} />
+
           <Stack.Screen name="Store" component={StoreHomeScreen} />
         </Stack.Navigator>
       </NavigationContainer>
