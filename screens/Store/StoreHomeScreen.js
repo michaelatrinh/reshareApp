@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef, useC } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
@@ -99,11 +99,18 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   //firebase update user data (name, location, type)
   const handleUpdateInfo = () => {
-    update(ref(db, "stores/" + uid), {
+    update(ref(db, "stores/" + uid ), {
       type: "store",
       email: email,
       location: inputLocation,
       username: inputName,
+      menu: [
+        {
+          name: "Apple",
+          price: "5.50",
+          expiry: "11/20/21" 
+        }
+      ]
     });
   };
 
