@@ -107,13 +107,7 @@ export default function StoreHomeScreen({ route, navigation }) {
     });
   };
 
-<<<<<<< HEAD:screens/StoreHomeScreen.js
-  const goToDashboard = () => {
-    navigation.navigate("RestaurantDashboard");
-  }
-=======
   console.log(currentUser);
->>>>>>> 8cc0251b542c21a706254aedce2aa91f3caa5e8f:screens/Store/StoreHomeScreen.js
 
   return (
     <ContainerUI>
