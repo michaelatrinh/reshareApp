@@ -1,9 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useC } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
-
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 import {
   getAuth,
@@ -14,8 +13,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { db } from "../config/firebase";
-import { auth } from "../config/firebase";
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { AuthContext } from "../../comps/auth";
 
 const ContainerUI = styled.View`
   flex: 1;
@@ -49,6 +49,7 @@ const ButtonUI = styled.Button`
 export default function StoreHomeScreen({ route, navigation }) {
   //parameter from previous route i.e. login screen
   const { uid, email } = route.params;
+  const currentUser = useContext(AuthContext);
 
   //display states
   const [displayName, setDisplayName] = useState("");
@@ -71,9 +72,9 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
-    const nameRef = ref(db, "users/" + userId + "/username");
-    const locationRef = ref(db, "users/" + userId + "/location");
-    const typeRef = ref(db, "users/" + userId + "/type");
+    const nameRef = ref(db, "stores/" + userId + "/username");
+    const locationRef = ref(db, "stores/" + userId + "/location");
+    const typeRef = ref(db, "stores/" + userId + "/type");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -98,15 +99,21 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   //firebase update user data (name, location, type)
   const handleUpdateInfo = () => {
-    update(ref(db, "users/" + uid), {
-      username: inputName,
+    update(ref(db, "stores/" + uid), {
+      type: "store",
+      email: email,
       location: inputLocation,
+      username: inputName,
     });
   };
 
+<<<<<<< HEAD:screens/StoreHomeScreen.js
   const goToDashboard = () => {
     navigation.navigate("RestaurantDashboard");
   }
+=======
+  console.log(currentUser);
+>>>>>>> 8cc0251b542c21a706254aedce2aa91f3caa5e8f:screens/Store/StoreHomeScreen.js
 
   return (
     <ContainerUI>
