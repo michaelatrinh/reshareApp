@@ -1,28 +1,15 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { initializeApp } from "firebase/app";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
-import { getDatabase, ref, onValue, set, update } from "firebase/database";
-import {
-  getAuth,
-  onAuthStateChanged,
-  FacebookAuthProvider,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { db } from "../../config/firebase";
-import { auth } from "../../config/firebase";
-import { AuthContext } from "../../comps/auth";
 import ItemCard from "../../comps/Customer/ItemCard";
-/* import { CartProvider, useShoppingCart } from "use-shopping-cart";
-import Cart from "../../comps/Customer/Cart"; */
+import shopImage from "../../assets/store-img.png";
+import { Image } from "react-native";
+import MenuFilter from "../../comps/Customer/MenuFilter";
 
 const ScreenUI = styled.View`
   align-items: center;
   justify-content: flex-start;
+  background-color: #fff;
 `;
 
 const ContainerUI = styled.View`
@@ -30,44 +17,61 @@ const ContainerUI = styled.View`
   align-items: flex-start;
   justify-content: flex-start;
   width: 90%;
+  min-height: 100%;
 `;
 
-const GreetingUI = styled.Text`
-  font-size: 32px;
-  font-weight: bold;
-  margin: 0 0 10px 0;
+const TitleUI = styled.Text`
+  font-weight: normal;
+  font-family: Poppins;
+  font-size: 22px;
+  margin: 15px 0;
+`;
+
+const FilterTextUI = styled.Text`
+  font-weight: normal;
+  font-family: Poppins;
+  font-size: 18px;
+  margin: 10px 0;
 `;
 
 const DetailsUI = styled.Text`
   margin: 0 0 10px 0;
+  font-size: 14px;
 `;
 
 export default function ShopMenu({ route, navigation }) {
   const { store } = route.params;
 
-  return (
-    /*     <CartProvider
-      mode="payment"
-      cartMode="client-only"
-      stripe={
-        "pk_test_51IZlClAcpIvk8gMGgBFvvoLwetyiSLp9PO9orIff7tK8ZAQWNBOA18e1jjAHDKh07COpuvHlQqd6rn0y4gbXEw1c00JYAkPfPy"
-      }
-      successUrl="stripe.com"
-      cancelUrl="twitter.com/dayhaysoos"
-      currency="USD"
-      allowedCountries={["US", "GB", "CA"]}
-      billingAddressCollection={true}
-    > */
+  const [selection, setSelection] = useState("all");
 
+  return (
     <ScreenUI>
       <ContainerUI>
-        <GreetingUI>Welcome to {store.username}</GreetingUI>
-        <DetailsUI>Location: {store.location}</DetailsUI>
+        <Image
+          source={shopImage}
+          style={{ width: "100%", height: 180, borderRadius: 15 }}
+        />
+        <TitleUI>
+          {store.username} - {store.location}
+        </TitleUI>
+        <DetailsUI>0.5km</DetailsUI>
+        <MenuFilter selection={selection} setSelection={setSelection} />
 
-        {store.menu &&
-          store.menu.map((item) => (
-            <ItemCard item={item} navigation={navigation} />
-          ))}
+        <FilterTextUI>{selection}</FilterTextUI>
+
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: "center",
+            justifyContent: "flex-start",
+            backgroundColor: "white",
+            width: "100%",
+          }}
+        >
+          {store.menu &&
+            store.menu.map((item) => (
+              <ItemCard item={item} navigation={navigation} />
+            ))}
+        </ScrollView>
       </ContainerUI>
     </ScreenUI>
   );

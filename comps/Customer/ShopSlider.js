@@ -2,15 +2,19 @@ import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import ShopCardSmall from "./ShopCardSmall";
+import { ScrollView } from "react-native";
 
 const ContainerUI = styled.View`
-  font-family: "Poppins";
-  font-size: 32;
-  justify-content: flex-start;
+  margin: 0 0 30px 0;
+  display: inline;
 `;
 
 const RowUI = styled.View`
   flex-direction: row;
+  justify-content: space-between;
+  margin: 0 0 0px 0;
+  width: 100%;
+  padding: 0 5%;
 `;
 
 const ScrollUI = styled.View`
@@ -24,9 +28,10 @@ const HeadingUI = styled.Text`
 `;
 
 const ExpandUI = styled.Text`
-  font-family: "Poppins";
-  font-size: 10px;
   justify-content: flex-start;
+  font-family: Poppins;
+  color: #ee9837;
+  font-size: 11px;
 `;
 
 export default function ShopSlider({
@@ -42,8 +47,10 @@ export default function ShopSlider({
     return null;
   }
 
+  console.log(displayStores);
+
   return (
-    <ContainerUI>
+    <>
       <RowUI>
         <HeadingUI>{heading}</HeadingUI>
 
@@ -57,11 +64,23 @@ export default function ShopSlider({
         </ExpandUI>
       </RowUI>
 
-      <ScrollUI>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          display: "flex",
+          flexDirection: "row",
+          marginBottom: 30,
+          left: '5%'
+        }}
+      >
         {Object.entries(displayStores).map(([key, v]) => {
           return <ShopCardSmall index={key} v={v} navigation={navigation} />;
         })}
-      </ScrollUI>
-    </ContainerUI>
+        {Object.entries(displayStores).map(([key, v]) => {
+          return <ShopCardSmall index={key} v={v} navigation={navigation} />;
+        })}
+      </ScrollView>
+    </>
   );
 }
