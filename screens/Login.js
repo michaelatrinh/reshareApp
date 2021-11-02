@@ -21,16 +21,21 @@ const ContainerUI = styled.View`
 `;
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("juliantmayes@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("Hello123!");
+
+  const [createEmail, setCreateEmail] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [createAccountError, setCreateAccountError] = useState("");
 
   const { currentUser } = useContext(AuthContext);
 
   console.log(currentUser);
 
   //firebase sign in with email and password
-  const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const handleSignIn = (myEmail, myPassword) => {
+    signInWithEmailAndPassword(auth, myEmail, myPassword)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -44,8 +49,13 @@ export default function LoginScreen({ navigation }) {
               uid: user.uid,
               email: user.email,
             });
-          } else {
+          } else if (data == "customer") {
             navigation.navigate("Customer", {
+              uid: user.uid,
+              email: user.email,
+            });
+          } else {
+            navigation.navigate("Sign Up", {
               uid: user.uid,
               email: user.email,
             });
@@ -62,18 +72,27 @@ export default function LoginScreen({ navigation }) {
 
   //firebase sign up with email and password
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    if (createPassword === confirmPassword) {
+      createUserWithEmailAndPassword(auth, createEmail, createPassword)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+          console.log("account created");
+          setCreateAccountError("account created");
+          handleSignIn(createEmail, createPassword);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          // ..
+        });
+    } else {
+      console.log("passwords don't match");
+      setCreateAccountError("passwords don't match");
+    }
   };
 
   return (
@@ -85,6 +104,12 @@ export default function LoginScreen({ navigation }) {
         setPassword={setPassword}
         email={email}
         password={password}
+        setCreateEmail={setCreateEmail}
+        setCreatePassword={setCreatePassword}
+        setConfirmPassword={setConfirmPassword}
+        createAccountError={createAccountError}
+        createEmail={createEmail}
+        createPassword={createPassword}
       />
     </ContainerUI>
   );
