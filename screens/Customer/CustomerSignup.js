@@ -99,7 +99,7 @@ export default function CustomerSignup({ route, navigation }) {
 
   //firebase update user data (name, location, type)
   const handleUpdateInfo = async () => {
-    await update(ref(db, "users/" + uid ), {
+    await update(ref(db, "users/" + uid), {
       type: "customer",
       email: email,
       location: inputLocation,
