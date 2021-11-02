@@ -72,9 +72,9 @@ export default function CustomerSignup({ route, navigation }) {
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
-    const nameRef = ref(db, "stores/" + userId + "/username");
-    const locationRef = ref(db, "stores/" + userId + "/location");
-    const typeRef = ref(db, "stores/" + userId + "/type");
+    const nameRef = ref(db, "users/" + userId + "/username");
+    const locationRef = ref(db, "users/" + userId + "/location");
+    const typeRef = ref(db, "users/" + userId + "/type");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -98,19 +98,17 @@ export default function CustomerSignup({ route, navigation }) {
   }, []);
 
   //firebase update user data (name, location, type)
-  const handleUpdateInfo = () => {
-    update(ref(db, "stores/" + uid ), {
-      type: "store",
+  const handleUpdateInfo = async () => {
+    await update(ref(db, "users/" + uid ), {
+      type: "customer",
       email: email,
       location: inputLocation,
       username: inputName,
-      menu: [
-        {
-          name: "Apple",
-          price: "5.50",
-          expiry: "11/20/21" 
-        }
-      ]
+    });
+
+    navigation.navigate("Customer", {
+      uid: currentUser.uid,
+      email: currentUser.email,
     });
   };
 
