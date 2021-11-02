@@ -17,6 +17,8 @@ import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
 
+import Greeting from "@/comps/Greeting";
+
 const ContainerUI = styled.View`
   flex: 1;
   background-color: #fff;
@@ -118,9 +120,6 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   return (
     <ContainerUI>
-      {/* michael test */}
-      <GoToDash title="Go To Dashboard" onPress={goToDashboard} />
-
       <ButtonUI title="Sign Out" onPress={handleSignOut} />
       <Text>Hello {displayName}</Text>
       <Text>Your Location: {displayLocation}</Text>
@@ -137,7 +136,6 @@ export default function StoreHomeScreen({ route, navigation }) {
   );
 }
 
-// michael testing
 const GoToDash = styled.Button`
   flex: 1;
   background-color: #ddd;
