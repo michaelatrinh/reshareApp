@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStack from "./HomeStack";
 import BrowseStack from "./BrowseStack";
-import SettingsStack from "./SettingsStack";
+import LocationStack from "./LocationStack";
 import OrdersStack from "./OrdersStack";
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ export default function Customer({ route, navigation }) {
         <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Browse" component={BrowseStack} />
         <Tab.Screen name="Orders" component={OrdersStack} />
-        <Tab.Screen name="Settings" component={SettingsStack} />
+        <Tab.Screen name="Location" component={LocationStack} />
       </Tab.Navigator>
     </>
   );
