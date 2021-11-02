@@ -4,8 +4,9 @@ import styled from "styled-components/native";
 
 const GreetingUI = styled.Text`
   font-family: "Poppins";
-  font-size: 32;
+  font-size: 32px;
   justify-content: flex-start;
+  left: 5%;
 `;
 
 export default function Greeting({ name = "Juhee" }) {
@@ -19,7 +20,7 @@ export default function Greeting({ name = "Juhee" }) {
 
   return (
     <GreetingUI>
-      Hi,
+      Hi,{"\n"}
       {name} 👋
     </GreetingUI>
   );
