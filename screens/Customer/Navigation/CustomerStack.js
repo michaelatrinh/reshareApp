@@ -5,15 +5,9 @@ import BrowseStack from "./BrowseStack";
 import LocationStack from "./LocationStack";
 import OrdersStack from "./OrdersStack";
 import { View, Text, TouchableOpacity } from "react-native";
-import {
-  ClipboardText,
-  EmojiHappy,
-  Home,
-  Home2,
-  SearchNormal,
-  SearchNormal1,
-  Map,
-} from "iconsax-react-native";
+import { Feather } from '@expo/vector-icons'; 
+
+
 import styled from "styled-components/native";
 const Tab = createBottomTabNavigator();
 
@@ -69,13 +63,13 @@ function MyTabBar({ state, descriptors, navigation }) {
           >
             <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
               {label == "Home" ? (
-                <Home2 />
+                <Feather name="home" size={24} color="black" />
               ) : label == "Browse" ? (
-                <SearchNormal1 />
+                <Feather name="search" size={24} color="black" />
               ) : label == "Orders" ? (
-                <ClipboardText />
+                <Feather name="list" size={24} color="black" />
               ) : (
-                <Map />
+                <Feather name="map-pin" size={24} color="black" />
               )}
             </Text>
           </TouchableOpacity>
