@@ -16,6 +16,7 @@ import { stores } from "./comps/Data/StoreData";
 import ShopCard from "./comps/Customer/ShopCard";
 import CustomerSignup from "./screens/Customer/CustomerSignup";
 
+
 //Stack navigator to navigate through screens
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
