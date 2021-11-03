@@ -1,27 +1,43 @@
 import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
+import shopImage from "../../assets/store-img.png";
+import { Image } from "react-native";
 
-const StoreDetailsUI = styled.Text``;
+const StoreDetailsUI = styled.Text`
+color: #FE5D5D;
+`;
+
+const DistanceUI = styled.Text`
+font-size: 12px;
+`;
 
 const StoreContainerUI = styled.Pressable`
-  width: 100%;
+  width: 90%;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   background: white;
-  border: 3px solid black;
-  border-radius: 10px;
-  margin: 0 0 10px 0;
-  padding: 25px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  margin: 0 0 25px 0;
+ 
+`;
+
+const RowUI = styled.View`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  padding: 10px 20px;
 `;
 
 export default function ShopCard({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
+  distance="0.5",
   v,
-  key,
 }) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -33,15 +49,17 @@ export default function ShopCard({
 
   return (
     <StoreContainerUI
-      key={key}
       onPress={() => {
         navigation.navigate("Menu", {
           store: v,
         });
       }}
     >
-      <StoreDetailsUI>{v.username}</StoreDetailsUI>
-      <StoreDetailsUI>{v.location}</StoreDetailsUI>
+      <Image source={shopImage} style={{ width: "100%", height: 129, borderTopLeftRadius: 15, borderTopRightRadius: 15 }} />
+      <RowUI>
+        <StoreDetailsUI>{v.username}</StoreDetailsUI>
+        <DistanceUI>{distance}km</DistanceUI>
+      </RowUI>
     </StoreContainerUI>
   );
 }

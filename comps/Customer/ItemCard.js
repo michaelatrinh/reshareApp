@@ -1,22 +1,42 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components/native";
+import lime from "../../assets/lime.png";
+import { Image } from "react-native";
 
-const StoreDetailsUI = styled.Text``;
+const ItemDeatilsUI = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 0 0 20px;
+  flex: 1;
+  height: 100px;
+`;
 
-const StoreContainerUI = styled.Pressable`
+const ItemContainerUI = styled.Pressable`
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  background: white;
-  border: 3px solid black;
-  border-radius: 10px;
-  margin: 0 0 10px 0;
-  padding: 25px;
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+`;
+
+const ItemNameUI = styled.Text`
+  font-size: 14px;
+`;
+
+const ItemPriceUI = styled.Text`
+  color: #fe0000;
+`;
+
+const ItemExpiryUI = styled.Text`
+  font-size: 12px;
+  color: #ee9837;
 `;
 
 export default function ItemCard({ route, navigation, item }) {
   return (
-    <StoreContainerUI
+    <ItemContainerUI
       key={item.name}
       onPress={() => {
         navigation.navigate("Item", {
@@ -24,9 +44,13 @@ export default function ItemCard({ route, navigation, item }) {
         });
       }}
     >
-      <StoreDetailsUI>{item.name}</StoreDetailsUI>
-      <StoreDetailsUI>{item.price}</StoreDetailsUI>
-      <StoreDetailsUI>{item.expiry}</StoreDetailsUI>
-    </StoreContainerUI>
+      <Image source={lime} style={{ width: 171, height: 100 }} />
+
+      <ItemDeatilsUI>
+        <ItemNameUI>{item.name}</ItemNameUI>
+        <ItemPriceUI>{item.price}</ItemPriceUI>
+        <ItemExpiryUI>Best Before {item.expiry}</ItemExpiryUI>
+      </ItemDeatilsUI>
+    </ItemContainerUI>
   );
 }

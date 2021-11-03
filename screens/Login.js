@@ -11,59 +11,31 @@ import {
 import { db } from "../config/firebase";
 import { auth } from "../config/firebase";
 import { AuthContext } from "../comps/auth";
+import LoginCard from "../comps/LoginCard";
 
 const ContainerUI = styled.View`
   flex: 1;
-  background-color: #fff;
+  background-color: #ee9837;
   align-items: center;
   justify-content: center;
-`;
-
-const InputUI = styled.TextInput`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  max-height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
-
-const ButtonContainerUI = styled.View`
-  display: flex;
-  flex-direction: row;
-  width: 90%;
-  height: 50px;
-  background-color: aliceblue;
-`;
-
-const ButtonUI = styled.Pressable`
-  background-color: #000000;
-  color: white;
-  width: 90%;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 50px;
-  margin: 10px 0;
-`;
-
-const ButtonTextUI = styled.Text`
-  color: white;
 `;
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("juliantmayes@gmail.com");
   const [password, setPassword] = useState("Hello123!");
 
+  const [createEmail, setCreateEmail] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [createAccountError, setCreateAccountError] = useState("");
+
   const { currentUser } = useContext(AuthContext);
 
   console.log(currentUser);
 
   //firebase sign in with email and password
-  const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
+  const handleSignIn = (myEmail, myPassword) => {
+    signInWithEmailAndPassword(auth, myEmail, myPassword)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -77,8 +49,13 @@ export default function LoginScreen({ navigation }) {
               uid: user.uid,
               email: user.email,
             });
-          } else {
+          } else if (data == "customer") {
             navigation.navigate("Customer", {
+              uid: user.uid,
+              email: user.email,
+            });
+          } else {
+            navigation.navigate("Sign Up", {
               uid: user.uid,
               email: user.email,
             });
@@ -95,35 +72,45 @@ export default function LoginScreen({ navigation }) {
 
   //firebase sign up with email and password
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+    if (createPassword === confirmPassword) {
+      createUserWithEmailAndPassword(auth, createEmail, createPassword)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+          console.log("account created");
+          setCreateAccountError("account created");
+          handleSignIn(createEmail, createPassword);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          // ..
+        });
+    } else {
+      console.log("passwords don't match");
+      setCreateAccountError("passwords don't match");
+    }
   };
 
   return (
     <ContainerUI>
-      <Text></Text>
-      <InputUI placeholder="email" onChangeText={(text) => setEmail(text)} />
-      <InputUI
-        placeholder="password"
-        onChangeText={(text) => setPassword(text)}
+      <LoginCard
+        handleSignIn={handleSignIn}
+        handleSignUp={handleSignUp}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        email={email}
+        password={password}
+        setCreateEmail={setCreateEmail}
+        setCreatePassword={setCreatePassword}
+        setConfirmPassword={setConfirmPassword}
+        createAccountError={createAccountError}
+        createEmail={createEmail}
+        createPassword={createPassword}
       />
-
-      <ButtonUI onPress={handleSignIn}>
-        <ButtonTextUI>Sign In</ButtonTextUI>
-      </ButtonUI>
-      <ButtonUI onPress={handleSignUp}>
-        <ButtonTextUI>Sign Up</ButtonTextUI>
-      </ButtonUI>
     </ContainerUI>
   );
 }

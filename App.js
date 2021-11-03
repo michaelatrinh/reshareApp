@@ -10,7 +10,10 @@ import { AuthProvider } from "./comps/auth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Customer from "./screens/Customer/Navigation/CustomerStack";
 import { useFonts } from 'expo-font';
-
+import ShopSlider from "./comps/Customer/ShopSlider";
+import { stores } from "./comps/Data/StoreData";
+import ShopCard from "./comps/Customer/ShopCard";
+import CustomerSignup from "./screens/Customer/CustomerSignup";
 
 //Stack navigator to navigate through screens
 const Stack = createNativeStackNavigator();
@@ -29,6 +32,7 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Sign Up" component={CustomerSignup} />
           <Stack.Screen name="Customer" component={Customer} />
 
           <Stack.Screen name="Store" component={StoreHomeScreen} />

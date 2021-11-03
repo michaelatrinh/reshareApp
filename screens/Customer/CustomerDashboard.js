@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 
@@ -24,16 +24,11 @@ import ShopSlider from "../../comps/Customer/ShopSlider";
 
 const Tab = createBottomTabNavigator();
 
-const ScreenUI = styled.View`
-  align-items: center;
-  justify-content: flex-start;
-`;
-
 const ContainerUI = styled.View`
   background-color: #fff;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 90%;
+  width: 100%;
 `;
 
 const MapButtonUI = styled.Pressable`
@@ -42,6 +37,7 @@ const MapButtonUI = styled.Pressable`
   flex-direction: column;
   background: white;
   width: 100%;
+  margin: 30px 0;
 `;
 
 const UserDetailsUI = styled.Text`
@@ -110,7 +106,13 @@ export default function CustomerDashboard({ route, navigation }) {
   console.log(currentUser.uid);
 
   return (
-    <ScreenUI>
+    <ScrollView
+      contentContainerStyle={{
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+      }}
+    >
       <ContainerUI>
         <Greeting name={displayName} />
 
@@ -138,6 +140,6 @@ export default function CustomerDashboard({ route, navigation }) {
           navigation={navigation}
         />
       </ContainerUI>
-    </ScreenUI>
+    </ScrollView>
   );
 }

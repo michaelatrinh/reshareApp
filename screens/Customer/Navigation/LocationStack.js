@@ -1,15 +1,15 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Settings from "../Settings";
+import ShopLocation from "../ShopLocation";
 
 const Stack = createNativeStackNavigator();
 
-export default function SettingsStack({ route, navigation }) {
+export default function LocationStack({ route, navigation }) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Your Settings"
-        component={Settings}
+        name="Location"
+        component={ShopLocation}
         options={{ headerShadowVisible: false }}
       />
     </Stack.Navigator>

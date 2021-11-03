@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
@@ -16,7 +16,9 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
-// import RestaurantDashboardScreen from "./RestaurantDashboardScreen";
+
+//components
+import Greeting from "../../comps/Greeting";
 
 
 export default function StoreHomeScreen({ route, navigation }) {
@@ -42,6 +44,11 @@ export default function StoreHomeScreen({ route, navigation }) {
       console.log(error);
     }
   };
+
+  //read user data on mount
+  useEffect(() => {
+    readUserData(currentUser.uid);
+  }, []);
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
@@ -93,22 +100,31 @@ export default function StoreHomeScreen({ route, navigation }) {
   console.log(currentUser);
 
   return (
-    <ContainerUI>
-      {/* <GoToDash title="Go To Dashboard" onPress={goToDashboard} /> */}
+    <ScrollView 
+      contentContainerStyle={{
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+      }}
+    >
+      <ContainerUI>
+        {/* <GoToDash title="Go To Dashboard" onPress={goToDashboard} /> */}
+        <Greeting name={displayName}/>
 
-      <ButtonUI title="Sign Out" onPress={handleSignOut} />
-      <Text>Hello {displayName}</Text>
-      <Text>Your Location: {displayLocation}</Text>
-      <Text>User Type: {displayType}</Text>
-      <InputUI placeholder="name" onChangeText={(text) => setInputName(text)} />
+        {/* <ButtonUI title="Sign Out" onPress={handleSignOut} />
+        <Text>Hello {displayName}</Text>
+        <Text>Your Location: {displayLocation}</Text>
+        <Text>User Type: {displayType}</Text>
+        <InputUI placeholder="name" onChangeText={(text) => setInputName(text)} />
 
-      <InputUI
-        placeholder="location"
-        onChangeText={(text) => setInputLocation(text)}
-      />
+        <InputUI
+          placeholder="location"
+          onChangeText={(text) => setInputLocation(text)}
+        />
 
-      <ButtonUI title="Update Info" onPress={handleUpdateInfo} />
-    </ContainerUI>
+        <ButtonUI title="Update Info" onPress={handleUpdateInfo} /> */}
+      </ContainerUI>
+    </ScrollView>
   );
 }
 
@@ -125,10 +141,10 @@ const GoToDash = styled.Button`
 `;
 
 const ContainerUI = styled.View`
-  flex: 1;
   background-color: #fff;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 const InputUI = styled.TextInput`

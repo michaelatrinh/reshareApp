@@ -1,19 +1,22 @@
 import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
-
-const StoreDetailsUI = styled.Text``;
+import shopImage from "../../assets/store-img.png";
+import { Image } from "react-native";
 
 const StoreContainerUI = styled.Pressable`
-  width: 200px;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  background: white;
-  border: 3px solid black;
-  border-radius: 10px;
-  margin: 0 10px 10px 0;
-  padding: 25px;
+  background: #ffffff;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  margin: 10px 15px 0 0;
+  padding: 2px;
+`;
+
+const StoreDetailsUI = styled.Text`
+  padding: 10px;
 `;
 
 export default function ShopCardSmall({
@@ -21,7 +24,6 @@ export default function ShopCardSmall({
   displayStores,
   navigation,
   v,
-  key,
 }) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -33,15 +35,17 @@ export default function ShopCardSmall({
 
   return (
     <StoreContainerUI
-      key={key}
       onPress={() => {
         navigation.navigate("Menu", {
           store: v,
         });
       }}
     >
-      <StoreDetailsUI>{v.username}</StoreDetailsUI>
-      <StoreDetailsUI>{v.location}</StoreDetailsUI>
+      <Image source={shopImage} style={{ width: 171, height: 78, borderRadius: 5 }} />
+      <StoreDetailsUI>
+        {v.username} -
+        {v.location}
+      </StoreDetailsUI>
     </StoreContainerUI>
   );
 }

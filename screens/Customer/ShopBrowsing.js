@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 
@@ -18,17 +18,14 @@ import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
 import ShopCard from "../../comps/Customer/ShopCard";
-
-const ScreenUI = styled.View`
-  align-items: center;
-  justify-content: flex-start;
-`;
+import BrowseSearch from "../../comps/Customer/BrowseSearch";
 
 const ContainerUI = styled.View`
   background-color: #fff;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 90%;
+  width: 100%;
+  display: flex;
 `;
 
 export default function ShopBrowsing({ route, navigation }) {
@@ -81,12 +78,22 @@ export default function ShopBrowsing({ route, navigation }) {
   console.log(displayStores);
   console.log(currentUser.uid);
   return (
-    <ScreenUI>
-      <ContainerUI>
-        {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCard key={key} v={v} navigation={navigation}/>;
-        })}
-      </ContainerUI>
-    </ScreenUI>
+    <>
+
+    <BrowseSearch/>
+
+      <ScrollView
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "flex-start",
+              backgroundColor: "white",
+              width: "100%",
+              minHeight: "100%"
+            }}>
+      {Object.entries(displayStores).map(([key, v]) => {
+        return <ShopCard key={key} v={v} navigation={navigation} />;
+      })}
+      </ScrollView>
+    </>
   );
 }
