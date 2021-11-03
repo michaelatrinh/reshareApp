@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
@@ -17,30 +17,9 @@ import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
 
-<<<<<<< HEAD
-import Greeting from "@/comps/Greeting";
-
-const ContainerUI = styled.View`
-  flex: 1;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-`;
-
-const InputUI = styled.TextInput`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  max-height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
-=======
-//components
+// components
 import Greeting from "../../comps/Greeting";
->>>>>>> 2499c5a35d912af46343ba3d6b011a15ec2c6195
+
 
 
 export default function StoreHomeScreen({ route, navigation }) {
@@ -66,11 +45,6 @@ export default function StoreHomeScreen({ route, navigation }) {
       console.log(error);
     }
   };
-
-  //read user data on mount
-  useEffect(() => {
-    readUserData(currentUser.uid);
-  }, []);
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
@@ -116,14 +90,11 @@ export default function StoreHomeScreen({ route, navigation }) {
     });
   };
 
-  const goToDashboard = (navigation) => {
-    navigation.navigate(RestaurantDashboardScreen)
-  }
   console.log(currentUser);
 
   return (
-<<<<<<< HEAD
     <ContainerUI>
+      <Greeting />
       <ButtonUI title="Sign Out" onPress={handleSignOut} />
       <Text>Hello {displayName}</Text>
       <Text>Your Location: {displayLocation}</Text>
@@ -140,53 +111,11 @@ export default function StoreHomeScreen({ route, navigation }) {
   );
 }
 
-=======
-    <ScrollView 
-      contentContainerStyle={{
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <ContainerUI>
-        {/* <GoToDash title="Go To Dashboard" onPress={goToDashboard} /> */}
-        <Greeting name={displayName}/>
-
-        {/* <ButtonUI title="Sign Out" onPress={handleSignOut} />
-        <Text>Hello {displayName}</Text>
-        <Text>Your Location: {displayLocation}</Text>
-        <Text>User Type: {displayType}</Text>
-        <InputUI placeholder="name" onChangeText={(text) => setInputName(text)} />
-
-        <InputUI
-          placeholder="location"
-          onChangeText={(text) => setInputLocation(text)}
-        />
-
-        <ButtonUI title="Update Info" onPress={handleUpdateInfo} /> */}
-      </ContainerUI>
-    </ScrollView>
-  );
-}
-
-
->>>>>>> 2499c5a35d912af46343ba3d6b011a15ec2c6195
-const GoToDash = styled.Button`
+const ContainerUI = styled.View`
   flex: 1;
-  background-color: #ddd;
+  background-color: #fff;
   align-items: center;
   justify-content: center;
-  width: 80%;
-  height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
-
-const ContainerUI = styled.View`
-  background-color: #fff;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
 `;
 
 const InputUI = styled.TextInput`
@@ -201,6 +130,17 @@ const InputUI = styled.TextInput`
 `;
 
 const ButtonUI = styled.Button`
+  flex: 1;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 50px;
+  text-align: center;
+  margin: 10px 0;
+`;
+
+const GoToDash = styled.Button`
   flex: 1;
   background-color: #ddd;
   align-items: center;
