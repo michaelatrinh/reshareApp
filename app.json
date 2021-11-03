@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "reshareApp",
-    "slug": "reshareApp",
+    "name": "reshare",
+    "slug": "reshare",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.juliantm.reshare"
     },
     "android": {
       "adaptiveIcon": {

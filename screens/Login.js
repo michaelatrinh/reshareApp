@@ -1,21 +1,16 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { initializeApp } from "firebase/app";
+import React, { useState, useContext } from "react";
+import { Text } from "react-native";
+
 import styled from "styled-components/native";
 
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import {
-  getAuth,
-  onAuthStateChanged,
-  FacebookAuthProvider,
-  signInWithCredential,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
 } from "firebase/auth";
 import { db } from "../config/firebase";
 import { auth } from "../config/firebase";
+import { AuthContext } from "../comps/auth";
 
 const ContainerUI = styled.View`
   flex: 1;
@@ -29,26 +24,42 @@ const InputUI = styled.TextInput`
   background-color: #ddd;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  width: 90%;
   max-height: 50px;
   text-align: center;
   margin: 10px 0;
 `;
 
-const ButtonUI = styled.Button`
-  flex: 1;
-  background-color: #ddd;
+const ButtonContainerUI = styled.View`
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  height: 50px;
+  background-color: aliceblue;
+`;
+
+const ButtonUI = styled.Pressable`
+  background-color: #000000;
+  color: white;
+  width: 90%;
   align-items: center;
   justify-content: center;
-  width: 80%;
-  height: 50px;
   text-align: center;
+  min-height: 50px;
   margin: 10px 0;
 `;
 
+const ButtonTextUI = styled.Text`
+  color: white;
+`;
+
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("juliantmayes@gmail.com");
+  const [password, setPassword] = useState("Hello123!");
+
+  const { currentUser } = useContext(AuthContext);
+
+  console.log(currentUser);
 
   //firebase sign in with email and password
   const handleSignIn = () => {
@@ -67,7 +78,7 @@ export default function LoginScreen({ navigation }) {
               email: user.email,
             });
           } else {
-            navigation.navigate("Home", {
+            navigation.navigate("Customer", {
               uid: user.uid,
               email: user.email,
             });
@@ -106,8 +117,13 @@ export default function LoginScreen({ navigation }) {
         placeholder="password"
         onChangeText={(text) => setPassword(text)}
       />
-      <ButtonUI title="Sign In" onPress={handleSignIn} />
-      <ButtonUI title="Sign Up" onPress={handleSignUp} />
+
+      <ButtonUI onPress={handleSignIn}>
+        <ButtonTextUI>Sign In</ButtonTextUI>
+      </ButtonUI>
+      <ButtonUI onPress={handleSignUp}>
+        <ButtonTextUI>Sign Up</ButtonTextUI>
+      </ButtonUI>
     </ContainerUI>
   );
 }

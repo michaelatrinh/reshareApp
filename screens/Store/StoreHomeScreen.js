@@ -1,9 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
-
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 import {
   getAuth,
@@ -14,41 +13,16 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { db } from "../config/firebase";
-import { auth } from "../config/firebase";
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { AuthContext } from "../../comps/auth";
+// import RestaurantDashboardScreen from "./RestaurantDashboardScreen";
 
-const ContainerUI = styled.View`
-  flex: 1;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-`;
-
-const InputUI = styled.TextInput`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  max-height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
-
-const ButtonUI = styled.Button`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
 
 export default function StoreHomeScreen({ route, navigation }) {
   //parameter from previous route i.e. login screen
   const { uid, email } = route.params;
+  const currentUser = useContext(AuthContext);
 
   //display states
   const [displayName, setDisplayName] = useState("");
@@ -71,9 +45,9 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
-    const nameRef = ref(db, "users/" + userId + "/username");
-    const locationRef = ref(db, "users/" + userId + "/location");
-    const typeRef = ref(db, "users/" + userId + "/type");
+    const nameRef = ref(db, "stores/" + userId + "/username");
+    const locationRef = ref(db, "stores/" + userId + "/location");
+    const typeRef = ref(db, "stores/" + userId + "/type");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -98,20 +72,29 @@ export default function StoreHomeScreen({ route, navigation }) {
 
   //firebase update user data (name, location, type)
   const handleUpdateInfo = () => {
-    update(ref(db, "users/" + uid), {
-      username: inputName,
+    update(ref(db, "stores/" + uid ), {
+      type: "store",
+      email: email,
       location: inputLocation,
+      username: inputName,
+      menu: [
+        {
+          name: "Apple",
+          price: "5.50",
+          expiry: "11/20/21" 
+        }
+      ]
     });
   };
 
-  const goToDashboard = () => {
-    navigation.navigate("RestaurantDashboard");
+  const goToDashboard = (navigation) => {
+    navigation.navigate(RestaurantDashboardScreen)
   }
+  console.log(currentUser);
 
   return (
     <ContainerUI>
-      {/* michael test */}
-      <GoToDash title="Go To Dashboard" onPress={goToDashboard} />
+      {/* <GoToDash title="Go To Dashboard" onPress={goToDashboard} /> */}
 
       <ButtonUI title="Sign Out" onPress={handleSignOut} />
       <Text>Hello {displayName}</Text>
@@ -129,8 +112,37 @@ export default function StoreHomeScreen({ route, navigation }) {
   );
 }
 
-// michael testing
+
 const GoToDash = styled.Button`
+  flex: 1;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 50px;
+  text-align: center;
+  margin: 10px 0;
+`;
+
+const ContainerUI = styled.View`
+  flex: 1;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InputUI = styled.TextInput`
+  flex: 1;
+  background-color: #ddd;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  max-height: 50px;
+  text-align: center;
+  margin: 10px 0;
+`;
+
+const ButtonUI = styled.Button`
   flex: 1;
   background-color: #ddd;
   align-items: center;
