@@ -9,7 +9,7 @@ const ItemDeatilsUI = styled.View`
   justify-content: space-between;
   margin: 0 0 0 20px;
   flex: 1;
-  height: 100;
+  height: 100px;
 `;
 
 const ItemContainerUI = styled.Pressable`

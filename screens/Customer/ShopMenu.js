@@ -69,7 +69,7 @@ export default function ShopMenu({ route, navigation }) {
         >
           {store.menu &&
             store.menu.map((item) => (
-              <ItemCard item={item} navigation={navigation} />
+              <ItemCard key={item.name} item={item} navigation={navigation} />
             ))}
         </ScrollView>
       </ContainerUI>

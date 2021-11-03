@@ -33,12 +33,6 @@ export default function ShopLocation({}) {
     text = JSON.stringify(location);
   }
 
-  //longitude
-  console.log(location.coords.latitude);
-
-  //latitude
-  console.log(location.coords.longitude);
-
   return (
     <ContainerUI>
       <Text>{text}</Text>

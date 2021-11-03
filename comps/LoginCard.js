@@ -50,8 +50,13 @@ const ButtonUI = styled.Pressable`
 `;
 
 const ButtonTextUI = styled.Text`
-  color: white;
   font-family: "Poppins";
+  color: white;
+`;
+
+const ErrorTextUI = styled.Text`
+  font-family: "Poppins";
+  color: red;
 `;
 
 const CreateAccountUI = styled.Pressable``;
@@ -70,6 +75,12 @@ export default function LoginCard({
   setPassword,
   handleSignIn,
   handleSignUp,
+  setCreatePassword,
+  setCreateEmail,
+  setConfirmPassword,
+  createAccountError,
+  createEmail,
+  createPassword,
 }) {
   const [page, setPage] = useState(false);
 
@@ -95,10 +106,10 @@ export default function LoginCard({
             onChangeText={(text) => setPassword(text)}
           />
 
-          <ButtonUI onPress={handleSignIn}>
+          <ButtonUI onPress={() => handleSignIn(email, password)}>
             <ButtonTextUI>Sign In</ButtonTextUI>
           </ButtonUI>
-          <CreateAccountUI onPress={() => setPage(1)}>
+          <CreateAccountUI onPress={() => setPage(true)}>
             <CreateAccountTextUI>Create Account</CreateAccountTextUI>
           </CreateAccountUI>
         </ContainerUI>
@@ -107,20 +118,24 @@ export default function LoginCard({
           <HeadingUI>Create an Account</HeadingUI>
           <InputUI
             placeholder="User Email"
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => setCreateEmail(text)}
           />
           <InputUI
             placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => setCreatePassword(text)}
           />
           <InputUI
             placeholder="Confirm password"
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => setConfirmPassword(text)}
           />
 
-          <ButtonUI onPress={handleSignIn}>
+          <ButtonUI onPress={handleSignUp}>
             <ButtonTextUI>Create Account</ButtonTextUI>
           </ButtonUI>
+
+          <ErrorTextUI>{createPassword}</ErrorTextUI>
+          <ErrorTextUI>{createEmail}</ErrorTextUI>
+          <ErrorTextUI>{createAccountError}</ErrorTextUI>
           <CreateAccountUI onPress={() => setPage(!page)}>
             <CreateAccountTextUI>Sign In</CreateAccountTextUI>
           </CreateAccountUI>

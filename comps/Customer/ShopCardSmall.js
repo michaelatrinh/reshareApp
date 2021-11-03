@@ -24,7 +24,6 @@ export default function ShopCardSmall({
   displayStores,
   navigation,
   v,
-  key,
 }) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -36,7 +35,6 @@ export default function ShopCardSmall({
 
   return (
     <StoreContainerUI
-      key={key}
       onPress={() => {
         navigation.navigate("Menu", {
           store: v,
