@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { useEffect, useState, useRef, useContext } from 'react'; from "react";
 import styled from "styled-components/native";
-import * as ReactNative from "react-native";
+import React, { useEffect, useState, useRef, useContext } from 'react';Native from "react-native";
 import { initializeApp } from "@firebase/app";
 
 import { Camera } from "expo-camera";
