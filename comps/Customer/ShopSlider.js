@@ -71,14 +71,14 @@ export default function ShopSlider({
           display: "flex",
           flexDirection: "row",
           marginBottom: 30,
-          left: '5%'
+          left: "5%",
         }}
       >
         {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCardSmall index={key} v={v} navigation={navigation} />;
+          return <ShopCardSmall key={key} v={v} navigation={navigation} />;
         })}
         {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCardSmall index={key} v={v} navigation={navigation} />;
+          return <ShopCardSmall key={key} v={v} navigation={navigation} />;
         })}
       </ScrollView>
     </>

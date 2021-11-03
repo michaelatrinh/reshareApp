@@ -38,7 +38,6 @@ export default function ShopCard({
   navigation,
   distance="0.5",
   v,
-  key,
 }) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -50,7 +49,6 @@ export default function ShopCard({
 
   return (
     <StoreContainerUI
-      key={key}
       onPress={() => {
         navigation.navigate("Menu", {
           store: v,
