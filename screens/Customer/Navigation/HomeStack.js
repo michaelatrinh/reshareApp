@@ -32,7 +32,7 @@ export default function HomeStack({ route, navigation }) {
       />
 
       <Stack.Screen
-        name="Location"
+        name="Map"
         component={ShopLocation}
         options={{
           headerShadowVisible: false, // applied here
