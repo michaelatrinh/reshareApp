@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import ShopImage from "../../assets/store-img.png";
 import { Image, View, Text, Pressable } from "react-native";
@@ -64,6 +65,16 @@ export default function ItemCard({
   ItemsOrdered = "3 items ordered",
   Time = "6:00 pm",
 }) {
+
+  // if font doesnt work show nothing
+  const [loaded] = useFonts({
+    Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
     return (
       <OrderContainerUI>
         <Image source={ShopImage} style=
