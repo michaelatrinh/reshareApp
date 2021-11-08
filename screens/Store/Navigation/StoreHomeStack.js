@@ -1,8 +1,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StoreDashboard from "../StoreDashboard";
+import AddItemsCamera from "../AddItemsCamera";
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function StoreHomeStack({ route, navigation }){
   return (
@@ -13,6 +16,14 @@ export default function StoreHomeStack({ route, navigation }){
         options={{
           headerShadowVisible: false, // applied here
         }}
+    />
+
+    <Stack.Screen
+      name="Add Item Camera"
+      component={AddItemsCamera}
+      options={{
+        headerShadowVisible: false,
+      }}
     />
     </Stack.Navigator>
   )

@@ -24,6 +24,7 @@ import { AuthContext } from "../../comps/auth";
 import Greeting from "../../comps/Greeting";
 import MyItemsHeader from "../../comps/Store/MyItemsHeader";
 import MyItemsItem from "../../comps/Store/MyItemsItem";
+import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
 
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
@@ -35,7 +36,9 @@ export default function StoreDashboardScreen({
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
   const [displayType, setDisplayType] = React.useState("");
-  const [displayStores, setDisplayStores] = useState("");
+  const [displayStores, setDisplayStores] = React.useState("");
+  const [displayRemove, setDisplayRemove] = React.useState(false);
+  const [displayGrey, setDisplayGrey] = React.useState(false);
 
   //input states
   const [inputName, setInputName] = useState("");
@@ -94,9 +97,42 @@ export default function StoreDashboardScreen({
   const [emptyPage, setEmptyPage] = React.useState(false);
 
   const addItems = () => {
-      navigation.navigate("AddItemsCamera");
+    navigation.navigate("AddItemsCamera");
   }
 
+  // Remove Item Window Display when remove btn is pressed
+  var newRemoveWindowDisplay="none"
+  // Grey background for when removal window pops up
+  var newGreyDisplay="none";
+
+  const removeItemBtnPress = () => {
+    setDisplayRemove(true);
+  }
+
+  // when user pressed no on Removal confirmation window
+  const handleNoPress = () => {
+    setDisplayRemove(false);
+
+  }
+
+  // when user pressed yes on Removal confirmation window
+  const handleYesPress = () => {
+    setDisplayRemove(false);
+
+    // will need to add code to identify which item to remove and how
+    // @ @ @ @ @ @
+  }
+
+  if(displayRemove){
+      newRemoveWindowDisplay="flex";
+      newGreyDisplay="flex";
+  }
+
+  const handleAddButton = () => {
+    navigation.navigate("Add Item Camera");
+  }
+
+  // ignore below if statement
   if(emptyPage === true){
       return (
         <ContainerUI>
@@ -120,16 +156,21 @@ export default function StoreDashboardScreen({
 
   return (
     <ContainerUI>
+      <GreyBackground style={styles.greyBg} greyDisplay={newGreyDisplay} />
+      <RemoveWindow removeWindowDisplay={newRemoveWindowDisplay} noOnPress={handleNoPress} yesOnPress={handleYesPress} />
+
       <TopContainer>
         <Greeting name={displayName} />
 
-        <MyItemsHeader />
+        <MyItemsHeader onAddPress={handleAddButton} />
       </TopContainer>
     
       <ReactNative.ScrollView
         contentContainerStyle={styles.foodListScroll}
       >
-        <MyItemsItem />
+        
+
+        <MyItemsItem removeOnPress={removeItemBtnPress} />
         <MyItemsItem />
         <MyItemsItem />
         <MyItemsItem />
@@ -154,12 +195,16 @@ const styles = ReactNative.StyleSheet.create({
     width: deviceWidth,
     minHeight: deviceHeight, 
   },
+  greyBg:{
+    minWidth: deviceWidth,
+    minHeight: deviceHeight,
+  },
 });
 
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 
@@ -177,4 +222,11 @@ const AddItemsButton = styled.Button`
 const TopContainer = styled.View`
   justify-content: space-between;
   height: 153px;
+`;
+
+const GreyBackground = styled.View`
+  display: ${props=>props.greyDisplay}
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  z-index: 2;
 `;
