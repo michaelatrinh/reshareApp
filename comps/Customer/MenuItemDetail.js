@@ -64,7 +64,7 @@ const QuantityFunction = styled.View`
 
 const RightRow = styled.View`
   display: flex;
-  width: 128px;
+  ${"" /* width: 128px; */}
   height: 76px;
   flex-direction: column;
 `;
