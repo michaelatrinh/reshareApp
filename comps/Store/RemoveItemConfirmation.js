@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactNative from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { useFonts } from 'expo-font';
 import { Feather } from '@expo/vector-icons';
 
@@ -8,6 +8,7 @@ export default function RemoveWindow({
   removeWindowDisplay="none",
   noOnPress=()=>{},
   yesOnPress=()=>{},
+  onXPress=()=>{},
 }){
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -24,7 +25,12 @@ export default function RemoveWindow({
     <Container removeWindowDisplay={removeWindowDisplay}>
       <Window>
         <FirstContainer>
-          <Feather name="x-circle" size={11} style={styles.x} />
+          <Feather 
+            name="x-circle" 
+            size={11} 
+            style={styles.x} 
+            onPress={onXPress} 
+          />
         </FirstContainer>
 
         <SecondContainer>
@@ -32,11 +38,19 @@ export default function RemoveWindow({
         </SecondContainer>
 
         <ThirdContainer>
-          <ReactNative.TouchableOpacity style={styles.no} activeOpacity={0.5} onPress={noOnPress}>
+          <ReactNative.TouchableOpacity 
+            style={styles.no} 
+            activeOpacity={0.5} 
+            onPress={noOnPress}
+          >
             <ReactNative.Text style={styles.noText}>NO</ReactNative.Text>
           </ReactNative.TouchableOpacity>
           
-          <ReactNative.TouchableOpacity style={styles.yes} activeOpacity={0.5} onPress={yesOnPress}>
+          <ReactNative.TouchableOpacity 
+            style={styles.yes} 
+            activeOpacity={0.5} 
+            onPress={yesOnPress}
+          >
             <ReactNative.Text style={styles.yesText}>YES</ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </ThirdContainer>

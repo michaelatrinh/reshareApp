@@ -18,13 +18,13 @@ export default function StoreHomeStack({ route, navigation }){
         }}
     />
 
-    <Stack.Screen
+    {/* <Stack.Screen
       name="Add Item Camera"
       component={AddItemsCamera}
       options={{
         headerShadowVisible: false,
       }}
-    />
+    /> */}
     </Stack.Navigator>
   )
 }

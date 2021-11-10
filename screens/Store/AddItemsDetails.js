@@ -19,11 +19,17 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 
-
+var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
+var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
 export default function AddItemsDetails({
     navigation,
 }){
+  const [itemName, setItemName] = React.useState("");
+  const [itemExpiry, setItemExpiry] = React.useState("");
+  const [itemQuantity, setItemQuantity] = React.useState(0);
+  const [itemOrigPrice, setItemOrigPrice] = React.useState(0);
+  const [itemDiscPrice, setItemDiscPrice] = React.useState(0);
 
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -42,36 +48,86 @@ export default function AddItemsDetails({
 
   return (
       <MainContainer>
+        <ReactNative.ScrollView style={styles.scrollView}>
           <FoodPicContainer>
-              <FoodPic style={styles.img} source={require('../../assets/lime2.png')} />
+              <FoodPic style={styles.img} />
           </FoodPicContainer>
           
           <MegaDetailsContainer>
               {/* Produce Title Section */}
               <TitleContainer>
-                  <InputTitle>
-                      <ReactNative.Text style={styles.header}>Title</ReactNative.Text>
-                  </InputTitle>
-
-                  <TitleInput />
+                <InputTitle>
+                  <ReactNative.Text style={styles.header}>TITLE</ReactNative.Text>
+                </InputTitle>
+                
+                <ReactNative.TextInput
+                  style={styles.titleInput}
+                  placeholder={"Type title"}
+                  value={itemName}
+                />
               </TitleContainer>
               
               {/* Expiry Section */}
               <ExpiryContainer>
-                  <InputTitle>
-                      <ReactNative.Text style={styles.header}>Expiry</ReactNative.Text>
-                  </InputTitle>
+                <InputTitle>
+                    <ReactNative.Text style={styles.header}>EXPIRY</ReactNative.Text>
+                </InputTitle>
 
-                  <TitleInput />
+                <ReactNative.TextInput
+                  style={styles.titleInput}
+                  placeholder={"Select the expiry date"}
+                  value={itemExpiry}
+                />
+              </ExpiryContainer>
+
+              {/* Quantity section */}
+              <ExpiryContainer>
+                <InputTitle>
+                  <ReactNative.Text style={styles.header}>QUANTITY</ReactNative.Text>
+                </InputTitle>
+
+                <ReactNative.TextInput
+                  style={styles.titleInput}
+                  placeholder={"Select the quantity"}
+                  value={itemQuantity}
+                />
               </ExpiryContainer>
                   
-              {/* Description Section */}
-              <DescriptionContainer>
+              <PriceContainer>
+                <OrigPrice>
                   <InputTitle>
-                      <ReactNative.Text style={styles.header}>Description</ReactNative.Text>
+                    <ReactNative.Text style={styles.header}>ORIGINAL PRICE</ReactNative.Text>
                   </InputTitle>
 
-                  <DescriptionInput />
+                  <ReactNative.TextInput
+                    style={styles.priceInput}
+                    placeholder={"Enter original price"}
+                    value={itemOrigPrice}
+                  />
+                </OrigPrice>
+
+                <DiscPrice>
+                  <InputTitle>
+                    <ReactNative.Text style={styles.header}>DISCOUNTED PRICE</ReactNative.Text>
+                  </InputTitle>
+
+                  <ReactNative.TextInput
+                    style={styles.priceInput}
+                    placeholder={"Select discounted price"}
+                    value={itemDiscPrice}
+                  />
+                </DiscPrice>
+              </PriceContainer>
+
+              <DescriptionContainer>
+                <InputTitle>
+                  <ReactNative.Text style={styles.header}>DISCOUNTED PRICE</ReactNative.Text>
+                </InputTitle>
+
+                <ReactNative.TextInput 
+                  style={styles.descInput}
+                  multiline={true}
+                />
               </DescriptionContainer>
           </MegaDetailsContainer>
           
@@ -80,6 +136,7 @@ export default function AddItemsDetails({
               <ReactNative.Text style={styles.postText}>POST</ReactNative.Text>
             </ReactNative.TouchableOpacity>
           </ContinueButtonContainer>
+        </ReactNative.ScrollView>
       </MainContainer>
   );
 }
@@ -104,13 +161,50 @@ const styles = ReactNative.StyleSheet.create({
   postText:{
     fontFamily: "UbuntuBold",
     fontSize: 12,
+  },
+  scrollView:{
+    minHeight: deviceHeight,
+    maxWidth: deviceWidth * 0.8,
+  },
+  titleInput:{
+    width: 328,
+    height: 49,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: {width: 0, height: 4},
+    shadowRadius: 14,
+  },
+  priceInput:{
+    width: 160,
+    height: 49,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+  },
+  descInput:{
+    width: 328,
+    height: 74,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
   }
 })
 
 const MainContainer = styled.View`
   flex-grow: 1;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   background-color: #FFFFFF;
 `;
 
@@ -144,38 +238,27 @@ const MegaDetailsContainer = styled.View`
 // Title
 const TitleContainer = styled.View`
   flex-grow: 1;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
   width: 100%;
+  height: 72px;
 `;
 
 const InputTitle = styled.View`
   flex-direction: row;
   justify-content: flex-start;
-  width: 80%;
-`;
-
-const TitleInput = styled.TextInput`
-  flex: 1;
-  background-color: #FFFFFF;
-  align-items: center;
-  justify-content: center;
-  width: 328px;
-  max-height: 50px;
-  text-align: left;
-  margin: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+  width: 100%;
 `;
 
 // Expiry
 const ExpiryContainer = styled.View`
   flex-grow: 1;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
   width: 100%;
+  height: 72px;
 `;
 
 // Description
@@ -185,20 +268,24 @@ const DescriptionContainer = styled.View`
   align-items: center;
   flex-direction: column;
   width: 100%;
+  height: 99px;
 `;
 
-const DescriptionInput = styled.TextInput`
-  flex: 1;
-  background-color: #FFFFFF;
+const PriceContainer = styled.View`
+  flex-grow: 1;
+  width: 100%;
+  height: 72px;
   align-items: center;
-  justify-content: flex-start;
-  width: 328px;
-  max-height: 200px;
-  text-align: left;
-  margin: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
 
+const OrigPrice = styled.View`
+  flex-grow: 1;
+`;
+
+const DiscPrice = styled.View`
+  flex-grow: 1;
 `;
 
 // Continue Button after all inputs are entered

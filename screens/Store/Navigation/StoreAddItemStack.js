@@ -25,13 +25,13 @@ export default function StoreHomeStack({ route, navigation }){
         }}
       />
 
-      <Stack.Screen 
+      {/* <Stack.Screen 
         name="Dashboard"
         component={StoreDashboardScreen}
         options={{
           headerShadowVisible: false,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   )
 }

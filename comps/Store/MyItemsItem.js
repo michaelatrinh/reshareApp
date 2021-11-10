@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactNative from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { useFonts } from 'expo-font';
 
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width

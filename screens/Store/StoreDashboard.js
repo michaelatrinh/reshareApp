@@ -16,7 +16,7 @@ import {
     signOut,
     produce, //may cause errors -Michael
 } from "firebase/auth";
-import { db } from "../../config/firebase";
+import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
 
@@ -39,6 +39,10 @@ export default function StoreDashboardScreen({
   const [displayStores, setDisplayStores] = React.useState("");
   const [displayRemove, setDisplayRemove] = React.useState(false);
   const [displayGrey, setDisplayGrey] = React.useState(false);
+  const [menu, setMenu] = React.useState([]);
+  const [itemName, setItemName] = React.useState("");
+  const [itemExpiry, setItemExpiry] = React.useState("");
+  const [itemPrice, setItemPrice] = React.useState(0);
 
   //input states
   const [inputName, setInputName] = useState("");
@@ -56,10 +60,14 @@ export default function StoreDashboardScreen({
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
-    const nameRef = ref(db, "users/" + userId + "/username");
-    const locationRef = ref(db, "users/" + userId + "/location");
-    const typeRef = ref(db, "users/" + userId + "/type");
-    const storesRef = ref(db, "stores/");
+    const nameRef = ref(db, "stores/" + userId + "/username");
+    const locationRef = ref(db, "stores/" + userId + "/location");
+    const typeRef = ref(db, "stores/" + userId + "/type");
+    const menuRef = ref(db, "stores/" + userId + "/menu");
+    const itemRef = ref(db, "store/" + userId + "/menu" + []);
+    const itemNameRef = ref(db, "store/" + userId + "/menu" + [] + "/name");
+    const itemExpiryRef = ref(db, "store/" + userId + "/menu" + [] + "/expiry");
+    const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -76,12 +84,15 @@ export default function StoreDashboardScreen({
       setDisplayType(data);
     });
 
-    onValue(storesRef, (snapshot) => {
+    onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
       setDisplayStores(data);
     });
+    
   }
 
+  // firebase read store data (menu, itemNum, type)
+  //
   //firebase update user data (name, location, type)
   const handleUpdateInfo = () => {
     update(ref(db, "users/" + uid), {
@@ -91,8 +102,8 @@ export default function StoreDashboardScreen({
     });
   };
 
-  console.log(displayStores);
-  console.log(currentUser.uid);
+  // console.log(displayStores);
+  // console.log(currentUser.uid);
 
   const [emptyPage, setEmptyPage] = React.useState(false);
 
@@ -156,8 +167,16 @@ export default function StoreDashboardScreen({
 
   return (
     <ContainerUI>
-      <GreyBackground style={styles.greyBg} greyDisplay={newGreyDisplay} />
-      <RemoveWindow removeWindowDisplay={newRemoveWindowDisplay} noOnPress={handleNoPress} yesOnPress={handleYesPress} />
+      <GreyBackground 
+        style={styles.greyBg} 
+        greyDisplay={newGreyDisplay} 
+      />
+      <RemoveWindow 
+        removeWindowDisplay={newRemoveWindowDisplay} 
+        noOnPress={handleNoPress} 
+        yesOnPress={handleYesPress} 
+        onXPress={handleNoPress}  
+      />
 
       <TopContainer>
         <Greeting name={displayName} />
