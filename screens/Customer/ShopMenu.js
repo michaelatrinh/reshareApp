@@ -5,9 +5,9 @@ import ItemCard from "../../comps/Customer/ItemCard";
 import shopImage from "../../assets/store-img.png";
 import { Image } from "react-native";
 import MenuFilter from "../../comps/Customer/MenuFilter";
-import { CartProvider, useShoppingCart } from "use-shopping-cart";
 import { loadStripe } from "@stripe/stripe-js";
-import CartCount from "../../comps/Customer/CartCount";
+import { CartProvider } from "../../comps/cart";
+import { CartContext } from "../../comps/cart";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -58,8 +58,10 @@ export default function ShopMenu({ route, navigation }) {
 
   const [selection, setSelection] = useState("all");
 
+  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } = useContext(CartContext);
+
   return (
-    <CartProvider mode="checkout-session" stripe={getStripe()} currency={"cad"}>
+ 
       <ScreenUI>
         <ContainerUI>
           <Image
@@ -86,11 +88,11 @@ export default function ShopMenu({ route, navigation }) {
               store.menu.map((item) => (
                 <ItemCard key={item.name} item={item} navigation={navigation} />
               ))}
-          </ScrollView>
 
-          <CartCount />
+
+          </ScrollView>
         </ContainerUI>
       </ScreenUI>
-    </CartProvider>
+
   );
 }

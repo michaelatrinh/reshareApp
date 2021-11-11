@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components/native";
 import lime from "../../assets/lime.png";
 import { Image } from "react-native";
-import { useShoppingCart } from 'use-shopping-cart'
+
 
 
 const ItemDeatilsUI = styled.View`
@@ -38,7 +38,7 @@ const ItemExpiryUI = styled.Text`
 
 export default function ItemCard({ route, navigation, item }) {
 
- const { totalPrice, redirectToCheckout, cartCount } = useShoppingCart()
+
 
   return (
     <ItemContainerUI
