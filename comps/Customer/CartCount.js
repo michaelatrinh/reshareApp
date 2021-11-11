@@ -2,8 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import styled from "styled-components/native";
 import lime from "../../assets/lime.png";
 import { Image } from "react-native";
-import { useShoppingCart } from 'use-shopping-cart'
-
+import { useShoppingCart } from "use-shopping-cart";
 
 const ItemDeatilsUI = styled.View`
   display: flex;
@@ -36,26 +35,8 @@ const ItemExpiryUI = styled.Text`
   color: #ee9837;
 `;
 
-export default function ItemCard({ route, navigation, item }) {
+export default function CartCount({ route, navigation, item }) {
+  const { totalPrice, redirectToCheckout, cartCount } = useShoppingCart();
 
- const { totalPrice, redirectToCheckout, cartCount } = useShoppingCart()
-
-  return (
-    <ItemContainerUI
-      key={item.name}
-      onPress={() => {
-        navigation.navigate("Item", {
-          item: item,
-        });
-      }}
-    >
-      <Image source={lime} style={{ width: 171, height: 100 }} />
-
-      <ItemDeatilsUI>
-        <ItemNameUI>{item.name}</ItemNameUI>
-        <ItemPriceUI>{item.price}</ItemPriceUI>
-        <ItemExpiryUI>Best Before {item.expiry}</ItemExpiryUI>
-      </ItemDeatilsUI>
-    </ItemContainerUI>
-  );
+  return <ItemNameUI>Your Cart has {cartCount} Items</ItemNameUI>;
 }

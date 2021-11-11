@@ -79,20 +79,20 @@ export default function ShopBrowsing({ route, navigation }) {
   console.log(currentUser.uid);
   return (
     <>
-
-    <BrowseSearch/>
+      <BrowseSearch />
 
       <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              backgroundColor: "white",
-              width: "100%",
-              minHeight: "100%"
-            }}>
-      {Object.entries(displayStores).map(([key, v]) => {
-        return <ShopCard key={key} v={v} navigation={navigation} />;
-      })}
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "flex-start",
+          backgroundColor: "white",
+          width: "100%",
+          minHeight: "100%",
+        }}
+      >
+        {Object.entries(displayStores).map(([key, v]) => {
+          return <ShopCard key={key} v={v} navigation={navigation} />;
+        })}
       </ScrollView>
     </>
   );
