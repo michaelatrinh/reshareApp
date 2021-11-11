@@ -19,8 +19,10 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 
+
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+
 
 export default function AddItemsDetails({
     navigation,
