@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import * as ReactNative from 'react-native';
 import styled from "styled-components/native";
 import MenuItemDetail from "../../comps/Customer/MenuItemDetail";
 import ItemSlider from "../../comps/Customer/ItemSlider";
@@ -23,10 +24,12 @@ export default function MenuItem({ route, navigation }) {
 
   return (
     <ContainerUI>
+
       <ItemSlider></ItemSlider>
       <BottomCol>
         <MenuItemDetail />
       </BottomCol>
+
     </ContainerUI>
   );
 }

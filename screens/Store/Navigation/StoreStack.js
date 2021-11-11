@@ -7,7 +7,7 @@ import StoreAddItemStack from './StoreAddItemStack';
 import StoreOrdersStack from './StoreOrdersStack';
 import { Feather } from '@expo/vector-icons'; 
 
-
+// Bottom Nav Comp
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -47,14 +47,15 @@ function MyTabBar({ state, descriptors, navigation }) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            activeOpacity={0.5}
           >
-            <ReactNative.Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
+            <ReactNative.Text style={{ color: isFocused ? "#57BA68" : "#DFEFB9" }}>
               {label == "Home" ? (
-                <Feather name="home" size={24} color="black" />
-              ) : label == "AddItem" ? (
-                <Feather name="plus-square" size={24} color="black" />
+                <Feather name="home" size={24} />
+              ) : label == "Add Item" ? (
+                  <Feather name="plus-square" size={24} />
               ) : label == "Orders" ? (
-                <Feather name="list" size={24} color="black" />
+                <Feather name="list" size={24} />
               ) : label == ""}
             </ReactNative.Text>
           </ReactNative.TouchableOpacity>
