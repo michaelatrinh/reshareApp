@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import shopImage from "../../assets/store-img.png";
-import { Image } from "react-native";
+import { Image, Pressable } from "react-native";
 
 const StoreContainerUI = styled.Pressable`
   justify-content: flex-start;
