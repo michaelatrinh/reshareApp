@@ -19,8 +19,6 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 
-
-
 export default function AddItemsDetails({
     navigation,
 }){

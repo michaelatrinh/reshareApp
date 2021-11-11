@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import * as ReactNative from "react-native";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StoreHomeStack from './StoreHomeStack';
 import StoreAddItemStack from './StoreAddItemStack';

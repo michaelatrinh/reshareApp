@@ -12,6 +12,7 @@
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
+    "@stripe/stripe-js": "^1.21.1",
     "expo": "~42.0.1",
     "expo-camera": "~11.2.2",
     "expo-font": "~9.2.1",
@@ -24,7 +25,8 @@
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^12.1.1",
     "react-native-web": "~0.13.12",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.1",
+    "use-shopping-cart": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
