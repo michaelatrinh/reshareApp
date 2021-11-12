@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import styled from "styled-components/native";
+import Header from "../../comps/Customer/Header";
 
 //------ comps -------
 import OrderCard from "../../comps/Customer/OrderCard";
@@ -40,6 +41,8 @@ export default function Orders({ route, navigation }) {
 
   return (
     <ScreenUI>
+      <Header navigation={navigation}/>
+      
       <ContainerUI>
 
 
