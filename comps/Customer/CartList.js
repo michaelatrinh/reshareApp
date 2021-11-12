@@ -53,8 +53,18 @@ const Quantity = styled.View`
   width: 47px;
   height: 17px;
   border: 1px solid #ee9837;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
-
+const QuantityButton = styled.Pressable`
+  width: 18px;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  color: #e5e5e5;
+`;
 const SecondRight = styled.View``;
 
 const Expiry = styled.Text`
@@ -86,6 +96,25 @@ const Trash = styled.View`
   display: flex;
 `;
 export default function CartList() {
+  const [quantity, setQuantity] = useState(1);
+
+  const subtractQuantity = () => {
+    if (quantity < 2) {
+      return;
+    } else {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  //add quantity with max limit of item quantity
+  const addQuantity = () => {
+    if (quantity >= item.quantity) {
+      Alert.alert("Only " + item.quantity + " in stock!");
+      return;
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
   return (
     <Main>
       <Left>
@@ -94,7 +123,15 @@ export default function CartList() {
       <Right>
         <FirstRight>
           <Title>Fresh Lime (500-700g)</Title>
-          <Quantity></Quantity>
+          <Quantity>
+            <QuantityButton onPress={subtractQuantity}>
+              <Text style={{ fontSize: 10 }}>-</Text>
+            </QuantityButton>
+            <Text style={{ fontSize: 10 }}>{quantity}</Text>
+            <QuantityButton onPress={addQuantity}>
+              <Text style={{ fontSize: 10 }}>+</Text>
+            </QuantityButton>
+          </Quantity>
         </FirstRight>
         <SecondRight>
           <Expiry>Best Before Oct 15th</Expiry>

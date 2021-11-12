@@ -16,10 +16,23 @@ const ContainerUI = styled.View`
   width: 90%;
   min-height: 100%;
   display: flex;
-  align-content: space-between;
 `;
 
+const Top = styled.View`
+  display: flex;
+  flex-direction: column;
+  height: 63%;
+`;
+
+const Bottom = styled.View`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+`;
 const TitleUI = styled.Text`
+  display: flex;
+  justify-content: flex-start;
   font-weight: normal;
   font-family: Poppins;
   font-size: 20px;
@@ -55,7 +68,39 @@ const OrderMoreText = styled.Text`
   color: #ee9837;
   font-size: 14px;
 `;
+const Checkout = styled.Pressable`
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 40px;
+  background-color: #ee9837;
+  border-radius: 10px;
+  flex-direction: row;
+  margin-top: 21px;
+`;
 
+const CheckoutText = styled.Text`
+  font-size: 11px;
+  color: #ffffff;
+  justify-content: center;
+  margin-left: 40px;
+`;
+
+const Price = styled.View`
+  width: 46px;
+  height: 21px;
+  background-color: #fde9c2;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+`;
+
+const PriceText = styled.Text`
+  font-family: Poppins;
+  font-size: 10px;
+  color: #9b9b9b;
+`;
 const ButtonCont = styled.View``;
 export default function Cart({ route, navigation }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
@@ -65,8 +110,9 @@ export default function Cart({ route, navigation }) {
     <ScreenUI>
       <Header navigation={navigation} />
       <ContainerUI>
-        <TitleUI>Your Cart</TitleUI>
-        {/* {cart &&
+        <Top>
+          <TitleUI>Your Cart</TitleUI>
+          {/* {cart &&
           cart.map((item) => (
             <View key={item.name}>
               <Text>{item.name}</Text>
@@ -75,26 +121,28 @@ export default function Cart({ route, navigation }) {
               <Text>{item.quantity}</Text>
             </View>
           ))} */}
-        <CartCont>
-          <CartList></CartList>
-          <CartList></CartList>
-          <CartList></CartList>
-          <Total>
-            <Text>3 items</Text>
-            <Text>total &11.22</Text>
-          </Total>
-        </CartCont>
+          <CartCont>
+            <CartList></CartList>
+            <CartList></CartList>
+            <CartList></CartList>
+            <Total style={{ marginTop: 10 }}>
+              <Text>3 items</Text>
+              <Text>total $11.22</Text>
+            </Total>
+          </CartCont>
+        </Top>
+        <Bottom>
+          <OrderMore onPress={() => navigation.goBack(null)}>
+            <OrderMoreText>Order More</OrderMoreText>
+          </OrderMore>
 
-        <OrderMore onPress={() => navigation.goBack(null)}>
-          <OrderMoreText>Order More</OrderMoreText>
-        </OrderMore>
-
-        <Pressable
-          style={{ position: "absolute", bottom: 250 }}
-          onPress={() => navigation.navigate("Confirmation")}
-        >
-          <Text>PROCEED TO CHECKOUT</Text>
-        </Pressable>
+          <Checkout onPress={() => navigation.navigate("Confirmation")}>
+            <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
+            <Price>
+              <PriceText>$11.22</PriceText>
+            </Price>
+          </Checkout>
+        </Bottom>
       </ContainerUI>
     </ScreenUI>
   );
