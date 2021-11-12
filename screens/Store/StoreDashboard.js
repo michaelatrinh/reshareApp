@@ -16,7 +16,7 @@ import {
     signOut,
     produce, //may cause errors -Michael
 } from "firebase/auth";
-import { db } from "../../config/firebase";
+import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
 
@@ -24,6 +24,7 @@ import { AuthContext } from "../../comps/auth";
 import Greeting from "../../comps/Greeting";
 import MyItemsHeader from "../../comps/Store/MyItemsHeader";
 import MyItemsItem from "../../comps/Store/MyItemsItem";
+import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
 
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
@@ -35,7 +36,13 @@ export default function StoreDashboardScreen({
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
   const [displayType, setDisplayType] = React.useState("");
-  const [displayStores, setDisplayStores] = useState("");
+  const [displayStores, setDisplayStores] = React.useState("");
+  const [displayRemove, setDisplayRemove] = React.useState(false);
+  const [displayGrey, setDisplayGrey] = React.useState(false);
+  const [menu, setMenu] = React.useState([]);
+  const [itemName, setItemName] = React.useState("");
+  const [itemExpiry, setItemExpiry] = React.useState("");
+  const [itemPrice, setItemPrice] = React.useState(0);
 
   //input states
   const [inputName, setInputName] = useState("");
@@ -53,10 +60,14 @@ export default function StoreDashboardScreen({
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
-    const nameRef = ref(db, "users/" + userId + "/username");
-    const locationRef = ref(db, "users/" + userId + "/location");
-    const typeRef = ref(db, "users/" + userId + "/type");
-    const storesRef = ref(db, "stores/");
+    const nameRef = ref(db, "stores/" + userId + "/username");
+    const locationRef = ref(db, "stores/" + userId + "/location");
+    const typeRef = ref(db, "stores/" + userId + "/type");
+    const menuRef = ref(db, "stores/" + userId + "/menu");
+    const itemRef = ref(db, "store/" + userId + "/menu" + []);
+    const itemNameRef = ref(db, "store/" + userId + "/menu" + [] + "/name");
+    const itemExpiryRef = ref(db, "store/" + userId + "/menu" + [] + "/expiry");
+    const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -73,12 +84,15 @@ export default function StoreDashboardScreen({
       setDisplayType(data);
     });
 
-    onValue(storesRef, (snapshot) => {
+    onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
       setDisplayStores(data);
     });
+    
   }
 
+  // firebase read store data (menu, itemNum, type)
+  //
   //firebase update user data (name, location, type)
   const handleUpdateInfo = () => {
     update(ref(db, "users/" + uid), {
@@ -88,15 +102,48 @@ export default function StoreDashboardScreen({
     });
   };
 
-  console.log(displayStores);
-  console.log(currentUser.uid);
+  // console.log(displayStores);
+  // console.log(currentUser.uid);
 
   const [emptyPage, setEmptyPage] = React.useState(false);
 
   const addItems = () => {
-      navigation.navigate("AddItemsCamera");
+    navigation.navigate("AddItemsCamera");
   }
 
+  // Remove Item Window Display when remove btn is pressed
+  var newRemoveWindowDisplay="none"
+  // Grey background for when removal window pops up
+  var newGreyDisplay="none";
+
+  const removeItemBtnPress = () => {
+    setDisplayRemove(true);
+  }
+
+  // when user pressed no on Removal confirmation window
+  const handleNoPress = () => {
+    setDisplayRemove(false);
+
+  }
+
+  // when user pressed yes on Removal confirmation window
+  const handleYesPress = () => {
+    setDisplayRemove(false);
+
+    // will need to add code to identify which item to remove and how
+    // @ @ @ @ @ @
+  }
+
+  if(displayRemove){
+      newRemoveWindowDisplay="flex";
+      newGreyDisplay="flex";
+  }
+
+  const handleAddButton = () => {
+    navigation.navigate("Add Item Camera");
+  }
+
+  // ignore below if statement
   if(emptyPage === true){
       return (
         <ContainerUI>
@@ -120,16 +167,29 @@ export default function StoreDashboardScreen({
 
   return (
     <ContainerUI>
+      <GreyBackground 
+        style={styles.greyBg} 
+        greyDisplay={newGreyDisplay} 
+      />
+      <RemoveWindow 
+        removeWindowDisplay={newRemoveWindowDisplay} 
+        noOnPress={handleNoPress} 
+        yesOnPress={handleYesPress} 
+        onXPress={handleNoPress}  
+      />
+
       <TopContainer>
         <Greeting name={displayName} />
 
-        <MyItemsHeader />
+        <MyItemsHeader onAddPress={handleAddButton} />
       </TopContainer>
     
       <ReactNative.ScrollView
         contentContainerStyle={styles.foodListScroll}
       >
-        <MyItemsItem />
+        
+
+        <MyItemsItem removeOnPress={removeItemBtnPress} />
         <MyItemsItem />
         <MyItemsItem />
         <MyItemsItem />
@@ -154,12 +214,16 @@ const styles = ReactNative.StyleSheet.create({
     width: deviceWidth,
     minHeight: deviceHeight, 
   },
+  greyBg:{
+    minWidth: deviceWidth,
+    minHeight: deviceHeight,
+  },
 });
 
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 `;
 
@@ -177,4 +241,11 @@ const AddItemsButton = styled.Button`
 const TopContainer = styled.View`
   justify-content: space-between;
   height: 153px;
+`;
+
+const GreyBackground = styled.View`
+  display: ${props=>props.greyDisplay}
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  z-index: 2;
 `;

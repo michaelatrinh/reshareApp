@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import styled from "styled-components/native";
+import Header from "../../comps/Customer/Header";
 
 const ScreenUI = styled.View`
   align-items: center;

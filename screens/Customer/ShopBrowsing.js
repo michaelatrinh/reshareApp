@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
+import Header from "../../comps/Customer/Header";
 
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 import {
@@ -79,20 +80,21 @@ export default function ShopBrowsing({ route, navigation }) {
   console.log(currentUser.uid);
   return (
     <>
-
-    <BrowseSearch/>
+         <Header navigation={navigation}/>
+      <BrowseSearch />
 
       <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              backgroundColor: "white",
-              width: "100%",
-              minHeight: "100%"
-            }}>
-      {Object.entries(displayStores).map(([key, v]) => {
-        return <ShopCard key={key} v={v} navigation={navigation} />;
-      })}
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "flex-start",
+          backgroundColor: "white",
+          width: "100%",
+          minHeight: "100%",
+        }}
+      >
+        {Object.entries(displayStores).map(([key, v]) => {
+          return <ShopCard key={key} v={v} navigation={navigation} />;
+        })}
       </ScrollView>
     </>
   );
