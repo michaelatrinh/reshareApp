@@ -3,8 +3,6 @@ import styled from "styled-components/native";
 import lime from "../../assets/lime.png";
 import { Image } from "react-native";
 
-
-
 const ItemDeatilsUI = styled.View`
   display: flex;
   flex-direction: column;
@@ -21,6 +19,7 @@ const ItemContainerUI = styled.Pressable`
   width: 100%;
   flex-direction: row;
   display: flex;
+  margin: 0 0 25px 0;
 `;
 
 const ItemNameUI = styled.Text`
@@ -31,14 +30,27 @@ const ItemPriceUI = styled.Text`
   color: #fe0000;
 `;
 
+const ItemPriceOgUI = styled.Text`
+  color: #c5c1c1;
+  font-size: 14px;
+  text-decoration: line-through;
+`;
+
 const ItemExpiryUI = styled.Text`
   font-size: 12px;
   color: #ee9837;
 `;
 
+const RowUI = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+`;
+
 export default function ItemCard({ route, navigation, item }) {
-
-
+  const price = item.price.toFixed(2);
+  const priceOg = item.priceog.toFixed(2);
 
   return (
     <ItemContainerUI
@@ -53,7 +65,11 @@ export default function ItemCard({ route, navigation, item }) {
 
       <ItemDeatilsUI>
         <ItemNameUI>{item.name}</ItemNameUI>
-        <ItemPriceUI>{item.price}</ItemPriceUI>
+        <RowUI>
+          <ItemPriceUI>${price}</ItemPriceUI>
+          <ItemPriceOgUI>${priceOg}</ItemPriceOgUI>
+        </RowUI>
+
         <ItemExpiryUI>Best Before {item.expiry}</ItemExpiryUI>
       </ItemDeatilsUI>
     </ItemContainerUI>

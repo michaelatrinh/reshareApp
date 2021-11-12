@@ -5,9 +5,10 @@ import ItemCard from "../../comps/Customer/ItemCard";
 import shopImage from "../../assets/store-img.png";
 import { Image } from "react-native";
 import MenuFilter from "../../comps/Customer/MenuFilter";
-import { loadStripe } from "@stripe/stripe-js";
 import { CartProvider } from "../../comps/cart";
 import { CartContext } from "../../comps/cart";
+import CartButton from "../../comps/Customer/CartButton";
+import Header from "../../comps/Customer/Header";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -56,43 +57,51 @@ const getStripe = () => {
 export default function ShopMenu({ route, navigation }) {
   const { store } = route.params;
 
+  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
+    useContext(CartContext);
+
   const [selection, setSelection] = useState("all");
 
-  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } = useContext(CartContext);
+  // filter menu
+  const filterMenu = (menu) => {
+    if (selection === "all") {
+      return menu;
+    } else {
+      return menu.filter((item) => item.type === selection);
+    }
+  };
 
   return (
- 
-      <ScreenUI>
-        <ContainerUI>
-          <Image
-            source={shopImage}
-            style={{ width: "100%", height: 180, borderRadius: 15 }}
-          />
-          <TitleUI>
-            {store.username} - {store.location}
-          </TitleUI>
-          <DetailsUI>0.5km</DetailsUI>
-          <MenuFilter selection={selection} setSelection={setSelection} />
+    <ScreenUI>
+      <Header navigation={navigation} />
+      <ContainerUI>
+        <Image
+          source={shopImage}
+          style={{ width: "100%", height: 180, borderRadius: 15 }}
+        />
+        <TitleUI>
+          {store.username} - {store.location}
+        </TitleUI>
+        <DetailsUI>0.5km</DetailsUI>
+        <MenuFilter selection={selection} setSelection={setSelection} />
 
-          <FilterTextUI>{selection}</FilterTextUI>
+        <FilterTextUI>{selection}</FilterTextUI>
 
-          <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              backgroundColor: "white",
-              width: "100%",
-            }}
-          >
-            {store.menu &&
-              store.menu.map((item) => (
-                <ItemCard key={item.name} item={item} navigation={navigation} />
-              ))}
-
-
-          </ScrollView>
-        </ContainerUI>
-      </ScreenUI>
-
+        <ScrollView
+          contentContainerStyle={{
+            alignItems: "center",
+            justifyContent: "flex-start",
+            backgroundColor: "white",
+            width: "100%",
+          }}
+        >
+          {store.menu &&
+            filterMenu(store.menu).map((item) => (
+              <ItemCard key={item.name} item={item} navigation={navigation} />
+            ))}
+        </ScrollView>
+        <CartButton navigation={navigation} />
+      </ContainerUI>
+    </ScreenUI>
   );
 }

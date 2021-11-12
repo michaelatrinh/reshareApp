@@ -21,6 +21,7 @@ import { AuthContext } from "../../comps/auth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Greeting from "../../comps/Greeting";
 import ShopSlider from "../../comps/Customer/ShopSlider";
+import Header from "../../comps/Customer/Header";
 
 const Tab = createBottomTabNavigator();
 
@@ -106,40 +107,43 @@ export default function CustomerDashboard({ route, navigation }) {
   console.log(currentUser.uid);
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <ContainerUI>
-        <Greeting name={displayName} />
+    <>
+      <Header navigation={navigation} back={false} />
+      <ScrollView
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "white",
+        }}
+      >
+        <ContainerUI>
+          <Greeting name={displayName} />
 
-        <MapButtonUI
-          onPress={() => {
-            navigation.navigate("Location", {});
-          }}
-        >
-          <UserDetailsUI>Your Location: {displayLocation}</UserDetailsUI>
-        </MapButtonUI>
+          <MapButtonUI
+            onPress={() => {
+              navigation.navigate("Map");
+            }}
+          >
+            <UserDetailsUI>Your Location: {displayLocation}</UserDetailsUI>
+          </MapButtonUI>
 
-        <ShopSlider
-          displayStores={displayStores}
-          heading="Stores you love!"
-          navigation={navigation}
-        />
-        <ShopSlider
-          displayStores={displayStores}
-          heading="Stores near you!"
-          navigation={navigation}
-        />
-        <ShopSlider
-          displayStores={displayStores}
-          heading="Today’s recommendations!"
-          navigation={navigation}
-        />
-      </ContainerUI>
-    </ScrollView>
+          <ShopSlider
+            displayStores={displayStores}
+            heading="Stores you love!"
+            navigation={navigation}
+          />
+          <ShopSlider
+            displayStores={displayStores}
+            heading="Stores near you!"
+            navigation={navigation}
+          />
+          <ShopSlider
+            displayStores={displayStores}
+            heading="Today’s recommendations!"
+            navigation={navigation}
+          />
+        </ContainerUI>
+      </ScrollView>
+    </>
   );
 }

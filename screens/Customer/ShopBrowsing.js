@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
+import Header from "../../comps/Customer/Header";
 
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 import {
@@ -79,6 +80,7 @@ export default function ShopBrowsing({ route, navigation }) {
   console.log(currentUser.uid);
   return (
     <>
+         <Header navigation={navigation}/>
       <BrowseSearch />
 
       <ScrollView
