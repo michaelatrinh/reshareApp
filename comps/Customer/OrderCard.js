@@ -51,14 +51,12 @@ const TextRow = styled.View`
 const PickUpTime = styled.Text`
   color: #EE9837;
   font-family: "Poppins";
-
 `;
 
 
 export default function ItemCard({ 
-  route, 
-  navigation, 
-  item ,
+  navigation,
+  v,
   
   Store = "Superstore",
   Location = "Brentwood",
@@ -76,7 +74,13 @@ export default function ItemCard({
   }
 
     return (
-      <OrderContainerUI>
+      <OrderContainerUI 
+      onPress={() => {
+        navigation.navigate("Menu", {
+          store: v,
+        });
+      }}
+      >
         <Image source={ShopImage} style=
         {{ 
           width: 126, 
