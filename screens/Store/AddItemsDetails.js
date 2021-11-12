@@ -19,6 +19,12 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 
+//components
+import Picture from '../../comps/Store/AddItemPicture';
+import TextInput from '../../comps/Store/AddItemTextInput';
+import PriceInput from '../../comps/Store/AddItemPricesTextInput';
+import DescInput from '../../comps/Store/AddItemDescriptionInput';
+
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
@@ -47,108 +53,62 @@ export default function AddItemsDetails({
   }
 
   return (
-      <MainContainer>
-        <ReactNative.ScrollView style={styles.scrollView}>
-          <FoodPicContainer>
-              <FoodPic style={styles.img} />
-          </FoodPicContainer>
+    <ReactNative.SafeAreaView style={styles.safeArea}>
+      <ReactNative.ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewInside}
+        centerContent={true}
+      >
+        <Picture />
+
+        {/* Produce Title Section */}
+        <TextInput 
+          header="TITLE"
+          inputPlaceholder="Type title"
+        />
           
-          <MegaDetailsContainer>
-              {/* Produce Title Section */}
-              <TitleContainer>
-                <InputTitle>
-                  <ReactNative.Text style={styles.header}>TITLE</ReactNative.Text>
-                </InputTitle>
-                
-                <ReactNative.TextInput
-                  style={styles.titleInput}
-                  placeholder={"Type title"}
-                  value={itemName}
-                />
-              </TitleContainer>
+        {/* Expiry Section */}
+        <TextInput
+          header="EXPIRY"
+          inputPlaceholder="Select the expiry date"
+        />
+
+        {/* Quantity section */}
+        <TextInput
+          header="QUANTITY"
+          inputPlaceholder="Type quantity"
+        />
               
-              {/* Expiry Section */}
-              <ExpiryContainer>
-                <InputTitle>
-                    <ReactNative.Text style={styles.header}>EXPIRY</ReactNative.Text>
-                </InputTitle>
+        {/* Price Section */}
+        <PriceInput 
+          header1="ORIGINAL PRICE"
+          header2="DISCOUNTED PRICE"
+          inputPlaceholder1="Enter original price"
+          inputPlaceholder2="Enter discounted price"
+        />
 
-                <ReactNative.TextInput
-                  style={styles.titleInput}
-                  placeholder={"Select the expiry date"}
-                  value={itemExpiry}
-                />
-              </ExpiryContainer>
-
-              {/* Quantity section */}
-              <ExpiryContainer>
-                <InputTitle>
-                  <ReactNative.Text style={styles.header}>QUANTITY</ReactNative.Text>
-                </InputTitle>
-
-                <ReactNative.TextInput
-                  style={styles.titleInput}
-                  placeholder={"Select the quantity"}
-                  value={itemQuantity}
-                />
-              </ExpiryContainer>
-                  
-              <PriceContainer>
-                <OrigPrice>
-                  <InputTitle>
-                    <ReactNative.Text style={styles.header}>ORIGINAL PRICE</ReactNative.Text>
-                  </InputTitle>
-
-                  <ReactNative.TextInput
-                    style={styles.priceInput}
-                    placeholder={"Enter original price"}
-                    value={itemOrigPrice}
-                  />
-                </OrigPrice>
-
-                <DiscPrice>
-                  <InputTitle>
-                    <ReactNative.Text style={styles.header}>DISCOUNTED PRICE</ReactNative.Text>
-                  </InputTitle>
-
-                  <ReactNative.TextInput
-                    style={styles.priceInput}
-                    placeholder={"Select discounted price"}
-                    value={itemDiscPrice}
-                  />
-                </DiscPrice>
-              </PriceContainer>
-
-              <DescriptionContainer>
-                <InputTitle>
-                  <ReactNative.Text style={styles.header}>DISCOUNTED PRICE</ReactNative.Text>
-                </InputTitle>
-
-                <ReactNative.TextInput 
-                  style={styles.descInput}
-                  multiline={true}
-                />
-              </DescriptionContainer>
-          </MegaDetailsContainer>
-          
-          <ContinueButtonContainer>
-            <ReactNative.TouchableOpacity style={styles.postBtn} onPress={Continue}>
-              <ReactNative.Text style={styles.postText}>POST</ReactNative.Text>
-            </ReactNative.TouchableOpacity>
-          </ContinueButtonContainer>
-        </ReactNative.ScrollView>
-      </MainContainer>
+        {/* Description Section */}
+        <DescInput 
+          header="DESCRIPTION"
+          inputPlaceholder="Enter description"
+        />
+        
+        <ContinueButtonContainer>
+          <ReactNative.TouchableOpacity style={styles.postBtn} onPress={Continue}>
+            <ReactNative.Text style={styles.postText}>POST</ReactNative.Text>
+          </ReactNative.TouchableOpacity>
+        </ContinueButtonContainer>
+      </ReactNative.ScrollView>
+    </ReactNative.SafeAreaView>
   );
 }
 
 const styles = ReactNative.StyleSheet.create({
-  header:{
-    fontFamily: "UbuntuBold",
-    fontSize: 12,
-  },
-  img:{
-    resizeMode: "contain",
-    backgroundColor: "#DFEFB9",
+  safeArea:{
+    flexGrow: 1,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    width: deviceWidth,
   },
   postBtn:{
     backgroundColor: "#DFEFB9",
@@ -164,129 +124,16 @@ const styles = ReactNative.StyleSheet.create({
   },
   scrollView:{
     minHeight: deviceHeight,
-    maxWidth: deviceWidth * 0.8,
+    width: deviceWidth,
   },
-  titleInput:{
-    width: 328,
-    height: 49,
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000000",
-    shadowOpacity: 0.1,
-    shadowOffset: {width: 0, height: 4},
-    shadowRadius: 14,
+  scrollViewInside:{
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: deviceHeight * 1.15,
+    maxWidth: deviceWidth * 0.9,
   },
-  priceInput:{
-    width: 160,
-    height: 49,
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 14,
-  },
-  descInput:{
-    width: 328,
-    height: 74,
-    padding: 10,
-    borderRadius: 8,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 14,
-  }
 })
-
-const MainContainer = styled.View`
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: #FFFFFF;
-`;
-
-// Food Picture Styling
-const FoodPicContainer = styled.View`
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: black;
-  max-height: 333px;
-  max-width: 328px;
-`;
-
-const FoodPic = styled.Image`
-  background-color: #ddd;
-  flex-grow: 1;
-  height: 333px;
-  width: 328px;
-  max-height: 333px;
-  max-width: 328px;
-`;
-
-// Product Details Styling
-const MegaDetailsContainer = styled.View`
-  flex-grow: 1;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-`;
-
-// Title
-const TitleContainer = styled.View`
-  flex-grow: 1;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 72px;
-`;
-
-const InputTitle = styled.View`
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-// Expiry
-const ExpiryContainer = styled.View`
-  flex-grow: 1;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 72px;
-`;
-
-// Description
-const DescriptionContainer = styled.View`
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  height: 99px;
-`;
-
-const PriceContainer = styled.View`
-  flex-grow: 1;
-  width: 100%;
-  height: 72px;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-evenly;
-`;
-
-const OrigPrice = styled.View`
-  flex-grow: 1;
-`;
-
-const DiscPrice = styled.View`
-  flex-grow: 1;
-`;
 
 // Continue Button after all inputs are entered
 const ContinueButtonContainer = styled.View`
