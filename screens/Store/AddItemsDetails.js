@@ -28,6 +28,7 @@ import DescInput from '../../comps/Store/AddItemDescriptionInput';
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
+
 export default function AddItemsDetails({
     navigation,
 }){

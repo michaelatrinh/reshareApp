@@ -5,10 +5,13 @@ import BrowseStack from "./BrowseStack";
 import LocationStack from "./LocationStack";
 import OrdersStack from "./OrdersStack";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Feather } from '@expo/vector-icons'; 
+import { Feather } from "@expo/vector-icons";
 
 
 import styled from "styled-components/native";
+import TopNav from "../../../comps/Customer/Header";
+import Header from "../../../comps/Customer/Header";
+import HeaderRight from "../../../comps/Customer/HeaderRight";
 const Tab = createBottomTabNavigator();
 
 const TabBarUI = styled.View`
@@ -82,6 +85,8 @@ function MyTabBar({ state, descriptors, navigation }) {
 export default function Customer({ route, navigation }) {
   return (
     <>
+
+<HeaderRight/>
       <Tab.Navigator
         tabBar={(props) => <MyTabBar {...props} />}
         screenOptions={{
@@ -96,3 +101,4 @@ export default function Customer({ route, navigation }) {
     </>
   );
 }
+  
