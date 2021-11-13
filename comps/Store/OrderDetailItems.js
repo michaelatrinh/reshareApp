@@ -45,7 +45,7 @@ const StatusBg = styled.View`
 `;
 
 const OrderStatus = styled.Text`
-  font-family: Poppins;
+  font-family: "Poppins";
   font-size: 10px;
   color: ${(props) => props.txtcolor};
 `;
@@ -56,9 +56,10 @@ export default function OrderDetailItems({
   orderStatus = "waiting",
   bgcolor = "#FFF7B2",
   txtcolor = "#986D00",
+  onPress,
 }) {
   return (
-    <ContainerUI>
+    <ContainerUI onPress={onPress}>
       <Order>
         <OrderId>{orderId}</OrderId>
       </Order>

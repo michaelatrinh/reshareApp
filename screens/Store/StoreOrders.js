@@ -88,41 +88,56 @@ export default function StoreDashboardScreen({ navigation }) {
 
   // PUT PAGE FRONT END CODE BELOW WITHIN "RETURN"
   return (
+    <ScreenUI>
+
+      <Header navigation={navigation}/>
+
     <ContainerUI>
-      <Header navigation={navigation}></Header>
+
       <TitleCont>
         <TitleUI>Order Details</TitleUI>
       </TitleCont>
+
       <Table>
+
         <TableTitle>
           <Text>Order ID</Text>
           <Text>Pickup Time</Text>
           <Text>Order Status</Text>
         </TableTitle>
+
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
         <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
+
       </Table>
+
     </ContainerUI>
+    </ScreenUI>
   );
 }
 
+const ScreenUI = styled.View`
+  height: 100%;
+  background-color: white;
+  
+`;
+
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   min-height: 100%;
 `;
 
 const TitleUI = styled.Text`
-  display: flex;
   justify-content: flex-start;
   font-weight: normal;
-  font-family: Poppins;
+  font-family: "Poppins";
   font-size: 20px;
   margin: 15px 0 10px 15px;
 `;
@@ -130,21 +145,15 @@ const TitleUI = styled.Text`
 const TitleCont = styled.View`
   background-color: #fff;
   display: flex;
-  width: 90%;
 `;
 
 const Table = styled.View`
-  width: 100%;
-  height: 500px;
-  display: flex;
 
-  align-items: center;
 `;
 
 const TableTitle = styled.View`
   width: 100%;
   height: 50px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   border: 0.5px solid #c2d1d9;
