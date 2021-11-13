@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
+import Header from "../../comps/Customer/Header";
+
+//------ comps -------
+import OrderCard from "../../comps/Customer/OrderCard";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -9,17 +13,59 @@ const ScreenUI = styled.View`
 
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  width: 90%;
+  width: 100%;
+  height: 100%;
 `;
 
+const OrdersUI = styled.Text`
+  margin: 0 0 10px 0;
+  font-family: "Poppins";
+  font-size: 22px;
+  justify-content: flex-start;
+  left: 5%;
+`;
+
+const PastOrdersUI = styled.Text`
+  margin: 50px 0 10px 0;
+  font-family: "Poppins";
+  font-size: 22px;
+  justify-content: flex-start;
+  left: 5%;
+`;
+
+
+
 export default function Orders({ route, navigation }) {
+  
 
   return (
     <ScreenUI>
+      <Header navigation={navigation}/>
+      
       <ContainerUI>
-        <Text>Orders</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+
+        <OrdersUI>Current Orders</OrdersUI>
+
+
+          {/* <OrderCard onPress={() => navigation.navigate("Menu")}/> */}
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+
+          <OrderCard/>
+
+
+        
+        <PastOrdersUI>Past Orders</PastOrdersUI>
+
+
+          <OrderCard/>
+          <OrderCard/>
+          <OrderCard/>
+
+      </ScrollView>
+
       </ContainerUI>
     </ScreenUI>
   );

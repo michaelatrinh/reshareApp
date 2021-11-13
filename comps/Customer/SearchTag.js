@@ -25,7 +25,7 @@ const TagUI = styled.Pressable`
   justify-content: center;
   align-items: center;
   width: 30%;
-  background: ${props => props.selected ? "#fde9c2" : "#ffffff"} 
+  background: ${props => props.selected ? "#fde9c2" : "#ffffff"};
   border-radius: 10px;
   height: 28px;
 

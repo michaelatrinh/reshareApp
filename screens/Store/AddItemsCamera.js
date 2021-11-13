@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import styled from "styled-components/native";
 import * as ReactNative from "react-native";
 import { initializeApp } from "@firebase/app";
+import { Feather } from '@expo/vector-icons';
 
 import { Camera } from "expo-camera";
 
@@ -42,7 +43,7 @@ export default function AddItemsCamera({
 
     const snapPic = () => {
         // takePictureAsync()
-        navigation.navigate("AddItemsDetails");
+        navigation.navigate("Add Item Details");
     }
 
     return (
@@ -56,7 +57,8 @@ export default function AddItemsCamera({
             </CameraViewFinder> 
 
             <TakePictureButtonContainer>
-                <TakePictureButton title="" onPress={snapPic}/>
+                <TakePictureButtonCenter title="" onPress={snapPic} />
+                <TakePictureButtonOuter onPress={snapPic} />
             </TakePictureButtonContainer>
         </MainContainer>
 
@@ -64,28 +66,40 @@ export default function AddItemsCamera({
 }
 
 const MainContainer = styled.View`
-    flex-grow: 1;
-    align-items: center;
-    justify-content: space-evenly;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 const CameraViewFinder = styled.View`
-    flex-grow: 3;
-    background-color: #A52A2A;
-    width: 100%;
-    height: 70%;
+  flex-grow: 3;
+  background-color: #A52A2A;
+  width: 100%;
+  height: 70%;
 `;
 
 const TakePictureButtonContainer = styled.View`
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
+  flex-grow: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000;
 `;
 
-const TakePictureButton = styled.TouchableOpacity`
-    border-radius: 100px;
-    border: 5px solid black;
-    width: 100px;
-    height: 100px;
-    background-color: #800000;
+const TakePictureButtonCenter = styled.TouchableOpacity`
+  border-radius: 100px;
+  border: 2px solid #000000;
+  width: 58px;
+  height: 58px;
+  background-color: #FFFFFF;
+
+  position: absolute;
+  z-index: 2;
+`;
+
+const TakePictureButtonOuter = styled.TouchableOpacity`
+  border-radius: 100px;
+  width: 70px;
+  height: 70px;
+  background-color: #FFFFFF;
 `;

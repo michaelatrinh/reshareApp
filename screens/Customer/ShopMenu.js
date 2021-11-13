@@ -5,6 +5,10 @@ import ItemCard from "../../comps/Customer/ItemCard";
 import shopImage from "../../assets/store-img.png";
 import { Image } from "react-native";
 import MenuFilter from "../../comps/Customer/MenuFilter";
+import { CartProvider } from "../../comps/cart";
+import { CartContext } from "../../comps/cart";
+import CartButton from "../../comps/Customer/CartButton";
+import Header from "../../comps/Customer/Header";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -39,13 +43,37 @@ const DetailsUI = styled.Text`
   font-size: 14px;
 `;
 
+let stripePromise;
+
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(
+      "pk_live_51JFU6sHU3r8RBID1vSR7F4f2PxHXMCPyeqTgb7gEnOoEKoQSZwlYxjcsn4yGMfwSwzszVyJIIWkBr5twqcEyI7nw00qkETIETp"
+    );
+  }
+  return stripePromise;
+};
+
 export default function ShopMenu({ route, navigation }) {
   const { store } = route.params;
 
+  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
+    useContext(CartContext);
+
   const [selection, setSelection] = useState("all");
+
+  // filter menu
+  const filterMenu = (menu) => {
+    if (selection === "all") {
+      return menu;
+    } else {
+      return menu.filter((item) => item.type === selection);
+    }
+  };
 
   return (
     <ScreenUI>
+      <Header navigation={navigation} />
       <ContainerUI>
         <Image
           source={shopImage}
@@ -68,10 +96,11 @@ export default function ShopMenu({ route, navigation }) {
           }}
         >
           {store.menu &&
-            store.menu.map((item) => (
+            filterMenu(store.menu).map((item) => (
               <ItemCard key={item.name} item={item} navigation={navigation} />
             ))}
         </ScrollView>
+        <CartButton navigation={navigation} />
       </ContainerUI>
     </ScreenUI>
   );

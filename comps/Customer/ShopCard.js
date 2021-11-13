@@ -2,14 +2,14 @@ import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import shopImage from "../../assets/store-img.png";
-import { Image } from "react-native";
+import { Image, Pressable } from "react-native";
 
 const StoreDetailsUI = styled.Text`
-color: #FE5D5D;
+  color: #fe5d5d;
 `;
 
 const DistanceUI = styled.Text`
-font-size: 12px;
+  font-size: 12px;
 `;
 
 const StoreContainerUI = styled.Pressable`
@@ -21,7 +21,6 @@ const StoreContainerUI = styled.Pressable`
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
   margin: 0 0 25px 0;
- 
 `;
 
 const RowUI = styled.View`
@@ -36,7 +35,7 @@ export default function ShopCard({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
-  distance="0.5",
+  distance = "0.5",
   v,
 }) {
   const [loaded] = useFonts({
@@ -55,7 +54,15 @@ export default function ShopCard({
         });
       }}
     >
-      <Image source={shopImage} style={{ width: "100%", height: 129, borderTopLeftRadius: 15, borderTopRightRadius: 15 }} />
+      <Image
+        source={shopImage}
+        style={{
+          width: "100%",
+          height: 129,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+        }}
+      />
       <RowUI>
         <StoreDetailsUI>{v.username}</StoreDetailsUI>
         <DistanceUI>{distance}km</DistanceUI>

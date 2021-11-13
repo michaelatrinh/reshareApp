@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactNative from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { useFonts } from 'expo-font';
 import { Feather } from '@expo/vector-icons'; 
 
@@ -8,7 +8,7 @@ var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
 export default function MyItemsHeader({
-
+  onAddPress=()=>{},
 }){
   const [loaded] = useFonts({
     PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -27,8 +27,8 @@ export default function MyItemsHeader({
 
       <AddContainer>
         <AddItemText>Add item</AddItemText>
-        <ReactNative.TouchableOpacity>
-          <Feather name="plus-square" color="#AAAAAA" size={25} />
+        <ReactNative.TouchableOpacity activeOpacity={0.5} onPress={onAddPress}>
+          <Feather name="plus-square" color="#57BA68" size={25} />
         </ReactNative.TouchableOpacity>
       </AddContainer>
     </Container>

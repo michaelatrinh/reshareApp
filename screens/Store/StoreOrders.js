@@ -86,30 +86,7 @@ export default function StoreDashboardScreen({
   console.log(displayStores);
   console.log(currentUser.uid);
 
-  const [emptyPage, setEmptyPage] = React.useState(true);
-
-  const addItems = () => {
-      navigation.navigate("AddItemsCamera");
-  }
-
-  if(emptyPage === true){
-      return (
-        <ReactNative.ScrollView
-          contentContainerStyle={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "white",
-          }}
-        >
-          <ContainerUI>
-            <Greeting name={displayName} />
-            <ReactNative.Text>You do not have any ingredients added.</ReactNative.Text>
-            <AddItemsButton title="Add Items" onPress={addItems} />
-          </ContainerUI>
-        </ReactNative.ScrollView>
-      );
-  }
-
+// PUT PAGE FRONT END CODE BELOW WITHIN "RETURN"
   return (
     <View>
       <OrderDetailItems/>
@@ -123,7 +100,6 @@ export default function StoreDashboardScreen({
         <OrderDetailItems/>
         <OrderDetailItems/>
         <OrderDetailItems/>
-        
       </View >
   );
 }
@@ -133,15 +109,4 @@ const ContainerUI = styled.View`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-`;
-
-const AddItemsButton = styled.Button`
-    flex: 1;
-    background-color: #ddd;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    height: 50px;
-    text-align: center;
-    margin: 10px 0;
 `;
