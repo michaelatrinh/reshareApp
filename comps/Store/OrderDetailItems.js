@@ -1,50 +1,53 @@
 import React, { useState, useContext } from "react";
-import { Text } from "react-native";
+import { Text, Pressable } from "react-native";
 import styled from "styled-components/native";
 import { useFonts } from "expo-font";
 
-const ContainerUI = styled.View`
-    flex-direction: row;
-    margin-top: 20px;
-    align-items: center;
+const ContainerUI = styled.Pressable`
+  flex-direction: row;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 25px;
 `;
 
 const Order = styled.View`
-  flex:1; 
   align-items: center;
-`
+`;
 
 const OrderId = styled.Text`
-  color: #7E7E7E;
+  color: #7e7e7e;
   font-size: 11px;
 `;
 
 const Time = styled.View`
-  flex:1;
   align-items: center;
-`
+`;
 
 const PickUpTime = styled.Text`
-  color: #7E7E7E;
+  color: #7e7e7e;
   font-size: 11px;
 `;
 
 const Status = styled.View`
-  flex:1;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const StatusBg = styled.View`
   width: 74px;
   height: 18px;
-  background-color: ${props => props.bgcolor};
+  background-color: ${(props) => props.bgcolor};
   border-radius: 5px;
   align-items: center;
-`
+  justify-content: center;
+`;
 
 const OrderStatus = styled.Text`
-  color: ${props => props.txtcolor};
+  font-family: "Poppins";
+  font-size: 10px;
+  color: ${(props) => props.txtcolor};
 `;
 
 export default function OrderDetailItems({
@@ -53,21 +56,21 @@ export default function OrderDetailItems({
   orderStatus = "waiting",
   bgcolor = "#FFF7B2",
   txtcolor = "#986D00",
+  onPress,
 }) {
-
   return (
-    <ContainerUI>
-        <Order>
-          <OrderId>{orderId}</OrderId>
-        </Order>
-        <Time>
-          <PickUpTime>{pickUpTime}</PickUpTime>
-        </Time>
-        <Status>
-          <StatusBg bgcolor={bgcolor}>
-            <OrderStatus txtcolor={txtcolor}>{orderStatus}</OrderStatus>
-          </StatusBg>
-        </Status>
+    <ContainerUI onPress={onPress}>
+      <Order>
+        <OrderId>{orderId}</OrderId>
+      </Order>
+      <Time>
+        <PickUpTime>{pickUpTime}</PickUpTime>
+      </Time>
+      <Status>
+        <StatusBg bgcolor={bgcolor}>
+          <OrderStatus txtcolor={txtcolor}>{orderStatus}</OrderStatus>
+        </StatusBg>
+      </Status>
     </ContainerUI>
   );
 }

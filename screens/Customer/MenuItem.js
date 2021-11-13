@@ -7,7 +7,6 @@ import { ScrollView, Text, View, Image } from "react-native";
 import { signInWithEmailAndPassword } from "@firebase/auth";
 import Header from "../../comps/Customer/Header";
 
-
 const ContainerUI = styled.View`
   display: flex;
   flex-direction: column;

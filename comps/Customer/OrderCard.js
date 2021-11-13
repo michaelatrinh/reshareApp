@@ -5,9 +5,9 @@ import ShopImage from "../../assets/store-img.png";
 import { Image, View, Text, Pressable } from "react-native";
 
 const OrderContainerUI = styled.Pressable`
-  width: 95%;
+  width: 100%;
   height: 100px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-direction: row;
   background-color: white;
@@ -40,7 +40,6 @@ const ItemsOrderedText = styled.Text`
 `;
 
 const TextRow = styled.View`
-  /* display: flex; */
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;

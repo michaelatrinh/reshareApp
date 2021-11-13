@@ -7,32 +7,35 @@ import Header from "../../comps/Customer/Header";
 import OrderCard from "../../comps/Customer/OrderCard";
 
 const ScreenUI = styled.View`
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
   align-items: center;
   justify-content: flex-start;
 `;
 
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: center;
-  justify-content: flex-start;
   width: 100%;
   height: 100%;
 `;
 
+const OrderCardContainer = styled.View`
+  padding: 10px;
+`;
+
 const OrdersUI = styled.Text`
-  margin: 0 0 10px 0;
+  margin: 0 0 10px 10px;
   font-family: "Poppins";
   font-size: 22px;
   justify-content: flex-start;
-  left: 5%;
 `;
 
 const PastOrdersUI = styled.Text`
-  margin: 50px 0 10px 0;
+  margin: 50px 0 10px 10px;
   font-family: "Poppins";
   font-size: 22px;
   justify-content: flex-start;
-  left: 5%;
 `;
 
 
@@ -44,29 +47,27 @@ export default function Orders({ route, navigation }) {
     <ScreenUI>
       <Header navigation={navigation}/>
       
-      <ContainerUI>
       <ScrollView showsVerticalScrollIndicator={false}>
+      <ContainerUI>
 
         <OrdersUI>Current Orders</OrdersUI>
 
-
-          {/* <OrderCard onPress={() => navigation.navigate("Menu")}/> */}
+        <OrderCardContainer>
           <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-
-          <OrderCard/>
-
-
-        
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+        </OrderCardContainer>
+          
         <PastOrdersUI>Past Orders</PastOrdersUI>
 
+        <OrderCardContainer>
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+        </OrderCardContainer>
 
-          <OrderCard/>
-          <OrderCard/>
-          <OrderCard/>
-
-      </ScrollView>
 
       </ContainerUI>
+      </ScrollView>
     </ScreenUI>
   );
 }

@@ -6,7 +6,7 @@ import lime from "../../assets/icon.png";
 import { Image, Pressable } from "react-native";
 
 const ProfileButtonUI = styled.Pressable`
-  font-family: Ubuntu;
+  font-family: "Ubuntu";
   background-color: #4da95d;
   width: 40px;
   height: 40px;
