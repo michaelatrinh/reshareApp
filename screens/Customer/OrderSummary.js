@@ -80,6 +80,18 @@ const YourOrderText = styled.Text`
   margin-bottom: 10px;
 `;
 
+const Total = styled.Pressable`
+  height: 37px;
+  border: 0.5px solid #d3cdcd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+`;
+
 
 export default function Orders({ route, navigation,
 
@@ -131,6 +143,13 @@ Status = "Order Pending",
         <StoreOrderCard/>
         <StoreOrderCard/>
         <StoreOrderCard/>
+
+{/* ----------- Total Items and Price -------- */}
+        <Total style={{ marginTop: 10 }}>
+              <Text>6 items</Text>
+              <Text>total $11.22</Text>
+        </Total>
+{/* ---------- End Of items and Price --------- */}
 
       </ScrollView>
 

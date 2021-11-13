@@ -142,6 +142,7 @@ export default function Cart({ route, navigation }) {
               <PriceText>$11.22</PriceText>
             </Price>
           </Checkout>
+          
         </Bottom>
       </ContainerUI>
     </ScreenUI>

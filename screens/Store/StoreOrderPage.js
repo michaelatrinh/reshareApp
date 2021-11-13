@@ -81,6 +81,8 @@ const YourOrderText = styled.Text`
 `;
 
 
+
+
 export default function Orders({ route, navigation,
 
 StoreName = "Superstore",
@@ -131,6 +133,7 @@ Status = "Order Pending",
         <StoreOrderCard/>
         <StoreOrderCard/>
         <StoreOrderCard/>
+
 
       </ScrollView>
 

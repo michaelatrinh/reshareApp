@@ -1,10 +1,10 @@
-import Header from "../../comps/Customer/Header";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
 import * as ReactNative from "react-native";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import OrderDetailItems from "../../comps/Store/OrderDetailItems";
+import Header from "../../comps/Customer/Header";
 
 import { initializeApp } from "@firebase/app";
 
