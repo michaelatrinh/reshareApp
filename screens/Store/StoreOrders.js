@@ -21,8 +21,7 @@ import { auth } from "../../config/firebase";
 
 //compontents
 import Greeting from "../../comps/Greeting";
-
-
+import OrderDetailItems from "../../comps/Store/OrderDetailItems";
 
 export default function StoreDashboardScreen({
     navigation,
@@ -89,9 +88,19 @@ export default function StoreDashboardScreen({
 
 // PUT PAGE FRONT END CODE BELOW WITHIN "RETURN"
   return (
-    <ContainerUI>
-      
-    </ContainerUI>
+    <View>
+      <OrderDetailItems/>
+        <OrderDetailItems orderId="#10283" pickUpTime="10:30pm oct 4th" bgcolor="#B9FFB2" txtcolor="#0B4B01" orderStatus="complete"/>
+        <OrderDetailItems/>
+        <OrderDetailItems orderId="#10345" pickUpTime="3:30pm oct 5th" bgcolor="#FFB2B2" txtcolor="#BD0606" orderStatus="canceled"/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+        <OrderDetailItems/>
+      </View >
   );
 }
 

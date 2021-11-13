@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import Header from "../../comps/Customer/Header";
 
@@ -13,7 +13,7 @@ const ScreenUI = styled.View`
 
 const ContainerUI = styled.View`
   background-color: #fff;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
   height: 100%;
@@ -38,25 +38,33 @@ const PastOrdersUI = styled.Text`
 
 
 export default function Orders({ route, navigation }) {
+  
 
   return (
     <ScreenUI>
       <Header navigation={navigation}/>
       
       <ContainerUI>
-
+      <ScrollView showsVerticalScrollIndicator={false}>
 
         <OrdersUI>Current Orders</OrdersUI>
 
+
+          {/* <OrderCard onPress={() => navigation.navigate("Menu")}/> */}
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
+
           <OrderCard/>
+
+
         
         <PastOrdersUI>Past Orders</PastOrdersUI>
 
-        <OrderCard/>
-        <OrderCard/>
-        <OrderCard/>
 
+          <OrderCard/>
+          <OrderCard/>
+          <OrderCard/>
 
+      </ScrollView>
 
       </ContainerUI>
     </ScreenUI>

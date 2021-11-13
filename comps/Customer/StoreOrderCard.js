@@ -1,22 +1,22 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
-import ShopImage from "../../assets/store-img.png";
+import ItemImage from "../../assets/lime.png";
 import { Image, View, Text, Pressable } from "react-native";
 
 const OrderContainerUI = styled.Pressable`
-  width: 95%;
+  width: 100%;
   height: 100px;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
+  border-top-width: 0.5px;
+  border-color: #F1F1F1;
   background-color: white;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
-  margin-bottom: 10px;
 `;
 
 const TextColumn = styled.View`
+  /* display: flex; */
   align-items: flex-start;
   justify-content: flex-start;
   background-color: white;
@@ -47,9 +47,16 @@ const TextRow = styled.View`
   background-color: white;
 `;
 
-const PickUpTime = styled.Text`
-  color: #EE9837;
+const Discount = styled.Text`
+  color: #FE0000;
   font-family: "Poppins";
+  margin-right: 20px;
+`;
+
+const PickUpTime = styled.Text`
+  color: #C5C1C1;
+  font-family: "Poppins";
+  text-decoration: line-through;
 `;
 
 
@@ -57,10 +64,13 @@ export default function ItemCard({
   navigation,
   onPress,
   
-  Store = "Superstore",
-  Location = "Brentwood",
-  ItemsOrdered = "3 items ordered",
-  Time = "6:00 pm",
+  Quantity = "2",
+  Item = "Orange",
+  grams = "100g - 120g",
+
+  DiscountedPrice = "$3.74",
+  OriginalPrice = "$7.74",
+
 }) {
 
   // if font doesnt work show nothing
@@ -75,12 +85,9 @@ export default function ItemCard({
     return (
       <OrderContainerUI 
       onPress={onPress}
-        // navigation.navigate("Menu", {
-        //   store: v,
-        // });
-      
+
       >
-        <Image source={ShopImage} style=
+        <Image source={ItemImage} style=
         {{ 
           width: 126, 
           height: 89, 
@@ -91,12 +98,11 @@ export default function ItemCard({
           }} />
 
         <TextColumn>
-          <StoreText>{Store} - {Location}</StoreText>
-          <ItemsOrderedText>{ItemsOrdered}</ItemsOrderedText>
+          <StoreText>{Quantity} {Item} ({grams})</StoreText>
 
         <TextRow>
-          <Text>Pick up - </Text>
-          <PickUpTime>{Time}</PickUpTime>
+          <Discount>{DiscountedPrice}</Discount>
+          <PickUpTime>{OriginalPrice}</PickUpTime>
         </TextRow>
 
         </TextColumn>

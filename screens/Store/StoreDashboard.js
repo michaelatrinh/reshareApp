@@ -259,7 +259,7 @@ const TopContainer = styled.View`
 `;
 
 const GreyBackground = styled.View`
-  display: ${props=>props.greyDisplay}
+  display: ${props=>props.greyDisplay};
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
   z-index: 2;
