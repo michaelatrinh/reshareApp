@@ -9,7 +9,7 @@ const ContainerUI = styled.Pressable`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 25px;
 `;
 
 const Order = styled.View`
