@@ -38,7 +38,6 @@ const PastOrdersUI = styled.Text`
 
 
 export default function Orders({ route, navigation }) {
-
   
 
   return (
@@ -51,8 +50,8 @@ export default function Orders({ route, navigation }) {
         <OrdersUI>Current Orders</OrdersUI>
 
 
-          <OrderCard/>
-          <OrderCard/>
+          {/* <OrderCard onPress={() => navigation.navigate("Menu")}/> */}
+          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
 
           <OrderCard/>
 
