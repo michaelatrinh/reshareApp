@@ -3,16 +3,24 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StoreOrders from "../StoreOrders";
 import OrderPage from "../StoreOrderPage";
 
+import NavButtons from "../../../comps/Customer/Header";
+
+
 const Stack = createNativeStackNavigator();
 
 export default function StoreHomeStack({ route, navigation }){
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         name="Orders"
         component={StoreOrders}
         options={{
-          headerShadowVisible: false, // applied here
+          headerShadowVisible: false,
+          headerTitle: () => false,
+          // applied here
         }}
     />
 
@@ -20,7 +28,9 @@ export default function StoreHomeStack({ route, navigation }){
         name="Order Page"
         component={OrderPage}
         options={{
-          headerShadowVisible: false, // applied here
+          headerShadowVisible: false,
+          headerTitle: () => false,
+          // applied here
         }}
     />
     </Stack.Navigator>
