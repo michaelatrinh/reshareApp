@@ -16,6 +16,7 @@ import { stores } from "./comps/Data/StoreData";
 import ShopCard from "./comps/Customer/ShopCard";
 import CustomerSignup from "./screens/Customer/CustomerSignup";
 import { CartProvider } from "./comps/cart";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //Stack navigator to navigate through screens
 const Stack = createNativeStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <AuthProvider>
       <CartProvider>
+        <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -38,6 +40,7 @@ export default function App() {
             <Stack.Screen name="Store" component={Store} />
           </Stack.Navigator>
         </NavigationContainer>
+        </SafeAreaProvider>
       </CartProvider>
     </AuthProvider>
   );
