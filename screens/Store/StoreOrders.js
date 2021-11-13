@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import * as ReactNative from "react-native";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
+import OrderDetailItems from "../../comps/Store/OrderDetailItems";
 
 import { initializeApp } from "@firebase/app";
 
@@ -98,6 +99,13 @@ export default function StoreDashboardScreen({ navigation }) {
           <Text>Pickup Time</Text>
           <Text>Order Status</Text>
         </TableTitle>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems></OrderDetailItems>
       </Table>
     </ContainerUI>
   );
