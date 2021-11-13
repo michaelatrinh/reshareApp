@@ -107,12 +107,12 @@ export default function StoreDashboardScreen({ navigation }) {
         </TableTitle>
 
         <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
-        <OrderDetailItems></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
+        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
 
       </Table>
 
