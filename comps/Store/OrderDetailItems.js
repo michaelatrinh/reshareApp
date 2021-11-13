@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Text } from "react-native";
+import { Text, Pressable } from "react-native";
 import styled from "styled-components/native";
 import { useFonts } from "expo-font";
 
-const ContainerUI = styled.View`
+const ContainerUI = styled.Pressable`
   flex-direction: row;
   margin-top: 20px;
   align-items: center;
