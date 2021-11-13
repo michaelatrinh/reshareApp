@@ -62,9 +62,9 @@ export default function TextInput({
 
 const styles = ReactNative.StyleSheet.create({
   container: {
-    width: "100%",
+    width: "90%",
     height: 72,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
   },
@@ -72,7 +72,7 @@ const styles = ReactNative.StyleSheet.create({
     flexGrow: 1,
     height: 72,
     flexDirection: "column",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   headerContainer: {

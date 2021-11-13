@@ -24,14 +24,6 @@ export default function StoreHomeStack({ route, navigation }){
           headerShadowVisible: false,
         }}
       />
-
-      {/* <Stack.Screen 
-        name="Dashboard"
-        component={StoreDashboardScreen}
-        options={{
-          headerShadowVisible: false,
-        }}
-      /> */}
     </Stack.Navigator>
   )
 }

@@ -42,20 +42,20 @@ const styles = ReactNative.StyleSheet.create({
   container:{
     width: "100%",
     height: 72,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   headerContainer:{
     flexDirection: "row",
     justifyContent: "flex-start",
-    width: "100%",
+    width: "90%",
   },
   header:{
     fontFamily: "UbuntuBold",
     fontSize: 12,
   },
   input:{
-    width: "100%",
+    width: "90%",
     height: 49,
     padding: 10,
     borderRadius: 8,

@@ -18,7 +18,7 @@ export default function Picture({
 const styles = ReactNative.StyleSheet.create({
   container:{
     height: undefined,
-    width: deviceWidth,
+    width: deviceWidth * 0.9,
     aspectRatio: 1/1,
 
     backgroundColor: "black",

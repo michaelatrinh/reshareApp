@@ -41,9 +41,9 @@ export default function TextInput({
 
 const styles = ReactNative.StyleSheet.create({
   container: {
-    width: "100%",
+    width: "90%",
     height: 99,
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   headerContainer: {

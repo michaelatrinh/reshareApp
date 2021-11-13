@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import * as ReactNative from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import styled from "styled-components/native";
 import { initializeApp } from "@firebase/app";
 import { useFonts } from 'expo-font';
@@ -24,10 +25,10 @@ import Picture from '../../comps/Store/AddItemPicture';
 import TextInput from '../../comps/Store/AddItemTextInput';
 import PriceInput from '../../comps/Store/AddItemPricesTextInput';
 import DescInput from '../../comps/Store/AddItemDescriptionInput';
+import PostBtn from '../../comps/Store/AddItemPostBtn';
 
 var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
-
 
 export default function AddItemsDetails({
     navigation,
@@ -54,12 +55,18 @@ export default function AddItemsDetails({
   }
 
   return (
-    <ReactNative.SafeAreaView style={styles.safeArea}>
+    <SafeAreaView 
+      style={styles.safeArea}
+      edges={['left', 'right']}
+    >
       <ReactNative.ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewInside}
         centerContent={true}
+        showsVerticalScrollIndicator={false}
       >
+        {/* <ReactNative.View style={styles.mainContentContainer}> */}
+        {/* Camera Picture */}
         <Picture />
 
         {/* Produce Title Section */}
@@ -94,13 +101,11 @@ export default function AddItemsDetails({
           inputPlaceholder="Enter description"
         />
         
-        <ContinueButtonContainer>
-          <ReactNative.TouchableOpacity style={styles.postBtn} onPress={Continue}>
-            <ReactNative.Text style={styles.postText}>POST</ReactNative.Text>
-          </ReactNative.TouchableOpacity>
-        </ContinueButtonContainer>
+        {/* Post Button */}
+        <PostBtn />
+        {/* </ReactNative.View> */}
       </ReactNative.ScrollView>
-    </ReactNative.SafeAreaView>
+    </SafeAreaView>
   );
 }
 
@@ -108,39 +113,27 @@ const styles = ReactNative.StyleSheet.create({
   safeArea:{
     flexGrow: 1,
     backgroundColor: "#FFFFFF",
-    alignItems: "center",
     width: deviceWidth,
-  },
-  postBtn:{
-    backgroundColor: "#DFEFB9",
-    width: 170,
-    height: 42,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  postText:{
-    fontFamily: "UbuntuBold",
-    fontSize: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollView:{
-    minHeight: deviceHeight,
-    width: deviceWidth,
+    flexGrow: 1,
+    // minHeight: deviceHeight,
+    // width: deviceWidth,
   },
   scrollViewInside:{
     flexGrow: 1,
     alignItems: "center",
-    justifyContent: "space-evenly",
-    height: deviceHeight * 1.15,
-    maxWidth: deviceWidth * 0.9,
+    justifyContent: "space-between",
+    height: deviceHeight * 1.05,
+    maxWidth: deviceWidth,
+  },
+  mainContentContainer:{
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: deviceHeight * 1.05,
+    width: deviceWidth * 0.9,
   },
 })
-
-// Continue Button after all inputs are entered
-const ContinueButtonContainer = styled.View`
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-height: 100px;
-`;
