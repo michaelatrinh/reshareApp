@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 
 const GreetingUI = styled.Text`
   font-family: "Poppins";
-  font-size: 32px;
+  font-size: 26px;
   justify-content: flex-start;
   left: 5%;
 `;

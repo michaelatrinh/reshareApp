@@ -10,9 +10,10 @@ export default function MyItemsItem({
   title="Lime",
   expiry="Dec 31",
   quantity="3",
-  price="$3.99",
+  price="$0.39",
   foodPic="",
-  removeOnPress=()=>{},
+  removeBtnPress=()=>{},
+  bgColour,
 }){
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -27,7 +28,7 @@ export default function MyItemsItem({
   return (
     <Container>
       <FoodImgContainer>
-        <ReactNative.Image style={styles.image} />
+        <ReactNative.Image style={styles.image(bgColour)} />
       </FoodImgContainer>
 
       <TextContainer>
@@ -43,7 +44,7 @@ export default function MyItemsItem({
             <ReactNative.Text style={styles.editBtnText}>EDIT</ReactNative.Text>
           </ReactNative.TouchableOpacity>        
           
-          <ReactNative.TouchableOpacity style={styles.removeBtn} activeOpacity={0.5} onPress={removeOnPress}>
+          <ReactNative.TouchableOpacity style={styles.removeBtn} activeOpacity={0.5} onPress={removeBtnPress}>
             <ReactNative.Text style={styles.removeBtnText}>REMOVE</ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </BtnsContainer02>
@@ -53,11 +54,12 @@ export default function MyItemsItem({
 }
 
 const styles = ReactNative.StyleSheet.create({
-  image:{
+  image: (bgColour) => { return {
+    backgroundColor: bgColour,
     width: 101,
     height: 91,
-    backgroundColor: "#DFEFB9",
-    resizeMode: "contain"
+    resizeMode: "contain",
+  }
   },
   text:{
     fontFamily: "PoppinsSemiBold",

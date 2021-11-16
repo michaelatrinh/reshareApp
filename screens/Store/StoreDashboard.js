@@ -189,9 +189,24 @@ export default function StoreDashboardScreen({
       >
         
 
-        <MyItemsItem removeOnPress={removeItemBtnPress} />
-        <MyItemsItem />
-        <MyItemsItem />
+        <MyItemsItem 
+          bgColour="#DFEFB9"
+          removeBtnPress={removeItemBtnPress}
+        />
+        <MyItemsItem 
+          title="Peach"
+          expiry="Nov 31"
+          quantity="12"
+          price="$0.89"
+          bgColour="pink"
+        />
+        <MyItemsItem 
+          title="Banana"
+          expiry="Oct 31"
+          quantity="30"
+          price="$1.29"
+          bgColour="yellow"
+        />
         <MyItemsItem />
         <MyItemsItem />
       </ReactNative.ScrollView>
