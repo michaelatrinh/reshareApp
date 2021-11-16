@@ -22,7 +22,6 @@ export default function HomeStack({ route, navigation }) {
           component={CustomerDashboard}
           options={{
             headerShadowVisible: false,
-
           }}
         />
 
@@ -38,6 +37,7 @@ export default function HomeStack({ route, navigation }) {
             },
           }}
         />
+
         <Stack.Screen
           name="Item"
           component={MenuItem}
@@ -73,6 +73,7 @@ export default function HomeStack({ route, navigation }) {
             headerTitle: () => false,
           }}
         />
+
       </Stack.Navigator>
     </>
   );
