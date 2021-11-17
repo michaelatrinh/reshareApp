@@ -27,19 +27,19 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Sign Up" component={CustomerSignup} />
-            <Stack.Screen name="Customer" component={Customer} />
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Sign Up" component={CustomerSignup} />
+              <Stack.Screen name="Customer" component={Customer} />
 
-            <Stack.Screen name="Store" component={Store} />
-          </Stack.Navigator>
-        </NavigationContainer>
+              <Stack.Screen name="Store" component={Store} />
+            </Stack.Navigator>
+          </NavigationContainer>
         </SafeAreaProvider>
       </CartProvider>
     </AuthProvider>

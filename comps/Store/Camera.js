@@ -116,7 +116,8 @@ const styles = ReactNative.StyleSheet.create({
     backgroundColor: "pink",
   },
   viewFinder:{
-    flexGrow: 6,
+    flexGrow: 99,
+    // height: deviceHeight * 0.75,
     maxHeight: deviceHeight * 0.66,
     backgroundColor: "pink",
   },

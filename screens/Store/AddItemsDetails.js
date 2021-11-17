@@ -15,7 +15,6 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    produce, //may cause errors -Michael
 } from "firebase/auth";
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";

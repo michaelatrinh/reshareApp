@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import * as ReactNative from "react-native";
 import styled from "styled-components/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { initializeApp } from "@firebase/app";
 
@@ -14,7 +15,6 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    produce, //may cause errors -Michael
 } from "firebase/auth";
 import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
@@ -166,7 +166,11 @@ export default function StoreDashboardScreen({
   }
 
   return (
-    <ContainerUI>
+    <SafeAreaView
+      style={styles.safeArea}
+      edges={['left', 'right']}  
+    >
+    {/* <ContainerUI> */}
       <GreyBackground 
         style={styles.greyBg} 
         greyDisplay={newGreyDisplay} 
@@ -187,9 +191,11 @@ export default function StoreDashboardScreen({
       <ReactNative.ScrollView
         contentContainerStyle={styles.foodListScroll}
       >
-        
-
         <MyItemsItem 
+          title="Lime"
+          expiry="Dec 31"
+          quantity="6"
+          price="$0.39"
           bgColour="#DFEFB9"
           removeBtnPress={removeItemBtnPress}
         />
@@ -199,6 +205,7 @@ export default function StoreDashboardScreen({
           quantity="12"
           price="$0.89"
           bgColour="pink"
+          removeBtnPress={removeItemBtnPress}
         />
         <MyItemsItem 
           title="Banana"
@@ -206,16 +213,24 @@ export default function StoreDashboardScreen({
           quantity="30"
           price="$1.29"
           bgColour="yellow"
+          removeBtnPress={removeItemBtnPress}
         />
         <MyItemsItem />
         <MyItemsItem />
       </ReactNative.ScrollView>
-
-    </ContainerUI>
+    {/* </ContainerUI> */}
+    </SafeAreaView>
   );
 }
 
 const styles = ReactNative.StyleSheet.create({
+  safeArea:{
+    flexGrow: 1,
+    backgroundColor: "#FFFFFF",
+    width: deviceWidth,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   foodListScrollNothing:{
     alignItems: "center",
     justifyContent: "center",
@@ -227,7 +242,9 @@ const styles = ReactNative.StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     width: deviceWidth,
-    minHeight: deviceHeight, 
+    // minHeight: deviceHeight,
+    marginBottom: "-33%",
+    marginTop: "3%"
   },
   greyBg:{
     minWidth: deviceWidth,

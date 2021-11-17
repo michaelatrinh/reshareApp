@@ -20,54 +20,46 @@ export default function MyItemsHeader({
   }
 
   return (
-    <Container>
-      <TextContainer>
-        <MyItemsText>My Items</MyItemsText>
-      </TextContainer>
+    <ReactNative.View style={styles.container}>
+      <ReactNative.View style={styles.textCont}>
+        <ReactNative.Text style={styles.myItemsTxt}>My Items</ReactNative.Text>
+      </ReactNative.View>
 
-      <AddContainer>
-        <AddItemText>Add item</AddItemText>
+      <ReactNative.View style={styles.addCont}>
+        <ReactNative.Text style={styles.addItemsTxt}>Add item</ReactNative.Text>
         <ReactNative.TouchableOpacity activeOpacity={0.5} onPress={onAddPress}>
           <Feather name="plus-square" color="#57BA68" size={25} />
         </ReactNative.TouchableOpacity>
-      </AddContainer>
-    </Container>
+      </ReactNative.View>
+    </ReactNative.View>
   );
 }
 
-//styled components
-const Container = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 30px;
-`;
-
-// Text
-  const TextContainer = styled.View`
-    display: flex;
-    flex-grow: 50;
-  `;
-
-    const MyItemsText = styled.Text`
-      font-family: "PoppinsSemiBold";
-      font-size: 16;
-      left: 5%;
-    `;
-
-// Add Btn
-  const AddContainer = styled.View`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    justify-content: space-between;
-    align-items: center;
-    right: 5%;
-  `;
-
-    const AddItemText = styled.Text`
-      font-family: "Ubuntu";
-      font-size: 12;
-    `;
+const styles = ReactNative.StyleSheet.create({
+  container:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: deviceWidth,
+    height: 30,
+  },
+  textCont:{
+    flexGrow: 50,
+  },
+  myItemsTxt:{
+    fontFamily: "PoppinsSemiBold",
+    fontSize: 16,
+    left: "5%",
+  },
+  addCont:{
+    flexDirection: "row",
+    flexGrow: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    right: "5%"
+  },
+  addItemsTxt:{
+    fontFamily: "Ubuntu",
+    fontSize: 12,
+  },
+})
