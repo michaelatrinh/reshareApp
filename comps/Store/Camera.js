@@ -10,11 +10,14 @@ var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
 export default function PhoneCamera({
-  takePic=()=>{},
+
 }){
   const [hasPermission, setHasPermission] = React.useState(null);
+  const [cameraSnap, setCameraSnap] = React.useState(null);
+  const [snappedImg, setSnappedImg] = React.useState(null);
   const [type, setType] = React.useState(Camera.Constants.Type.back);
 
+  // camera api asks phone permission to use phone's camera
   React.useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -36,6 +39,7 @@ export default function PhoneCamera({
     return <Text>No access to camera</Text>;
   }
 
+  // photo gallery access function
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -51,14 +55,30 @@ export default function PhoneCamera({
     }
   };
 
+  // function to snap a picture using camera
+  const takePicture = async () => {
+    if(cameraSnap){
+      const picture = await Camera.current.takePictureAsync(null);
+      // console.log(data.uri);
+      setSnappedImg(picture.uri);
+    }
+  }
+
   return (
     <ReactNative.View style={styles.container}>
       <ReactNative.View style={styles.viewFinder}>
         <Camera 
+          ref={ref => setCameraSnap(ref)}
+          // onCameraReady={()=>takePicture()}
           style={styles.camera} 
           type={type}
           ratio={'1:1'}
         />
+        {snappedImg && <Image source={{uri: snappedImg}} style={{
+          flex: 1,
+          position: "absolute",
+          zIndex: 5,
+        }}/>}
       </ReactNative.View>
 
       <ReactNative.View style={styles.bottomContainer}>
@@ -76,7 +96,7 @@ export default function PhoneCamera({
         <ReactNative.View style={styles.snapBtnContainer}>
           <ReactNative.TouchableOpacity 
             style={styles.snapBtnTouch}
-            onPress={takePic}
+            onPress={()=>takePicture()}
           >
             <ReactNative.View style={styles.snapBtnOutside}>
               <ReactNative.View style={styles.snapBtnInside} />
