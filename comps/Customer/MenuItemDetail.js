@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import { ScrollView, Text, View, Pressable, Alert } from "react-native";
 import { CartContext } from "../cart";
@@ -123,10 +122,11 @@ const ThirdCol = styled.View`
 
 const AddToCart = styled.Pressable`
   background-color: #4da95d;
-  width: 100%;
+  width: 90%;
   height: 43px;
   position: absolute;
-  bottom: 10px;
+  bottom: 25px;
+  left: 5%;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -201,6 +201,8 @@ export default function MenuItemDetail({ navigation, item }) {
   };
 
   return (
+
+    <>
     <Main>
       <TopCol>
         <Title>{item.name}</Title>
@@ -231,10 +233,13 @@ export default function MenuItemDetail({ navigation, item }) {
         </RightRow>
       </SecondCol>
       <ThirdCol>
-        <AddToCart onPress={() => handleAddToCart(item)}>
-          <CartText>ADD TO CART</CartText>
-        </AddToCart>
+
       </ThirdCol>
     </Main>
+
+<AddToCart onPress={() => handleAddToCart(item)}>
+<CartText>ADD TO CART</CartText>
+</AddToCart>
+</>
   );
 }

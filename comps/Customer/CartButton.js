@@ -5,10 +5,11 @@ import { CartContext } from "../cart";
 const AddToCartUI = styled.Pressable`
   font-family: Ubuntu;
   background-color: #4da95d;
-  width: 100%;
+  width: 90%;
   height: 43px;
   position: absolute;
-  bottom: 225px;
+  bottom: 25px;
+  left: 5%;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;

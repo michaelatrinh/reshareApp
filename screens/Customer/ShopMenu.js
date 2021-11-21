@@ -9,6 +9,7 @@ import { CartProvider } from "../../comps/cart";
 import { CartContext } from "../../comps/cart";
 import CartButton from "../../comps/Customer/CartButton";
 import Header from "../../comps/Customer/Header";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -72,6 +73,8 @@ export default function ShopMenu({ route, navigation }) {
   };
 
   return (
+
+    <>
     <ScreenUI>
       <Header navigation={navigation} />
       <ContainerUI>
@@ -100,8 +103,14 @@ export default function ShopMenu({ route, navigation }) {
               <ItemCard key={item.name} item={item} navigation={navigation} />
             ))}
         </ScrollView>
-        <CartButton navigation={navigation} />
+  
+
       </ContainerUI>
+
+  
     </ScreenUI>
+
+    <CartButton navigation={navigation} />
+    </>
   );
 }

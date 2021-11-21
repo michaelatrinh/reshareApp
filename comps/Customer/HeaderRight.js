@@ -4,6 +4,7 @@ import { CartContext } from "../cart";
 import { Feather } from "@expo/vector-icons";
 import lime from "../../assets/icon.png";
 import { Image, Pressable } from "react-native";
+import ProfileDropdown from "./ProfileDropdown";
 
 const ProfileButtonUI = styled.Pressable`
   font-family: Ubuntu;
@@ -74,12 +75,7 @@ export default function HeaderRight({ navigation }) {
     <>
       {showProfile ? (
         <>
-          <DropdownOverlayUI />
-          <ProfileDropdownUI>
-            <Pressable onPress={() => setShowProfile(false)}>
-              <Feather name="x" size={24} color="black" />
-            </Pressable>
-          </ProfileDropdownUI>
+          <ProfileDropdown setShowProfile={setShowProfile} />
         </>
       ) : (
         <></>
