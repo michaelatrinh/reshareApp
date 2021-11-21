@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import { ScrollView, Image, View } from "react-native";
-import lime from "../../assets/limenobg.png";
+import lime from "../../assets/lime.png"; // uhh mikol here changing file source cause random source error, feel free to change back if it looks weird
 
 const Main = styled.View`
   display: flex;

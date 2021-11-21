@@ -7,11 +7,11 @@ var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
 var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
 
 export default function MyItemsItem({
-  title="Lime",
-  expiry="Dec 31",
-  quantity="3",
-  price="$0.39",
-  foodPic="",
+  title,
+  expiry,
+  quantity,
+  price,
+  foodPic,
   removeBtnPress=()=>{},
   bgColour,
 }){
