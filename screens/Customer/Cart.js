@@ -72,7 +72,7 @@ const Checkout = styled.Pressable`
   align-items: center;
   justify-content: center;
   width: 90%;
-  height: 40px;
+  height: 43px;
   background-color: #ee9837;
   border-radius: 10px;
   flex-direction: row;
