@@ -12,7 +12,7 @@ const ItemDeatilsUI = styled.View`
   height: 100px;
 `;
 
-const ItemContainerUI = styled.Pressable`
+const ItemContainerUI = styled.TouchableHighlight`
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
@@ -60,18 +60,22 @@ export default function ItemCard({ route, navigation, item }) {
           item: item,
         });
       }}
+      activeOpacity={0.6}
+      underlayColor="#FDE9C2"
     >
-      <Image source={lime} style={{ width: 171, height: 100 }} />
+      <>
+        <Image source={lime} style={{ width: 171, height: 100 }} />
 
-      <ItemDeatilsUI>
-        <ItemNameUI>{item.name}</ItemNameUI>
-        <RowUI>
-          <ItemPriceUI>${price}</ItemPriceUI>
-          <ItemPriceOgUI>${priceOg}</ItemPriceOgUI>
-        </RowUI>
+        <ItemDeatilsUI>
+          <ItemNameUI>{item.name}</ItemNameUI>
+          <RowUI>
+            <ItemPriceUI>${price}</ItemPriceUI>
+            <ItemPriceOgUI>${priceOg}</ItemPriceOgUI>
+          </RowUI>
 
-        <ItemExpiryUI>Best Before {item.expiry}</ItemExpiryUI>
-      </ItemDeatilsUI>
+          <ItemExpiryUI>Best Before {item.expiry}</ItemExpiryUI>
+        </ItemDeatilsUI>
+      </>
     </ItemContainerUI>
   );
 }

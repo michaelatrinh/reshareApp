@@ -64,15 +64,15 @@ function MyTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
+            <Text style={{ color: isFocused ? "#EE9837" : "#EE9837" }}>
               {label == "Home" ? (
-                <Feather name="home" size={24} color="black" />
+                <Feather name="home" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
               ) : label == "Browse" ? (
-                <Feather name="search" size={24} color="black" />
+                <Feather name="search" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
               ) : label == "Orders" ? (
-                <Feather name="list" size={24} color="black" />
+                <Feather name="list" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
               ) : (
-                <Feather name="map-pin" size={24} color="black" />
+                <Feather name="map-pin" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
               )}
             </Text>
           </TouchableOpacity>

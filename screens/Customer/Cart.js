@@ -36,7 +36,7 @@ const TitleUI = styled.Text`
   font-weight: normal;
   font-family: Poppins;
   font-size: 20px;
-  margin: 15px 0 10px 15px;
+  margin: 15px 0;
 `;
 
 const CartCont = styled.View`
@@ -46,7 +46,7 @@ const CartCont = styled.View`
 `;
 
 const Total = styled.Pressable`
-  width: 95%;
+  width: 100%;
   height: 37px;
   border: 0.5px solid #d3cdcd;
   border-radius: 10px;
@@ -61,6 +61,10 @@ const OrderMore = styled.Pressable`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  bottom: 100px;
+  left: 5%;
+  width: 90%;
 `;
 const OrderMoreText = styled.Text`
   font-weight: normal;
@@ -76,7 +80,10 @@ const Checkout = styled.Pressable`
   background-color: #ee9837;
   border-radius: 10px;
   flex-direction: row;
-  margin-top: 21px;
+  position: absolute;
+  bottom: 25px;
+  left: 5%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const CheckoutText = styled.Text`
@@ -106,45 +113,41 @@ export default function Cart({ route, navigation }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
     useContext(CartContext);
 
-  return (
-    <ScreenUI>
-      <Header navigation={navigation} />
-      <ContainerUI>
-        <Top>
-          <TitleUI>Your Cart</TitleUI>
-          {/* {cart &&
-          cart.map((item) => (
-            <View key={item.name}>
-              <Text>{item.name}</Text>
-              <Text>{item.price}</Text>
-              <Text>{item.expiry}</Text>
-              <Text>{item.quantity}</Text>
-            </View>
-          ))} */}
-          <CartCont>
-            <CartList></CartList>
-            <CartList></CartList>
-            <CartList></CartList>
-            <Total style={{ marginTop: 10 }}>
-              <Text>3 items</Text>
-              <Text>total $11.22</Text>
-            </Total>
-          </CartCont>
-        </Top>
-        <Bottom>
-          <OrderMore onPress={() => navigation.goBack(null)}>
-            <OrderMoreText>Order More</OrderMoreText>
-          </OrderMore>
+    const total = cartTotal.toFixed(2);
 
-          <Checkout onPress={() => navigation.navigate("Confirmation")}>
-            <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
-            <Price>
-              <PriceText>$11.22</PriceText>
-            </Price>
-          </Checkout>
-          
-        </Bottom>
-      </ContainerUI>
-    </ScreenUI>
+  return (
+    <>
+      <ScreenUI>
+        <Header navigation={navigation} />
+        <ContainerUI>
+          <Top>
+            <TitleUI>Your Cart</TitleUI>
+
+            <CartCont>
+              {cart && cart.map((item) => <CartList key={item.name} item={item}></CartList>)}
+              <Total style={{ marginTop: 10 }}>
+                <Text>{cart.length} items</Text>
+                <Text>total ${total}</Text>
+              </Total>
+            </CartCont>
+          </Top>
+
+        </ContainerUI>
+      </ScreenUI>
+
+      <OrderMore onPress={() => navigation.goBack(null)}>
+              <OrderMoreText>Order More</OrderMoreText>
+            </OrderMore>
+      <Checkout onPress={() => navigation.navigate("Confirmation", {
+        cartTotal: total
+      })}>
+
+        
+        <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
+        <Price>
+          <PriceText>${total}</PriceText>
+        </Price>
+      </Checkout>
+    </>
   );
 }

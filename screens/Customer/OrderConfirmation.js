@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { Text, View, Pressable, ScrollView, Image } from "react-native";
+import { Text, View, Pressable, ScrollView, Image, TouchableHighlight } from "react-native";
 import styled from "styled-components/native";
 import { CartContext } from "../../comps/cart";
 import Header from "../../comps/Customer/Header";
@@ -35,6 +35,10 @@ const GetDirection = styled.Pressable`
   background-color: #ee9837;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  bottom: 25px;
+  left: 5%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const ButtonText = styled.Text`
@@ -47,21 +51,26 @@ const MapCont = styled.Image`
   margin: 10% 0;
 `;
 export default function OrderConfirmation({ route, navigation }) {
-  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
-    useContext(CartContext);
+
+    const { cartTotal } = route.params;
 
   return (
+
+    <>
     <ScreenUI>
       <Header navigation={navigation} />
       <ContainerUI>
         <TitleUI>Thank you! Your order has successfully been placed.</TitleUI>
-        <OrderComfirmation></OrderComfirmation>
+        <OrderComfirmation cartTotal={cartTotal}/>
 
         <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont>
-        <GetDirection onPress={() => navigation.navigate("Confirmation")}>
-          <ButtonText>GET DIRECTIONS</ButtonText>
-        </GetDirection>
+
       </ContainerUI>
     </ScreenUI>
+    <GetDirection onPress={() => navigation.navigate("Map")}>
+          <ButtonText>GET DIRECTIONS</ButtonText>
+        </GetDirection>
+
+    </>
   );
 }

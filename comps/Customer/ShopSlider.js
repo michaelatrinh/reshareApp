@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import ShopCardSmall from "./ShopCardSmall";
 import { ScrollView } from "react-native";
+import SkeletonCardSmall from "./SkeletonCardSmall";
 
 const ContainerUI = styled.View`
   margin: 0 0 30px 0;
@@ -39,6 +40,12 @@ export default function ShopSlider({
   displayStores,
   navigation,
 }) {
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+
+  console.log(imagesLoaded);
+
+  const length = Object.keys(displayStores).length;
+
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
   });
@@ -46,8 +53,6 @@ export default function ShopSlider({
   if (!loaded) {
     return null;
   }
-
-  console.log(displayStores);
 
   return (
     <>
@@ -74,12 +79,32 @@ export default function ShopSlider({
           left: "5%",
         }}
       >
-        {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCardSmall key={key} v={v} navigation={navigation} />;
-        })}
-        {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCardSmall key={key} v={v} navigation={navigation} />;
-        })}
+
+        {
+          //skeleton loading
+          imagesLoaded >= length ? (
+            <></>
+          ) : (
+            Object.entries(displayStores).map(([key, v]) => {
+              return <SkeletonCardSmall key={key} />;
+            })
+          )
+        }
+
+        {
+          //show stores once images loaded
+          Object.entries(displayStores).map(([key, v]) => {
+            return (
+              <ShopCardSmall
+                setImagesLoaded={setImagesLoaded}
+                imagesLoaded={imagesLoaded}
+                key={key}
+                v={v}
+                navigation={navigation}
+              />
+            );
+          })
+        }
       </ScrollView>
     </>
   );

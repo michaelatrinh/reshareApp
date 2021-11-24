@@ -14,7 +14,6 @@ import lime from "../../assets/limenobg.png";
 import { EvilIcons } from "@expo/vector-icons";
 
 const Main = styled.View`
-  width: 95%;
   height: 100px;
   justify-content: flex-start;
   align-items: center;
@@ -95,8 +94,11 @@ const OriginalPriceText = styled.Text`
 const Trash = styled.View`
   display: flex;
 `;
-export default function CartList() {
+export default function CartList({item}) {
   const [quantity, setQuantity] = useState(1);
+
+  const price = item.price.toFixed(2);
+  const priceOg = item.priceog.toFixed(2);
 
   const subtractQuantity = () => {
     if (quantity < 2) {
@@ -122,7 +124,7 @@ export default function CartList() {
       </Left>
       <Right>
         <FirstRight>
-          <Title>Fresh Lime (500-700g)</Title>
+          <Title>{item.name} (500-700g)</Title>
           <Quantity>
             <QuantityButton onPress={subtractQuantity}>
               <Text style={{ fontSize: 10 }}>-</Text>
@@ -134,12 +136,12 @@ export default function CartList() {
           </Quantity>
         </FirstRight>
         <SecondRight>
-          <Expiry>Best Before Oct 15th</Expiry>
+          <Expiry>Best Before {item.expiry}</Expiry>
         </SecondRight>
         <ThirdRight>
           <PriceDiv>
-            <PriceText>3.74</PriceText>
-            <OriginalPriceText>7.74</OriginalPriceText>
+            <PriceText>${price}</PriceText>
+            <OriginalPriceText>${priceOg}</OriginalPriceText>
           </PriceDiv>
           <Trash>
             <EvilIcons name="trash" size={18} color="black" />

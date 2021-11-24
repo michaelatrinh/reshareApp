@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import ShopCardSmall from "./ShopCardSmall";
 import { ScrollView, Text } from "react-native";
-import lime from "../../assets/lime.png";
+import lime from "../../assets/lime2.png";
 import { Image } from "react-native";
 
 const ContainerUI = styled.View`
