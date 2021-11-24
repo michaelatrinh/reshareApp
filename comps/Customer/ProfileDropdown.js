@@ -5,27 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import lime from "../../assets/lime.png";
 import { Image, Pressable, Text } from "react-native";
 
-
-const HeaderUI = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px 0 25px 0;
-  height: 100px;
-  position: absolute;
-  right: 5%;
-  background: white;
-
-  z-index: 10000;
-`;
-
 const ProfileDropdownUI = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 50px 5%;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 20% 0;
   height: 50%;
   position: absolute;
   width: 100%;
@@ -40,7 +26,7 @@ const ProfileDropdownUI = styled.View`
 const DropdownOverlayUI = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-start;
 
   height: 100%;
@@ -63,28 +49,65 @@ const CloseMenuUI = styled.Pressable`
 
 const ProfileButtonUI = styled.Pressable`
   font-family: Ubuntu;
-  background-color: #4da95d;
-  width: 95px;
-  height: 95px;
-  border-radius: 50px;
+  background-color: lightgray;
+  width: 125px;
+  height: 125px;
+  border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-`;
+  margin: 0 0 10px 0;
 
+`;
 
 const RowUI = styled.View`
   display: flex;
-  width: 100%;
+  width: 80%;
   flex-direction: row;
-
   align-items: center;
+  margin: 0 0 35px 0;
 `;
 
 const ColumnUI = styled.View`
   display: flex;
-  
+  justify-content: center;
+  align-items: center;
+
+`;
+
+const NameUI = styled.Text`
+  font-size: 28px;
+  margin: 0 0 15px;
+`;
+
+const LabelUI = styled.Text`
+  width: 25%;
+  font-size: 14px;
+`;
+
+const TextUI = styled.Text`
+  width: 50%;
+  font-size: 14px;
+`;
+
+const EditUI = styled.Pressable`
+  width: 25%;
+
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+`;
+
+const EditTextUI = styled.Text`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #EE9837;
 `;
 
 export default function ProfileDropdown({ setShowProfile }) {
@@ -97,13 +120,43 @@ export default function ProfileDropdown({ setShowProfile }) {
         </CloseMenuUI>
 
         <RowUI>
-          <ProfileButtonUI>
-            <Image style={{ width: 95, height: 95 }} source={lime} />
-          </ProfileButtonUI>
           <ColumnUI>
-            <Text>Name</Text>
-            <Text>Orders</Text>
+            <ProfileButtonUI>
+              <Image style={{ width: 125, height: 125 }} source={lime} />
+            </ProfileButtonUI>
+
+            <EditUI>
+              <EditTextUI>edit</EditTextUI>
+            </EditUI>
           </ColumnUI>
+          <ColumnUI style={{marginLeft: 25}}>
+            <NameUI>Name</NameUI>
+            <Text> 53 Orders</Text>
+          </ColumnUI>
+        </RowUI>
+
+        <RowUI>
+          <LabelUI>Email</LabelUI>
+          <TextUI>trevorjohn@gmail.com</TextUI>
+          <EditUI>
+            <EditTextUI>edit</EditTextUI>
+          </EditUI>
+        </RowUI>
+
+        <RowUI>
+          <LabelUI>Phone</LabelUI>
+          <TextUI>778-910-2302</TextUI>
+          <EditUI>
+            <EditTextUI>edit</EditTextUI>
+          </EditUI>
+        </RowUI>
+
+        <RowUI>
+          <LabelUI>Password</LabelUI>
+          <TextUI>*********</TextUI>
+          <EditUI>
+            <EditTextUI>edit</EditTextUI>
+          </EditUI>
         </RowUI>
       </ProfileDropdownUI>
     </>

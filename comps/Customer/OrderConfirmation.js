@@ -17,22 +17,22 @@ const TextLine = styled.View`
   margin-bottom: 5px;
 `;
 const Title = styled.Text`
-  font-size: 14;
+  font-size: 14px;
   font-family: Poppins;
   font-weight: bold;
 `;
 
 const Left = styled.Text`
-  font-size: 14;
+  font-size: 14px;
   font-family: Poppins;
   font-weight: bold;
   color: #ee9837;
 `;
 const Right = styled.Text`
-  font-size: 14;
+  font-size: 14px;
   font-family: Poppins;
 `;
-export default function OrderComfirmation() {
+export default function OrderComfirmation({cartTotal}) {
   return (
     <Main>
       <TextLine>
@@ -54,7 +54,7 @@ export default function OrderComfirmation() {
         }}
       >
         <Left>Total</Left>
-        <Right>$9.89</Right>
+        <Right>${cartTotal}</Right>
       </TextLine>
       <TextLine
         style={{

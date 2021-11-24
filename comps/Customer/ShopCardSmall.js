@@ -2,9 +2,10 @@ import React, { useState, useContext } from "react";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import shopImage from "../../assets/store-img.png";
-import { Image, Pressable } from "react-native";
+import { Image, Pressable, TouchableHighlight, View } from "react-native";
+import SkeletonCardSmall from "./SkeletonCardSmall";
 
-const StoreContainerUI = styled.Pressable`
+const StoreContainerUI = styled.TouchableHighlight`
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
@@ -23,6 +24,8 @@ export default function ShopCardSmall({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
+  setImagesLoaded,
+  imagesLoaded,
   v,
 }) {
   const [loaded] = useFonts({
@@ -33,6 +36,10 @@ export default function ShopCardSmall({
     return null;
   }
 
+  handleImageLoad = () => {
+    setImagesLoaded(imagesLoaded + 1);
+  };
+
   return (
     <StoreContainerUI
       onPress={() => {
@@ -40,12 +47,19 @@ export default function ShopCardSmall({
           store: v,
         });
       }}
+      activeOpacity={0.6}
+      underlayColor="#FDE9C2"
     >
-      <Image source={shopImage} style={{ width: 171, height: 78, borderRadius: 5 }} />
-      <StoreDetailsUI>
-        {v.username} -
-        {v.location}
-      </StoreDetailsUI>
+      <>
+        <Image
+          onLoad={handleImageLoad}
+          source={shopImage}
+          style={{ width: 171, height: 78, borderRadius: 5 }}
+        />
+        <StoreDetailsUI>
+          {v.username} -{v.location}
+        </StoreDetailsUI>
+      </>
     </StoreContainerUI>
   );
 }
