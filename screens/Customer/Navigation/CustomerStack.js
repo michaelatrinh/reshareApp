@@ -7,7 +7,6 @@ import OrdersStack from "./OrdersStack";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-
 import styled from "styled-components/native";
 import TopNav from "../../../comps/Customer/Header";
 import Header from "../../../comps/Customer/Header";
@@ -66,13 +65,29 @@ function MyTabBar({ state, descriptors, navigation }) {
           >
             <Text style={{ color: isFocused ? "#EE9837" : "#EE9837" }}>
               {label == "Home" ? (
-                <Feather name="home" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
+                <Feather
+                  name="home"
+                  size={24}
+                  style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }}
+                />
               ) : label == "Browse" ? (
-                <Feather name="search" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
+                <Feather
+                  name="search"
+                  size={24}
+                  style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }}
+                />
               ) : label == "Orders" ? (
-                <Feather name="list" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
+                <Feather
+                  name="list"
+                  size={24}
+                  style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }}
+                />
               ) : (
-                <Feather name="map-pin" size={24} style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }} />
+                <Feather
+                  name="map-pin"
+                  size={24}
+                  style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }}
+                />
               )}
             </Text>
           </TouchableOpacity>
@@ -85,8 +100,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 export default function Customer({ route, navigation }) {
   return (
     <>
-
-<HeaderRight/>
+      <HeaderRight />
       <Tab.Navigator
         tabBar={(props) => <MyTabBar {...props} />}
         screenOptions={{
@@ -101,4 +115,3 @@ export default function Customer({ route, navigation }) {
     </>
   );
 }
-  
