@@ -10,7 +10,7 @@ import {
   Image,
   SectionList,
 } from "react-native";
-import lime from "../../assets/limenobg.png";
+import lime from "../../assets/lime.png";
 import { EvilIcons } from "@expo/vector-icons";
 
 const Main = styled.View`

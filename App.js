@@ -30,7 +30,6 @@ export default function App() {
       <CartProvider>
       <StatusBar barStyle="dark-content" /> 
         <SafeAreaProvider>
-      
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -40,10 +39,9 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Sign Up" component={CustomerSignup} />
             <Stack.Screen name="Customer" component={Customer} />
-
             <Stack.Screen name="Store" component={Store} />
-          </Stack.Navigator>
-        </NavigationContainer>
+            </Stack.Navigator>
+          </NavigationContainer>
         </SafeAreaProvider>
       </CartProvider>
     </AuthProvider>
