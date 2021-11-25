@@ -29,7 +29,7 @@ export default function MenuItem({ route, navigation }) {
   return (
     <ContainerUI>
       <Header navigation={navigation} />
-      <ItemSlider></ItemSlider>
+      <ItemSlider item={item}></ItemSlider>
       <BottomCol>
         <MenuItemDetail navigation={navigation} item={item} />
       </BottomCol>

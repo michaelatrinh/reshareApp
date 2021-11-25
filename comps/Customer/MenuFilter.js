@@ -3,7 +3,13 @@ import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import ShopCardSmall from "./ShopCardSmall";
 import { ScrollView, Text } from "react-native";
-import lime from "../../assets/lime2.png";
+import all from "../../assets/Categories/all.png";
+import lime from "../../assets/Categories/lime.png";
+import grain from "../../assets/Categories/grain.png";
+import onion from "../../assets/Categories/onion.png";
+import can from "../../assets/Categories/can.png";
+import milk from "../../assets/Categories/milk.png";
+
 import { Image } from "react-native";
 
 const ContainerUI = styled.View`
@@ -18,7 +24,7 @@ const RowUI = styled.View`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  width: 90%;
+  width: 100%;
   margin: 10px 0;
 `;
 
@@ -72,7 +78,7 @@ export default function MenuFilter({
         }}
         onPress={() => setSelection("all")}
       >
-        <Image source={lime} style={{ width: 48, height: 48 }} />
+        <Image source={all} style={{ width: 48, height: 48 }} />
       </TagUI>
       <TagUI
         style={{ opacity: selection == "fruits" ? 1 : 0.5 }}
@@ -82,11 +88,11 @@ export default function MenuFilter({
       </TagUI>
       <TagUI
         style={{
-          opacity: selection == "greens" ? 1 : 0.5,
+          opacity: selection == "vegtables" ? 1 : 0.5,
         }}
-        onPress={() => setSelection("greens")}
+        onPress={() => setSelection("vegtables")}
       >
-        <Image source={lime} style={{ width: 48, height: 48 }} />
+        <Image source={onion} style={{ width: 48, height: 48 }} />
       </TagUI>
       <TagUI
         style={{
@@ -94,7 +100,7 @@ export default function MenuFilter({
         }}
         onPress={() => setSelection("dairy")}
       >
-        <Image source={lime} style={{ width: 48, height: 48 }} />
+        <Image source={milk} style={{ width: 48, height: 48 }} />
       </TagUI>
       <TagUI
         style={{
@@ -102,7 +108,15 @@ export default function MenuFilter({
         }}
         onPress={() => setSelection("grains")}
       >
-        <Image source={lime} style={{ width: 48, height: 48 }} />
+        <Image source={grain} style={{ width: 48, height: 48 }} />
+      </TagUI>
+      <TagUI
+        style={{
+          opacity: selection == "canned" ? 1 : 0.5,
+        }}
+        onPress={() => setSelection("canned")}
+      >
+        <Image source={can} style={{ width: 48, height: 48 }} />
       </TagUI>
     </RowUI>
   );

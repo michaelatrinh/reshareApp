@@ -32,7 +32,7 @@ const Right = styled.Text`
   font-size: 14px;
   font-family: Poppins;
 `;
-export default function OrderComfirmation({cartTotal}) {
+export default function OrderComfirmation({cartTotal, pickupTime}) {
   return (
     <Main>
       <TextLine>
@@ -63,7 +63,7 @@ export default function OrderComfirmation({cartTotal}) {
         }}
       >
         <Left>Pickup Time</Left>
-        <Right>9:30pm</Right>
+        <Right>{pickupTime}</Right>
       </TextLine>
       <TextLine
         style={{

@@ -5,6 +5,7 @@ import ShopMenu from "../ShopMenu";
 import MenuItem from "../MenuItem";
 import ShopLocation from "../ShopLocation";
 import Cart from "../Cart.js";
+import Schedule from "../Schedule"
 import OrderConfirmation from "../OrderConfirmation";
 import Header from "../../../comps/Customer/Header";
 
@@ -15,8 +16,9 @@ export default function HomeStack({ route, navigation }) {
     <>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
-        }}>
+          headerShown: false,
+        }}
+      >
         <Stack.Screen
           name="Dashboard"
           component={CustomerDashboard}
@@ -57,6 +59,15 @@ export default function HomeStack({ route, navigation }) {
         />
 
         <Stack.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{
+            headerShadowVisible: false,
+            headerTitle: () => false,
+          }}
+        />
+
+        <Stack.Screen
           name="Confirmation"
           component={OrderConfirmation}
           options={{
@@ -73,7 +84,6 @@ export default function HomeStack({ route, navigation }) {
             headerTitle: () => false,
           }}
         />
-
       </Stack.Navigator>
     </>
   );

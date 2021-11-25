@@ -6,7 +6,7 @@ import * as Location from "expo-location";
 import Header from "../../comps/Customer/Header";
 import axios from 'axios';
 
-export default function ShopLocation({navigation}) {
+export default function ShopLocation({ navigation }) {
   const [location, setLocation] = useState(null);
   const [mapRegion, setmapRegion] = useState(null);
   const [currentAddress, setCurrentAddress] = useState(null);
@@ -101,6 +101,7 @@ export default function ShopLocation({navigation}) {
 
   return (
     <View style={styles.container}>
+
            <Header navigation={navigation}/>
       <MapView 
       style={styles.map} 
@@ -109,6 +110,7 @@ export default function ShopLocation({navigation}) {
       showsUserLocation={true}
       showsMyLocationButton={true}
       >
+
         <Marker
           coordinate={pin}
           pinColor="red" //set pin color

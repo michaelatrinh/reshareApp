@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components/native";
 import { CartContext } from "../cart";
 
-const AddToCartUI = styled.Pressable`
+const AddToCartUI = styled.TouchableOpacity`
   font-family: Ubuntu;
   background-color: #4da95d;
   width: 90%;

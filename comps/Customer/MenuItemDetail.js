@@ -120,7 +120,7 @@ const ThirdCol = styled.View`
   height: 75px;
 `;
 
-const AddToCart = styled.Pressable`
+const AddToCart = styled.TouchableOpacity`
   background-color: #4da95d;
   width: 90%;
   height: 43px;
@@ -201,45 +201,42 @@ export default function MenuItemDetail({ navigation, item }) {
   };
 
   return (
-
     <>
-    <Main>
-      <TopCol>
-        <Title>{item.name}</Title>
-        <Quantity>{item.weight}</Quantity>
-        <Description>{item.description}</Description>
-        <ExpiryDate>Best before {item.expiry}</ExpiryDate>
-      </TopCol>
-      <SecondCol>
-        <LeftRow>
-          <QuantityFunction>
-            <QuantityButton onPress={subtractQuantity}>
-              <Text>-</Text>
-            </QuantityButton>
-            <Text>{quantity}</Text>
-            <QuantityButton onPress={addQuantity}>
-              <Text>+</Text>
-            </QuantityButton>
-          </QuantityFunction>
-        </LeftRow>
-        <RightRow>
-          <RightRowTop>
-            <PriceText>${price}</PriceText>
-            <OriginalPriceText>{priceOg}</OriginalPriceText>
-          </RightRowTop>
-          <RightRowBottom>
-            <Save>you save 50%</Save>
-          </RightRowBottom>
-        </RightRow>
-      </SecondCol>
-      <ThirdCol>
+      <Main>
+        <TopCol>
+          <Title>{item.name}</Title>
+          <Quantity>{item.weight}</Quantity>
+          <Description>{item.description}</Description>
+          <ExpiryDate>Best before {item.expiry}</ExpiryDate>
+        </TopCol>
+        <SecondCol>
+          <LeftRow>
+            <QuantityFunction>
+              <QuantityButton onPress={subtractQuantity}>
+                <Text>-</Text>
+              </QuantityButton>
+              <Text>{quantity}</Text>
+              <QuantityButton onPress={addQuantity}>
+                <Text>+</Text>
+              </QuantityButton>
+            </QuantityFunction>
+          </LeftRow>
+          <RightRow>
+            <RightRowTop>
+              <PriceText>${price}</PriceText>
+              <OriginalPriceText>{priceOg}</OriginalPriceText>
+            </RightRowTop>
+            <RightRowBottom>
+              <Save>you save 50%</Save>
+            </RightRowBottom>
+          </RightRow>
+        </SecondCol>
+        <ThirdCol></ThirdCol>
+      </Main>
 
-      </ThirdCol>
-    </Main>
-
-<AddToCart onPress={() => handleAddToCart(item)}>
-<CartText>ADD TO CART</CartText>
-</AddToCart>
-</>
+      <AddToCart onPress={() => handleAddToCart(item)}>
+        <CartText>ADD TO CART</CartText>
+      </AddToCart>
+    </>
   );
 }
