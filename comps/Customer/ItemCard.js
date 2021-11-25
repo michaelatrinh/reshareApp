@@ -3,23 +3,23 @@ import styled from "styled-components/native";
 import lime from "../../assets/lime.png";
 import { Image } from "react-native";
 
-const ItemDeatilsUI = styled.View`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 0 0 0 20px;
-  flex: 1;
-  height: 100px;
-`;
-
 const ItemContainerUI = styled.TouchableHighlight`
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
-  flex-direction: column;
   width: 100%;
   flex-direction: row;
   display: flex;
   margin: 0 0 25px 0;
+`;
+
+const ItemDeatilsUI = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 0 0 20px;
+  height: 114px;
+  flex: 1;
 `;
 
 const ItemNameUI = styled.Text`
@@ -64,7 +64,7 @@ export default function ItemCard({ route, navigation, item }) {
       underlayColor="#FDE9C2"
     >
       <>
-        <Image source={lime} style={{ width: 171, height: 100 }} />
+        <Image source={{ uri: item.img }} style={{ width: 114, height: 114 }} />
 
         <ItemDeatilsUI>
           <ItemNameUI>{item.name}</ItemNameUI>

@@ -73,44 +73,39 @@ export default function ShopMenu({ route, navigation }) {
   };
 
   return (
-
     <>
-    <ScreenUI>
-      <Header navigation={navigation} />
-      <ContainerUI>
-        <Image
-          source={shopImage}
-          style={{ width: "100%", height: 180, borderRadius: 15 }}
-        />
-        <TitleUI>
-          {store.username} - {store.location}
-        </TitleUI>
-        <DetailsUI>0.5km</DetailsUI>
-        <MenuFilter selection={selection} setSelection={setSelection} />
+      <ScreenUI>
+        <Header navigation={navigation} />
+        <ContainerUI>
+          <Image
+            source={shopImage}
+            style={{ width: "100%", height: 180, borderRadius: 15 }}
+          />
+          <TitleUI>
+            {store.username} - {store.location}
+          </TitleUI>
+          <DetailsUI>0.5km</DetailsUI>
+          <MenuFilter selection={selection} setSelection={setSelection} />
 
-        <FilterTextUI>{selection}</FilterTextUI>
+          <FilterTextUI>{selection}</FilterTextUI>
 
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-            backgroundColor: "white",
-            width: "100%",
-          }}
-        >
-          {store.menu &&
-            filterMenu(store.menu).map((item) => (
-              <ItemCard key={item.name} item={item} navigation={navigation} />
-            ))}
-        </ScrollView>
-  
+          <ScrollView
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "flex-start",
+              backgroundColor: "white",
+              width: "100%",
+            }}
+          >
+            {store.menu &&
+              filterMenu(store.menu).map((item) => (
+                <ItemCard key={item.name} item={item} navigation={navigation} />
+              ))}
+          </ScrollView>
+        </ContainerUI>
+      </ScreenUI>
 
-      </ContainerUI>
-
-  
-    </ScreenUI>
-
-    <CartButton navigation={navigation} />
+      <CartButton navigation={navigation} />
     </>
   );
 }

@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { Text, View, Pressable, ScrollView, Image, TouchableHighlight } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 import styled from "styled-components/native";
 import { CartContext } from "../../comps/cart";
 import Header from "../../comps/Customer/Header";
@@ -28,7 +35,7 @@ const TitleUI = styled.Text`
   margin: 15px 0 40px 0;
 `;
 
-const GetDirection = styled.Pressable`
+const GetDirection = styled.TouchableOpacity`
   width: 90%;
   height: 40px;
   border-radius: 5px;
@@ -51,26 +58,22 @@ const MapCont = styled.Image`
   margin: 10% 0;
 `;
 export default function OrderConfirmation({ route, navigation }) {
-
-    const { cartTotal } = route.params;
+  const { cartTotal, pickupTime } = route.params;
 
   return (
-
     <>
-    <ScreenUI>
-      <Header navigation={navigation} />
-      <ContainerUI>
-        <TitleUI>Thank you! Your order has successfully been placed.</TitleUI>
-        <OrderComfirmation cartTotal={cartTotal}/>
+      <ScreenUI>
+        <Header navigation={navigation} />
+        <ContainerUI>
+          <TitleUI>Thank you! Your order has successfully been placed.</TitleUI>
+          <OrderComfirmation cartTotal={cartTotal} pickupTime={pickupTime}/>
 
-        <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont>
-
-      </ContainerUI>
-    </ScreenUI>
-    <GetDirection onPress={() => navigation.navigate("Map")}>
-          <ButtonText>GET DIRECTIONS</ButtonText>
-        </GetDirection>
-
+          <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont>
+        </ContainerUI>
+      </ScreenUI>
+      <GetDirection onPress={() => navigation.navigate("Map")}>
+        <ButtonText>GET DIRECTIONS</ButtonText>
+      </GetDirection>
     </>
   );
 }

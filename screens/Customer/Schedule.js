@@ -39,6 +39,14 @@ const TitleUI = styled.Text`
   margin: 15px 0;
 `;
 
+const DateUI = styled.Text`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  margin: 15px 0;
+`;
+
 const CartCont = styled.View`
   display: flex;
   align-items: center;
@@ -108,21 +116,46 @@ const PriceText = styled.Text`
   font-size: 10px;
   color: #9b9b9b;
 `;
+
+const GridUI = styled.View`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
+const PickupTimeUI = styled.TouchableOpacity`
+  width: 83px;
+  height: 24px;
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+`;
+
+const pickupTimes = [
+  "5:30pm",
+  "5:45pm",
+  "6:00pm",
+  "6:15pm",
+  "6:30pm",
+  "6:45pm",
+  "7:00pm",
+  "7:15pm",
+];
+
 const ButtonCont = styled.View``;
 export default function Cart({ route, navigation }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
     useContext(CartContext);
 
-  const removeItem = (name) => {
-    console.log(name);
-    let updateCart = cart.filter((item) => {
-      return item.name !== name;
-    });
-
-    setCart(updateCart);
-  };
-
   const total = cartTotal.toFixed(2);
+
+  const [pickupTime, setPickupTime] = useState('')
 
   return (
     <>
@@ -130,17 +163,16 @@ export default function Cart({ route, navigation }) {
         <Header navigation={navigation} />
         <ContainerUI>
           <Top>
-            <TitleUI>Your Cart</TitleUI>
-
+            <TitleUI>Schedule Pick Up</TitleUI>
+            <DateUI>Today Dec 3, 2022</DateUI>
             <CartCont>
-              {cart &&
-                cart.map((item) => (
-                  <CartList
-                    key={item.name}
-                    item={item}
-                    removeItem={removeItem}
-                  ></CartList>
+              <GridUI>
+                {pickupTimes.map((x) => (
+                  <PickupTimeUI style={{backgroundColor: pickupTime === x ? '#FDE9C2' : '#ffffff'}}onPress={() => setPickupTime(x)}>
+                    <Text>{x}</Text>
+                  </PickupTimeUI>
                 ))}
+              </GridUI>
               <Total style={{ marginTop: 10 }}>
                 <Text>{cart.length} items</Text>
                 <Text>total ${total}</Text>
@@ -150,10 +182,8 @@ export default function Cart({ route, navigation }) {
         </ContainerUI>
       </ScreenUI>
 
-      <OrderMore onPress={() => navigation.goBack(null)}>
-        <OrderMoreText>Order More</OrderMoreText>
-      </OrderMore>
-      <Checkout onPress={() => navigation.navigate("Schedule")}>
+
+      <Checkout onPress={() => navigation.navigate("Confirmation", {cartTotal: cartTotal, pickupTime: pickupTime})}>
         <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
         <Price>
           <PriceText>${total}</PriceText>

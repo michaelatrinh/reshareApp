@@ -34,7 +34,7 @@ const store = {
   },
 };
 
-export default function ShopLocation({navigation}) {
+export default function ShopLocation({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -89,7 +89,7 @@ export default function ShopLocation({navigation}) {
 
   return (
     <View style={styles.container}>
-           <Header navigation={navigation}/>
+      <Header navigation={navigation} />
       <MapView style={styles.map} initialRegion={mapRegion} provider="google">
         <Marker
           coordinate={pin}

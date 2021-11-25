@@ -12,7 +12,7 @@ const Main = styled.View`
   align-items: center;
   height: 40%;
 `;
-export default function ItemSlider() {
+export default function ItemSlider({ item }) {
   return (
     // <ScrollView
     //   horizontal={true}
@@ -25,7 +25,7 @@ export default function ItemSlider() {
     //   }}
     // ></ScrollView>
     <Main>
-      <Image source={lime} style={{ width: 200, height: 100 }} />
+      <Image source={{ uri: item.img }} style={{ width: 200, height: 200 }} />
     </Main>
   );
 }

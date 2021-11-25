@@ -91,10 +91,10 @@ const OriginalPriceText = styled.Text`
   font-size: 11px;
   text-decoration: line-through;
 `;
-const Trash = styled.View`
+const Trash = styled.TouchableOpacity`
   display: flex;
 `;
-export default function CartList({item}) {
+export default function CartList({ item, removeItem }) {
   const [quantity, setQuantity] = useState(1);
 
   const price = item.price.toFixed(2);
@@ -120,7 +120,7 @@ export default function CartList({item}) {
   return (
     <Main>
       <Left>
-        <Image source={lime} style={{ width: 70, height: 70 }} />
+        <Image source={{ uri: item.img }} style={{ width: 70, height: 70 }} />
       </Left>
       <Right>
         <FirstRight>
@@ -143,7 +143,7 @@ export default function CartList({item}) {
             <PriceText>${price}</PriceText>
             <OriginalPriceText>${priceOg}</OriginalPriceText>
           </PriceDiv>
-          <Trash>
+          <Trash onPress={() => removeItem(item.name)}>
             <EvilIcons name="trash" size={18} color="black" />
           </Trash>
         </ThirdRight>

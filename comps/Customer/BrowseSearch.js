@@ -51,8 +51,7 @@ export default function BrowseSearch({
   displayStores,
   navigation,
 }) {
-
-  const [selection, setSelection] = useState('saved')
+  const [selection, setSelection] = useState("saved");
 
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -68,14 +67,29 @@ export default function BrowseSearch({
     <ContainerUI>
       <SearchBarUI />
       <RowUI>
-        <TagUI style={{ backgroundColor: selection == "saved" ? "#fde9c2" : "#ffffff" }} onPress={() => setSelection('saved')}>
+        <TagUI
+          style={{
+            backgroundColor: selection == "saved" ? "#fde9c2" : "#ffffff",
+          }}
+          onPress={() => setSelection("saved")}
+        >
           <TagTextUI>stores saved</TagTextUI>
         </TagUI>
-        <TagUI style={{ backgroundColor: selection == "near" ? "#fde9c2" : "#ffffff" }} onPress={() => setSelection('near')}>
+        <TagUI
+          style={{
+            backgroundColor: selection == "near" ? "#fde9c2" : "#ffffff",
+          }}
+          onPress={() => setSelection("near")}
+        >
           <TagTextUI>stores near you</TagTextUI>
         </TagUI>
 
-        <TagUI style={{ backgroundColor: selection == "recommended" ? "#fde9c2" : "#ffffff" }} onPress={() => setSelection('recommended')}>
+        <TagUI
+          style={{
+            backgroundColor: selection == "recommended" ? "#fde9c2" : "#ffffff",
+          }}
+          onPress={() => setSelection("recommended")}
+        >
           <TagTextUI>recommended</TagTextUI>
         </TagUI>
       </RowUI>

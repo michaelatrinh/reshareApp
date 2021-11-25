@@ -35,7 +35,7 @@ const InputUI = styled.TextInput`
   border-radius: 10px;
 `;
 
-const ButtonUI = styled.Pressable`
+const ButtonUI = styled.TouchableOpacity`
   background-color: #000000;
   color: white;
   width: 90%;
@@ -59,7 +59,7 @@ const ErrorTextUI = styled.Text`
   color: red;
 `;
 
-const CreateAccountUI = styled.Pressable``;
+const CreateAccountUI = styled.TouchableOpacity``;
 
 const CreateAccountTextUI = styled.Text`
   color: #ee9837;
