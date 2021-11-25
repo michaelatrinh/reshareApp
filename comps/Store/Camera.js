@@ -66,6 +66,7 @@ export default function PhoneCamera({
 
   return (
     <ReactNative.View style={styles.container}>
+      {/* actual camera component */}
       <ReactNative.View style={styles.viewFinder}>
         <Camera 
           ref={ref => setCameraSnap(ref)}
@@ -74,14 +75,17 @@ export default function PhoneCamera({
           type={type}
           ratio={'1:1'}
         />
-        {snappedImg && <Image source={{uri: snappedImg}} style={{
+
+        {/* trying to test and see if image is saved in phone cache once photo is taken */}
+        {/* {snappedImg && <Image source={{uri: snappedImg}} style={{
           flex: 1,
           position: "absolute",
           zIndex: 5,
-        }}/>}
+        }}/>} */}
       </ReactNative.View>
 
       <ReactNative.View style={styles.bottomContainer}>
+        {/* photo gallery */}
         <ReactNative.View style={styles.galleryContainer}>
           <ReactNative.TouchableOpacity>
             <AntDesign 
@@ -93,6 +97,7 @@ export default function PhoneCamera({
           </ReactNative.TouchableOpacity>
         </ReactNative.View>
 
+        {/* snap picture button */}
         <ReactNative.View style={styles.snapBtnContainer}>
           <ReactNative.TouchableOpacity 
             style={styles.snapBtnTouch}
@@ -104,6 +109,7 @@ export default function PhoneCamera({
           </ReactNative.TouchableOpacity>
         </ReactNative.View>
 
+        {/* camera flip button */}
         <ReactNative.View style={styles.flipBtnContainer}>
           <ReactNative.TouchableOpacity 
             onPress={()=>{
