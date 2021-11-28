@@ -15,7 +15,7 @@ export default function StoreHomeStack({ route, navigation }){
         headerShown: false,
       }}>
       <Stack.Screen
-        name="Orders"
+        name="Store Orders"
         component={StoreOrders}
         options={{
           headerShadowVisible: false,

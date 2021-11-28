@@ -1,9 +1,20 @@
 import Header from "../../comps/Customer/Header";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  Alert,
+} from "react-native";
 import styled from "styled-components/native";
 import { CartContext } from "../../comps/cart";
 import CartList from "../../comps/Customer/CartList";
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
+import { AuthContext } from "../../comps/auth";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -153,9 +164,94 @@ export default function Cart({ route, navigation }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
     useContext(CartContext);
 
+  const { store } = route.params;
+
   const total = cartTotal.toFixed(2);
 
-  const [pickupTime, setPickupTime] = useState('')
+  const [pickupTime, setPickupTime] = useState(null);
+
+  const [order, setOrder] = useState([]);
+
+  const [updateOrder, setUpdateOrder] = useState(null);
+
+  const orderNumber = Math.floor(Math.random() * (999999 - 1)) + 1;
+
+  const currentUser = useContext(AuthContext);
+  const uid = currentUser.currentUser.uid;
+
+  console.log(store.username)
+
+  useEffect(() => {
+    if (order) {
+      /* console.log(order); */
+    } else {
+      /* console.log("yo"); */
+    }
+  }, [order]);
+
+  useEffect(() => {
+    readUserData(uid);
+  }, []);
+
+  //firebase read user data (name, location, type)
+  function readUserData(userId) {
+    const menuRef = ref(db, "orders/" + userId);
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data){
+      setOrder(data.order);
+      }
+    });
+  }
+
+  const handleCheckout = () => {
+    if (pickupTime) {
+      navigation.navigate("Confirmation", {
+        cartTotal: cartTotal,
+        pickupTime: pickupTime,
+        store: store,
+        cart: cart,
+        orderNumber: orderNumber,
+      });
+
+      addOrder();
+    } else {
+      Alert.alert("Select a pickup time!");
+    }
+  };
+
+  const addOrder = () => {
+    setUpdateOrder([
+      ...order,
+      {
+        number: orderNumber,
+        total: cartTotal,
+        pickupTime: pickupTime,
+        pickupLocation: store.address,
+        name: store.username,
+        location: store.location,
+        cart: cart,
+        customer: uid,
+        store: store.uid,
+        complete: false
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    if (updateOrder) {
+      /* console.log(updateOrder); */
+      handleUpdateInfo();
+    } else {
+      /* console.log("no"); */
+    }
+  }, [updateOrder]);
+
+  const handleUpdateInfo = () => {
+    update(ref(db, "orders/" + uid), {
+      order: updateOrder,
+    });
+  };
 
   return (
     <>
@@ -168,7 +264,13 @@ export default function Cart({ route, navigation }) {
             <CartCont>
               <GridUI>
                 {pickupTimes.map((x) => (
-                  <PickupTimeUI style={{backgroundColor: pickupTime === x ? '#FDE9C2' : '#ffffff'}}onPress={() => setPickupTime(x)}>
+                  <PickupTimeUI
+                    key={x}
+                    style={{
+                      backgroundColor: pickupTime === x ? "#FDE9C2" : "#ffffff",
+                    }}
+                    onPress={() => setPickupTime(x)}
+                  >
                     <Text>{x}</Text>
                   </PickupTimeUI>
                 ))}
@@ -182,8 +284,7 @@ export default function Cart({ route, navigation }) {
         </ContainerUI>
       </ScreenUI>
 
-
-      <Checkout onPress={() => navigation.navigate("Confirmation", {cartTotal: cartTotal, pickupTime: pickupTime})}>
+      <Checkout onPress={handleCheckout}>
         <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
         <Price>
           <PriceText>${total}</PriceText>
