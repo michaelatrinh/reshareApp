@@ -14,6 +14,7 @@ export default function MyItemsItem({
   foodPic,
   removeBtnPress=()=>{},
   bgColour,
+  item
 }){
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -28,14 +29,14 @@ export default function MyItemsItem({
   return (
     <Container>
       <FoodImgContainer>
-        <ReactNative.Image style={styles.image(bgColour)} />
+        <ReactNative.Image source={{uri: item.img}} style={styles.image(bgColour)} />
       </FoodImgContainer>
 
       <TextContainer>
-        <ReactNative.Text style={styles.text}>{title}</ReactNative.Text>
-        <ReactNative.Text style={styles.text02}>Best before {expiry}</ReactNative.Text>
-        <ReactNative.Text style={styles.text02}>Quantity Left: {quantity}</ReactNative.Text>
-        <ReactNative.Text style={styles.text03}>{price}</ReactNative.Text>
+        <ReactNative.Text style={styles.text}>{item.name}</ReactNative.Text>
+        <ReactNative.Text style={styles.text02}>Best before {item.expiry}</ReactNative.Text>
+        <ReactNative.Text style={styles.text02}>Quantity Left: {item.quantity}</ReactNative.Text>
+        <ReactNative.Text style={styles.text03}>{item.price}</ReactNative.Text>
       </TextContainer>
 
       <BtnsContainer>
@@ -103,8 +104,7 @@ const styles = ReactNative.StyleSheet.create({
 
 const Container = styled.View`
   flex-direction: row;
-  width: 337px;
-  height: 91px;
+  width: 90%;
   justify-content: space-evenly;
   margin-bottom: 38px;
   

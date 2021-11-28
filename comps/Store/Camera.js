@@ -1,32 +1,37 @@
 // import React, { useState, useEffect } from 'react';
-import * as React from 'react';
+import * as React from "react";
 // import { StyleSheet, Text, ReactNative.View, TouchableOpacity, Dimensions } from 'react-native';
-import * as ReactNative from 'react-native';
-import { Camera } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import * as ReactNative from "react-native";
+import { Camera } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
+var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
-export default function PhoneCamera({
+export default function PhoneCamera({ navigation }) {
+  
+  const cameraRef = React.useRef(null);
 
-}){
   const [hasPermission, setHasPermission] = React.useState(null);
-  const [cameraSnap, setCameraSnap] = React.useState(null);
+
   const [snappedImg, setSnappedImg] = React.useState(null);
   const [type, setType] = React.useState(Camera.Constants.Type.back);
+
+  const [cameraSnap, setCameraSnap] = React.useState(null);
 
   // camera api asks phone permission to use phone's camera
   React.useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
 
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
     })();
@@ -48,8 +53,6 @@ export default function PhoneCamera({
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -57,23 +60,28 @@ export default function PhoneCamera({
 
   // function to snap a picture using camera
   const takePicture = async () => {
-    if(cameraSnap){
-      const picture = await Camera.current.takePictureAsync(null);
-      // console.log(data.uri);
-      setSnappedImg(picture.uri);
+    if (cameraRef) {
+      const picture = await cameraRef.current
+        .takePictureAsync()
+        .then((photo) => {
+          setSnappedImg(photo);
+          console.log(photo.uri);
+          
+          navigation.navigate("Add Item Details", { photoUri: photo.uri });
+        });
     }
-  }
+  };
 
   return (
     <ReactNative.View style={styles.container}>
       {/* actual camera component */}
       <ReactNative.View style={styles.viewFinder}>
-        <Camera 
-          ref={ref => setCameraSnap(ref)}
+        <Camera
+          ref={cameraRef}
           // onCameraReady={()=>takePicture()}
-          style={styles.camera} 
+          style={styles.camera}
           type={type}
-          ratio={'1:1'}
+          ratio={"1:1"}
         />
 
         {/* trying to test and see if image is saved in phone cache once photo is taken */}
@@ -88,10 +96,10 @@ export default function PhoneCamera({
         {/* photo gallery */}
         <ReactNative.View style={styles.galleryContainer}>
           <ReactNative.TouchableOpacity>
-            <AntDesign 
-              name="picture" 
-              size={35} 
-              color="white" 
+            <AntDesign
+              name="picture"
+              size={35}
+              color="white"
               onPress={pickImage}
             />
           </ReactNative.TouchableOpacity>
@@ -99,9 +107,9 @@ export default function PhoneCamera({
 
         {/* snap picture button */}
         <ReactNative.View style={styles.snapBtnContainer}>
-          <ReactNative.TouchableOpacity 
+          <ReactNative.TouchableOpacity
             style={styles.snapBtnTouch}
-            onPress={()=>takePicture()}
+            onPress={takePicture}
           >
             <ReactNative.View style={styles.snapBtnOutside}>
               <ReactNative.View style={styles.snapBtnInside} />
@@ -111,8 +119,8 @@ export default function PhoneCamera({
 
         {/* camera flip button */}
         <ReactNative.View style={styles.flipBtnContainer}>
-          <ReactNative.TouchableOpacity 
-            onPress={()=>{
+          <ReactNative.TouchableOpacity
+            onPress={() => {
               setType(
                 type === Camera.Constants.Type.back
                   ? Camera.Constants.Type.front
@@ -120,11 +128,7 @@ export default function PhoneCamera({
               );
             }}
           >
-            <Ionicons 
-              name="camera-reverse-outline" 
-              size={35} 
-              color="white" 
-            />
+            <Ionicons name="camera-reverse-outline" size={35} color="white" />
           </ReactNative.TouchableOpacity>
         </ReactNative.View>
       </ReactNative.View>
@@ -133,21 +137,21 @@ export default function PhoneCamera({
 }
 
 const styles = ReactNative.StyleSheet.create({
-  container:{
+  container: {
     width: "100%",
     height: "100%",
   },
-  camera:{
+  camera: {
     flexGrow: 1,
     backgroundColor: "pink",
   },
-  viewFinder:{
+  viewFinder: {
     flexGrow: 99,
     // height: deviceHeight * 0.75,
     maxHeight: deviceHeight * 0.66,
     backgroundColor: "pink",
   },
-  bottomContainer:{
+  bottomContainer: {
     flexGrow: 1,
     width: "100%",
     flexDirection: "row",
@@ -155,23 +159,23 @@ const styles = ReactNative.StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#000000",
   },
-  galleryContainer:{
+  galleryContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  snapBtnContainer:{
+  snapBtnContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  snapBtnTouch:{
+  snapBtnTouch: {
     width: 70,
     height: 70,
     justifyContent: "center",
     alignItems: "center",
   },
-  snapBtnOutside:{
+  snapBtnOutside: {
     width: 70,
     height: 70,
     borderRadius: 100,
@@ -179,20 +183,19 @@ const styles = ReactNative.StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  snapBtnInside:{
+  snapBtnInside: {
     width: 58,
-    height: 58,    
+    height: 58,
     backgroundColor: "#FFFFFF",
     borderRadius: 100,
     borderWidth: 2,
     position: "absolute",
-    
+
     zIndex: 1,
   },
-  flipBtnContainer:{
+  flipBtnContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-
-})
+});

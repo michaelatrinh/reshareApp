@@ -1,11 +1,11 @@
-import { useLinkProps } from '@react-navigation/native';
-import * as React from 'react';
-import * as ReactNative from 'react-native';
-import styled from 'styled-components/native';
-import { useFonts } from 'expo-font';
+import { useLinkProps } from "@react-navigation/native";
+import * as React from "react";
+import * as ReactNative from "react-native";
+import styled from "styled-components/native";
+import { useFonts } from "expo-font";
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
+var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function TextInput({
   header1 = "",
@@ -19,7 +19,7 @@ export default function TextInput({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
     PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
     Ubuntu: require("../../assets/fonts/Ubuntu/Ubuntu-Regular.ttf"),
-    UbuntuBold: require("../../assets/fonts/Ubuntu/Ubuntu-Bold.ttf")
+    UbuntuBold: require("../../assets/fonts/Ubuntu/Ubuntu-Bold.ttf"),
   });
 
   if (!loaded) {
@@ -28,34 +28,31 @@ export default function TextInput({
 
   return (
     <ReactNative.View style={styles.container}>
-
       {/* Original Price Input */}
       <ReactNative.View style={styles.priceContainer}>
         <ReactNative.View style={styles.headerContainer}>
           <ReactNative.Text style={styles.header}>{header1}</ReactNative.Text>
         </ReactNative.View>
-      
+
         <ReactNative.TextInput
           style={styles.input}
           placeholder={inputPlaceholder1}
           value={inputValue1}
         />
-      </ReactNative.View>      
-      
+      </ReactNative.View>
+
       {/* Discounted Price Input */}
       <ReactNative.View style={styles.priceContainer}>
         <ReactNative.View style={styles.headerContainer}>
           <ReactNative.Text style={styles.header}>{header2}</ReactNative.Text>
         </ReactNative.View>
-      
+
         <ReactNative.TextInput
           style={styles.input}
           placeholder={inputPlaceholder2}
           value={inputValue2}
         />
       </ReactNative.View>
-
-
     </ReactNative.View>
   );
 }
@@ -68,7 +65,7 @@ const styles = ReactNative.StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  priceContainer:{
+  priceContainer: {
     flexGrow: 1,
     height: 72,
     flexDirection: "column",
@@ -95,4 +92,4 @@ const styles = ReactNative.StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 14,
   },
-})
+});

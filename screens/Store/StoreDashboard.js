@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext } from "react";
 import * as ReactNative from "react-native";
+import { Text } from "react-native";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,13 +9,13 @@ import { initializeApp } from "@firebase/app";
 
 import { getDatabase, ref, onValue, set } from "@firebase/database";
 import {
-    getAuth,
-    onAuthStateChanged,
-    FacebookAuthProvider,
-    signInWithCredential,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signOut,
+  getAuth,
+  onAuthStateChanged,
+  FacebookAuthProvider,
+  signInWithCredential,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
@@ -25,13 +26,12 @@ import Greeting from "../../comps/Greeting";
 import MyItemsHeader from "../../comps/Store/MyItemsHeader";
 import MyItemsItem from "../../comps/Store/MyItemsItem";
 import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
+import { useIsFocused } from '@react-navigation/native';
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
+var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
-export default function StoreDashboardScreen({
-    navigation,
-}){
+export default function StoreDashboardScreen({ navigation }) {
   //display states
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
@@ -39,7 +39,7 @@ export default function StoreDashboardScreen({
   const [displayStores, setDisplayStores] = React.useState("");
   const [displayRemove, setDisplayRemove] = React.useState(false);
   const [displayGrey, setDisplayGrey] = React.useState(false);
-  const [menu, setMenu] = React.useState([]);
+  const [menu, setMenu] = useState("");
   const [itemName, setItemName] = React.useState("");
   const [itemExpiry, setItemExpiry] = React.useState("");
   const [itemPrice, setItemPrice] = React.useState(0);
@@ -53,10 +53,20 @@ export default function StoreDashboardScreen({
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
 
+    // This hook returns `true` if the screen is focused, `false` otherwise
+    const isFocused = useIsFocused();
+
   //read user data on mount
   useEffect(() => {
     readUserData(currentUser.uid);
+    setMenu(menu)
   }, []);
+
+  useEffect(() => {
+    readUserData(currentUser.uid);
+    setMenu(menu)
+  }, [isFocused]);
+
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
@@ -64,10 +74,10 @@ export default function StoreDashboardScreen({
     const locationRef = ref(db, "stores/" + userId + "/location");
     const typeRef = ref(db, "stores/" + userId + "/type");
     const menuRef = ref(db, "stores/" + userId + "/menu");
-    const itemRef = ref(db, "store/" + userId + "/menu" + []);
+    /*     const itemRef = ref(db, "store/" + userId + "/menu" + []);
     const itemNameRef = ref(db, "store/" + userId + "/menu" + [] + "/name");
     const itemExpiryRef = ref(db, "store/" + userId + "/menu" + [] + "/expiry");
-    const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price");
+    const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price"); */
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -86,9 +96,8 @@ export default function StoreDashboardScreen({
 
     onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
-      setDisplayStores(data);
+      setMenu(data);
     });
-    
   }
 
   // firebase read store data (menu, itemNum, type)
@@ -102,29 +111,24 @@ export default function StoreDashboardScreen({
     });
   };
 
-  // console.log(displayStores);
-  // console.log(currentUser.uid);
-
   const [emptyPage, setEmptyPage] = React.useState(false);
 
   const addItems = () => {
     navigation.navigate("AddItemsCamera");
-  }
+  };
 
-  // Remove Item Window Display when remove btn is pressed
-  var newRemoveWindowDisplay="none"
-  // Grey background for when removal window pops up
-  var newGreyDisplay="none";
+  var newRemoveWindowDisplay = "none";
+
+  var newGreyDisplay = "none";
 
   const removeItemBtnPress = () => {
     setDisplayRemove(true);
-  }
+  };
 
   // when user pressed no on Removal confirmation window
   const handleNoPress = () => {
     setDisplayRemove(false);
-
-  }
+  };
 
   // when user pressed yes on Removal confirmation window
   const handleYesPress = () => {
@@ -132,54 +136,48 @@ export default function StoreDashboardScreen({
 
     // will need to add code to identify which item to remove and how
     // @ @ @ @ @ @
-  }
+  };
 
-  if(displayRemove){
-      newRemoveWindowDisplay="flex";
-      newGreyDisplay="flex";
+  if (displayRemove) {
+    newRemoveWindowDisplay = "flex";
+    newGreyDisplay = "flex";
   }
 
   const handleAddButton = () => {
     navigation.navigate("Add Item Camera");
-  }
+  };
 
   // ignore below if statement
-  if(emptyPage === true){
-      return (
-        <ContainerUI>
-          <TopContainer>
-            <Greeting name={displayName} />
+  if (emptyPage === true) {
+    return (
+      <ContainerUI>
+        <TopContainer>
+          <Greeting name={displayName} />
 
-            <MyItemsHeader />
-          </TopContainer>
+          <MyItemsHeader />
+        </TopContainer>
 
-          <ReactNative.ScrollView
-            contentContainerStyle={styles.foodListScrollNothing}
-          >
-            
-            <ReactNative.Text>You do not have any ingredients added.</ReactNative.Text>
-            <AddItemsButton title="Add Items" onPress={addItems} />
-          </ReactNative.ScrollView>
-
-        </ContainerUI>
-      );
+        <ReactNative.ScrollView
+          contentContainerStyle={styles.foodListScrollNothing}
+        >
+          <ReactNative.Text>
+            You do not have any ingredients added.
+          </ReactNative.Text>
+          <AddItemsButton title="Add Items" onPress={addItems} />
+        </ReactNative.ScrollView>
+      </ContainerUI>
+    );
   }
 
   return (
-    <SafeAreaView
-      style={styles.safeArea}
-      edges={['left', 'right']}  
-    >
-    {/* <ContainerUI> */}
-      <GreyBackground 
-        style={styles.greyBg} 
-        greyDisplay={newGreyDisplay} 
-      />
-      <RemoveWindow 
-        removeWindowDisplay={newRemoveWindowDisplay} 
-        noOnPress={handleNoPress} 
-        yesOnPress={handleYesPress} 
-        onXPress={handleNoPress}  
+    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
+      {/* <ContainerUI> */}
+      <GreyBackground style={styles.greyBg} greyDisplay={newGreyDisplay} />
+      <RemoveWindow
+        removeWindowDisplay={newRemoveWindowDisplay}
+        noOnPress={handleNoPress}
+        yesOnPress={handleYesPress}
+        onXPress={handleNoPress}
       />
 
       <TopContainer>
@@ -187,66 +185,53 @@ export default function StoreDashboardScreen({
 
         <MyItemsHeader onAddPress={handleAddButton} />
       </TopContainer>
-    
-      <ReactNative.ScrollView
-        contentContainerStyle={styles.foodListScroll}
-      >
-        <MyItemsItem 
-          title="Lime"
-          expiry="Dec 31"
-          quantity="6"
-          price="$0.39"
-          bgColour="#DFEFB9"
-          removeBtnPress={removeItemBtnPress}
-        />
-        <MyItemsItem 
-          title="Peach"
-          expiry="Nov 31"
-          quantity="12"
-          price="$0.89"
-          bgColour="pink"
-          removeBtnPress={removeItemBtnPress}
-        />
-        <MyItemsItem 
-          title="Banana"
-          expiry="Oct 31"
-          quantity="30"
-          price="$1.29"
-          bgColour="yellow"
-          removeBtnPress={removeItemBtnPress}
-        />
-        <MyItemsItem />
-        <MyItemsItem />
+
+      <ReactNative.ScrollView contentContainerStyle={styles.foodListScroll}>
+        {menu ? (
+          menu.map((item) => (
+            <MyItemsItem
+              key={item.name}
+              title={item.name}
+              item={item}
+              expiry="Dec 31"
+              quantity="6"
+              price="$0.39"
+              bgColour="#DFEFB9"
+              removeBtnPress={removeItemBtnPress}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </ReactNative.ScrollView>
-    {/* </ContainerUI> */}
     </SafeAreaView>
   );
 }
 
 const styles = ReactNative.StyleSheet.create({
-  safeArea:{
+  safeArea: {
     flexGrow: 1,
     backgroundColor: "#FFFFFF",
     width: deviceWidth,
     justifyContent: "center",
     alignItems: "center",
   },
-  foodListScrollNothing:{
+  foodListScrollNothing: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
     width: deviceWidth,
-    height: deviceHeight
+    height: deviceHeight,
   },
-  foodListScroll:{
+  foodListScroll: {
     alignItems: "center",
     backgroundColor: "white",
     width: deviceWidth,
     // minHeight: deviceHeight,
     marginBottom: "-33%",
-    marginTop: "3%"
+    marginTop: "3%",
   },
-  greyBg:{
+  greyBg: {
     minWidth: deviceWidth,
     minHeight: deviceHeight,
   },
@@ -276,7 +261,7 @@ const TopContainer = styled.View`
 `;
 
 const GreyBackground = styled.View`
-  display: ${props=>props.greyDisplay};
+  display: ${(props) => props.greyDisplay};
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
   z-index: 2;

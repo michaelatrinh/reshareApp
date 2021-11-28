@@ -1,3 +1,4 @@
+import ItemCard from "../../comps/Customer/ItemCard";
 import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   StyleSheet,
@@ -13,6 +14,7 @@ import ShopImage from "../../assets/store-img.png";
 //------ comps -------
 import Header from "../../comps/Customer/Header";
 import StoreOrderCard from "../../comps/Customer/StoreOrderCard";
+import ItemSummaryCard from "../../comps/Customer/ItemSummaryCard";
 
 const ScreenUI = styled.View`
   height: 100%;
@@ -106,6 +108,10 @@ export default function Orders({
   Time = "6:00pm",
   Status = "Order Pending",
 }) {
+
+  const {order} = route.params;
+
+  console.log(order)
   return (
     <ScreenUI>
       <Header navigation={navigation} />
@@ -117,7 +123,7 @@ export default function Orders({
       <ContentContainer>
         <ContainerRow>
           <StoreText>
-            {StoreName} - {StoreLocation}
+            {order.name} - {order.location}
           </StoreText>
 
           <ViewStoreButton>
@@ -128,25 +134,25 @@ export default function Orders({
         </ContainerRow>
 
         <StoreDate>
-          {Date} at {Time}
+          Pickup at {order.pickupTime}
         </StoreDate>
 
-        <OrderStatus>{Status}</OrderStatus>
+        <OrderStatus>{order.complete ? 'Order Complete' :  'Order Pending'}</OrderStatus>
 
         {/* ----------- Your Orders ----------- */}
 
         <YourOrderText>Your Order</YourOrderText>
       </ContentContainer>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <StoreOrderCard />
-        <StoreOrderCard />
-        <StoreOrderCard />
+      <ScrollView showsVerticalScrollIndicator={false} style={{width: '90%'}}>
+        {order.cart.map(x => <ItemSummaryCard key={x.name} item={x}/>)}
+        
+  
 
         {/* ----------- Total Items and Price -------- */}
         <Total style={{ marginTop: 10 }}>
-          <Text>6 items</Text>
-          <Text>total $11.22</Text>
+          <Text>{order.cart.length} item{order.cart.length > 1 ? 's' : ''}</Text>
+          <Text>total ${order.total}</Text>
         </Total>
         {/* ---------- End Of items and Price --------- */}
       </ScrollView>

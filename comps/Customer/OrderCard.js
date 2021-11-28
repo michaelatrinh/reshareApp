@@ -5,14 +5,14 @@ import ShopImage from "../../assets/store-img.png";
 import { Image, View, Text, Pressable } from "react-native";
 
 const OrderContainerUI = styled.Pressable`
-  width: 100%;
+  width: 90%;
   height: 100px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: row;
   background-color: white;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  border-radius: 5px;
   margin-bottom: 10px;
 `;
 
@@ -25,18 +25,18 @@ const TextColumn = styled.View`
 `;
 
 const StoreText = styled.Text`
- font-family: "Poppins";
+  font-family: "Poppins";
   font-size: 13px;
   justify-content: flex-start;
-  flex-grow:2 ;
+  flex-grow: 2;
 `;
 
 const ItemsOrderedText = styled.Text`
   font-family: "Poppins";
-  color: #EE9837;
+  color: #ee9837;
   font-size: 13px;
   justify-content: flex-start;
-  flex-grow:2;
+  flex-grow: 2;
 `;
 
 const TextRow = styled.View`
@@ -47,21 +47,18 @@ const TextRow = styled.View`
 `;
 
 const PickUpTime = styled.Text`
-  color: #EE9837;
+  color: #ee9837;
   font-family: "Poppins";
 `;
 
-
-export default function ItemCard({ 
+export default function ItemCard({
   navigation,
-  onPress,
-  
-  Store = "Superstore",
-  Location = "Brentwood",
-  ItemsOrdered = "3 items ordered",
-  Time = "6:00 pm",
+  order,
+  store = "Superstore",
+  location = "Metrotown",
+  itemsOrdered = 3,
+  time = "6:00 pm",
 }) {
-
   // if font doesnt work show nothing
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -71,35 +68,36 @@ export default function ItemCard({
     return null;
   }
 
-    return (
-      <OrderContainerUI 
-      onPress={onPress}
-        // navigation.navigate("Menu", {
-        //   store: v,
-        // });
-      
-      >
-        <Image source={ShopImage} style=
-        {{ 
-          width: 126, 
-          height: 89, 
-          marginLeft: 19, 
-          marginTop: 6,
-          marginRight: 13,
-          marginBottom: 6
-          }} />
+  return (
+    <OrderContainerUI
+      onPress={() => navigation.navigate("Orders Summary", { order: order })}
+    >
+      <Image
+        source={ShopImage}
+        style={{
+          width: 126,
+          height: 95,
+          marginLeft: 2.5,
+          borderBottomRightRadius: 5,
+          borderBottomLeftRadius: 5,
+          borderTopLeftRadius: 5,
+          borderTopRightRadius: 5,
+        }}
+      />
 
-        <TextColumn>
-          <StoreText>{Store} - {Location}</StoreText>
-          <ItemsOrderedText>{ItemsOrdered}</ItemsOrderedText>
+      <TextColumn>
+        <StoreText>
+          {store} - {location}
+        </StoreText>
+        <ItemsOrderedText>
+          {itemsOrdered} Item{itemsOrdered > 1 ? "s" : ""} Ordered
+        </ItemsOrderedText>
 
         <TextRow>
           <Text>Pick up - </Text>
-          <PickUpTime>{Time}</PickUpTime>
+          <PickUpTime>{time}</PickUpTime>
         </TextRow>
-
-        </TextColumn>
-        
-      </OrderContainerUI>
-    );
-  }
+      </TextColumn>
+    </OrderContainerUI>
+  );
+}

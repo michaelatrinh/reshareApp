@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { CartContext } from "../../comps/cart";
 import CartList from "../../comps/Customer/CartList";
+import { Alert } from "react-native";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -113,6 +114,8 @@ export default function Cart({ route, navigation }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
     useContext(CartContext);
 
+  const { store } = route.params;
+
   const removeItem = (name) => {
     console.log(name);
     let updateCart = cart.filter((item) => {
@@ -123,6 +126,14 @@ export default function Cart({ route, navigation }) {
   };
 
   const total = cartTotal.toFixed(2);
+
+  const handleChekout = () => {
+    if(cart.length > 0){
+    navigation.navigate("Schedule", { store: store });
+    } else {
+      Alert.alert("Your cart is empty!")
+    }
+  };
 
   return (
     <>
@@ -153,8 +164,8 @@ export default function Cart({ route, navigation }) {
       <OrderMore onPress={() => navigation.goBack(null)}>
         <OrderMoreText>Order More</OrderMoreText>
       </OrderMore>
-      <Checkout onPress={() => navigation.navigate("Schedule")}>
-        <CheckoutText>PROCEED TO CHECKOUT</CheckoutText>
+      <Checkout onPress={handleChekout}>
+        <CheckoutText>SCHEDULE PICKUP</CheckoutText>
         <Price>
           <PriceText>${total}</PriceText>
         </Price>

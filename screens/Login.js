@@ -21,9 +21,8 @@ const ContainerUI = styled.View`
 `;
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState("juliantmayes@gmail.com");
+  const [email, setEmail] = useState("julianmayes@gmail.com");
   const [password, setPassword] = useState("Hello123!");
-
   const [createEmail, setCreateEmail] = useState("");
   const [createPassword, setCreatePassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

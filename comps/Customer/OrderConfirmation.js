@@ -31,8 +31,12 @@ const Left = styled.Text`
 const Right = styled.Text`
   font-size: 14px;
   font-family: Poppins;
+  width: 150px;
+  text-align: right;
+  margin: 5px 0;
+
 `;
-export default function OrderComfirmation({cartTotal, pickupTime}) {
+export default function OrderComfirmation({cartTotal, pickupTime, store, orderNumber}) {
   return (
     <Main>
       <TextLine>
@@ -45,7 +49,7 @@ export default function OrderComfirmation({cartTotal, pickupTime}) {
         }}
       >
         <Left>Order Number</Left>
-        <Right>#10283</Right>
+        <Right>#{orderNumber}</Right>
       </TextLine>
       <TextLine
         style={{
@@ -72,7 +76,7 @@ export default function OrderComfirmation({cartTotal, pickupTime}) {
         }}
       >
         <Left>Pickup Location</Left>
-        <Right>2102 Barclay St.</Right>
+        <Right>{store.address}</Right>
       </TextLine>
     </Main>
   );

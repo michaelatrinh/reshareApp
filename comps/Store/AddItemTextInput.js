@@ -1,22 +1,22 @@
-import { useLinkProps } from '@react-navigation/native';
-import * as React from 'react';
-import * as ReactNative from 'react-native';
-import styled from 'styled-components/native';
-import { useFonts } from 'expo-font';
+import { useLinkProps } from "@react-navigation/native";
+import * as React from "react";
+import * as ReactNative from "react-native";
+import styled from "styled-components/native";
+import { useFonts } from "expo-font";
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
+var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function TextInput({
-  header="",
-  inputPlaceholder="",
+  header = "",
+  inputPlaceholder = "",
   inputValue,
-}){
+}) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
     PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
     Ubuntu: require("../../assets/fonts/Ubuntu/Ubuntu-Regular.ttf"),
-    UbuntuBold: require("../../assets/fonts/Ubuntu/Ubuntu-Bold.ttf")
+    UbuntuBold: require("../../assets/fonts/Ubuntu/Ubuntu-Bold.ttf"),
   });
 
   if (!loaded) {
@@ -26,10 +26,10 @@ export default function TextInput({
   return (
     <ReactNative.View style={styles.container}>
       <ReactNative.View style={styles.headerContainer}>
-        <ReactNative.Text style={styles.header}>{header}</ReactNative.Text>        
+        <ReactNative.Text style={styles.header}>{header}</ReactNative.Text>
       </ReactNative.View>
 
-      <ReactNative.TextInput 
+      <ReactNative.TextInput
         style={styles.input}
         placeholder={inputPlaceholder}
         value={inputValue}
@@ -39,22 +39,23 @@ export default function TextInput({
 }
 
 const styles = ReactNative.StyleSheet.create({
-  container:{
+  container: {
     width: "100%",
     height: 72,
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 25,
   },
-  headerContainer:{
+  headerContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     width: "90%",
   },
-  header:{
+  header: {
     fontFamily: "UbuntuBold",
     fontSize: 12,
   },
-  input:{
+  input: {
     width: "90%",
     height: 49,
     padding: 10,
@@ -65,4 +66,4 @@ const styles = ReactNative.StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 14,
   },
-})
+});

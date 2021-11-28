@@ -1,31 +1,20 @@
-import * as React from 'react';
-import * as ReactNative from 'react-native';
-import styled from 'styled-components/native';
+import * as React from "react";
+import { Image, Dimensions } from "react-native";
+import styled from "styled-components/native";
+import lime from "../../assets/icon.png";
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
-
-export default function Picture({
-
-}){
+export default function Picture({ photoUri }) {
+  console.log(photoUri + "uri is passed");
   return (
-    <ReactNative.View style={styles.container}>
-      <ReactNative.Image style={styles.img} />
-    </ReactNative.View>
+    <>
+      {photoUri ? (
+        <Image
+          style={{ width: "90%", height: 400 }}
+          source={{ uri: photoUri }}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
-
-const styles = ReactNative.StyleSheet.create({
-  container:{
-    height: undefined,
-    width: deviceWidth * 0.9,
-    aspectRatio: 1/1,
-
-    backgroundColor: "black",
-  },
-  img:{
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
-  },
-})

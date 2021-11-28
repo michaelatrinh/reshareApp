@@ -11,6 +11,7 @@ const StoreContainerUI = styled.View`
   border-radius: 5px;
   margin: 10px 15px 0 0;
   padding: 2px;
+  width: 220px;
 
 `;
 
@@ -30,7 +31,7 @@ export default function SkeletonCardSmall({}) {
   
   return (
     <StoreContainerUI>
-      <StoreImageUI style={{ width: 171, height: 78, borderRadius: 5}} />
+      <StoreImageUI style={{ width: '100%', height: 78, borderRadius: 5}} />
       <StoreDetailsUI></StoreDetailsUI>
     </StoreContainerUI>
   );
