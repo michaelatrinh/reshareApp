@@ -19,6 +19,8 @@ const Order = styled.View`
 const OrderId = styled.Text`
   color: #7e7e7e;
   font-size: 11px;
+  width: 45px;
+  background-color: aliceblue;
 `;
 
 const Time = styled.View`
@@ -51,17 +53,21 @@ const OrderStatus = styled.Text`
 `;
 
 export default function OrderDetailItems({
+
   orderId = "#10284",
   pickUpTime = "7:30pm oct 5th",
   orderStatus = "waiting",
   bgcolor = "#FFF7B2",
   txtcolor = "#986D00",
   onPress,
+  order
 }) {
+
+
   return (
     <ContainerUI onPress={onPress}>
       <Order>
-        <OrderId>{orderId}</OrderId>
+        <OrderId>{order.number}</OrderId>
       </Order>
       <Time>
         <PickUpTime>{pickUpTime}</PickUpTime>

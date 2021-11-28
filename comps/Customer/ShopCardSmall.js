@@ -14,6 +14,7 @@ const StoreContainerUI = styled.TouchableHighlight`
   border-radius: 5px;
   margin: 10px 15px 0 0;
   padding: 2px;
+  width: 220px;
 `;
 
 const StoreDetailsUI = styled.Text`
@@ -28,6 +29,9 @@ export default function ShopCardSmall({
   imagesLoaded,
   v,
 }) {
+
+  const name = v.username + ' - ' + v.location;
+
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
   });
@@ -54,10 +58,10 @@ export default function ShopCardSmall({
         <Image
           onLoad={handleImageLoad}
           source={shopImage}
-          style={{ width: 171, height: 78, borderRadius: 5 }}
+          style={{ width: '100%', height: 78, borderRadius: 5 }}
         />
         <StoreDetailsUI>
-          {v.username} -{v.location}
+          {name.substring(0, 25)}
         </StoreDetailsUI>
       </>
     </StoreContainerUI>

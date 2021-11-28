@@ -8,115 +8,59 @@ import Header from "../../comps/Customer/Header";
 
 import { initializeApp } from "@firebase/app";
 
-import { getDatabase, ref, onValue, set } from "@firebase/database";
-import {
-  getAuth,
-  onAuthStateChanged,
-  FacebookAuthProvider,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  produce, //may cause errors -Michael
-} from "firebase/auth";
+import { AuthContext } from "../../comps/auth";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
+
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 
-//compontents
-import Greeting from "../../comps/Greeting";
-
 export default function StoreDashboardScreen({ navigation }) {
-  // //display states
-  // const [displayName, setDisplayName] = useState("");
-  // const [displayLocation, setDisplayLocation] = useState("");
-  // const [displayType, setDisplayType] = useState("");
-  // const [displayStores, setDisplayStores] = useState("");
+  const currentUser = useContext(AuthContext);
+  const uid = currentUser.currentUser.uid;
 
-  // //input states
-  // const [inputName, setInputName] = useState("");
-  // const [inputLocation, setInputLocation] = useState("");
+  const [orders, setOrders] = useState([]);
 
-  // const [navLocation, setNavLocation] = useState("home");
+  useEffect(() => {
+    readUserData();
+  }, []);
 
-  // //get current user from auth context
-  // const { currentUser } = useContext(AuthContext);
+  function readUserData() {
+    const menuRef = ref(db, "orders/");
 
-  // //read user data on mount
-  // useEffect(() => {
-  //   readUserData(currentUser.uid);
-  // }, []);
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
 
-  // //firebase read user data (name, location, type)
-  // function readUserData(userId) {
-  //   const nameRef = ref(db, "users/" + userId + "/username");
-  //   const locationRef = ref(db, "users/" + userId + "/location");
-  //   const typeRef = ref(db, "users/" + userId + "/type");
-  //   const storesRef = ref(db, "stores/");
+      Object.keys(data).forEach(function (key) {
+/*         console.log("fuck");
+        console.log(data[key].order.filter((x) => x.store === uid)); */
 
-  //   onValue(nameRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setDisplayName(data);
-  //   });
+        setOrders(data[key].order.filter((x) => x.store === uid));
+      });
+    });
+  }
 
-  //   onValue(locationRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setDisplayLocation(data);
-  //   });
+  console.log(orders);
 
-  //   onValue(typeRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setDisplayType(data);
-  //   });
-
-  //   onValue(storesRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     setDisplayStores(data);
-  //   });
-  // }
-
-  // //firebase update user data (name, location, type)
-  // const handleUpdateInfo = () => {
-  //   update(ref(db, "users/" + uid), {
-  //     email: email,
-  //     location: inputLocation,
-  //     username: inputName,
-  //   });
-  // };
-
-  // console.log(displayStores);
-  // console.log(currentUser.uid);
-
-  // PUT PAGE FRONT END CODE BELOW WITHIN "RETURN"
   return (
     <ScreenUI>
+      <Header navigation={navigation} />
 
-      <Header navigation={navigation}/>
+      <ContainerUI>
+        <TitleCont>
+          <TitleUI>Order Details</TitleUI>
+        </TitleCont>
 
-    <ContainerUI>
-
-      <TitleCont>
-        <TitleUI>Order Details</TitleUI>
-      </TitleCont>
-
-      <Table>
-
-        <TableTitle>
-          <Text>Order ID</Text>
-          <Text>Pickup Time</Text>
-          <Text>Order Status</Text>
-        </TableTitle>
-
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-        <OrderDetailItems onPress={() => navigation.navigate("Order Page")}></OrderDetailItems>
-
-      </Table>
-
-    </ContainerUI>
+        <Table>
+          <TableTitle>
+            <Text>Order ID</Text>
+            <Text>Pickup Time</Text>
+            <Text>Order Status</Text>
+          </TableTitle>
+          {orders.map((order) => (
+            <OrderDetailItems key={order.number} order={order} />
+          ))}
+        </Table>
+      </ContainerUI>
     </ScreenUI>
   );
 }
@@ -124,7 +68,6 @@ export default function StoreDashboardScreen({ navigation }) {
 const ScreenUI = styled.View`
   height: 100%;
   background-color: white;
-  
 `;
 
 const ContainerUI = styled.View`
@@ -147,9 +90,7 @@ const TitleCont = styled.View`
   display: flex;
 `;
 
-const Table = styled.View`
-
-`;
+const Table = styled.View``;
 
 const TableTitle = styled.View`
   width: 100%;

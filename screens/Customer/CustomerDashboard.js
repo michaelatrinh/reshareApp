@@ -22,6 +22,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Greeting from "../../comps/Greeting";
 import ShopSlider from "../../comps/Customer/ShopSlider";
 import Header from "../../comps/Customer/Header";
+import { LocationContext } from "../../comps/location";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +61,8 @@ export default function CustomerDashboard({ route, navigation }) {
 
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
+
+  const { currentAddress, lng, lat } = useContext(LocationContext);
 
   //read user data on mount
   useEffect(() => {
@@ -103,9 +106,6 @@ export default function CustomerDashboard({ route, navigation }) {
     });
   };
 
-  console.log(displayStores);
-  console.log(currentUser.uid);
-
   return (
     <>
       <Header navigation={navigation} back={false} />
@@ -114,6 +114,7 @@ export default function CustomerDashboard({ route, navigation }) {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "white",
+          height: '100%'
         }}
       >
         <ContainerUI>
@@ -124,7 +125,7 @@ export default function CustomerDashboard({ route, navigation }) {
               navigation.navigate("Map");
             }}
           >
-            <UserDetailsUI>Your Location: {displayLocation}</UserDetailsUI>
+            <UserDetailsUI>Your Location: {currentAddress}</UserDetailsUI>
           </MapButtonUI>
 
           <ShopSlider

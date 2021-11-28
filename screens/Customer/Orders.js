@@ -2,6 +2,11 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import Header from "../../comps/Customer/Header";
+import { AuthContext } from "../../comps/auth";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
+
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
 
 //------ comps -------
 import OrderCard from "../../comps/Customer/OrderCard";
@@ -18,55 +23,69 @@ const ContainerUI = styled.View`
   background-color: #fff;
   width: 100%;
   height: 100%;
+  margin-left: 5%;
 `;
 
 const OrderCardContainer = styled.View`
-  padding: 10px;
+
+display: flex;
 `;
 
-const OrdersUI = styled.Text`
-  margin: 0 0 10px 10px;
+const HeaderUI = styled.Text`
   font-family: "Poppins";
   font-size: 22px;
   justify-content: flex-start;
+  margin: 20px 0 10px 0;
 `;
-
-const PastOrdersUI = styled.Text`
-  margin: 50px 0 10px 10px;
-  font-family: "Poppins";
-  font-size: 22px;
-  justify-content: flex-start;
-`;
-
-
 
 export default function Orders({ route, navigation }) {
+  const [currentOrders, setCurrentOrders] = useState(null);
+  const [pastOrders, setPastOrders] = useState(null);
+
+  const currentUser = useContext(AuthContext);
+  const uid = currentUser.currentUser.uid;
+
+  useEffect(() => {
+    readUserData();
+  }, []);
+
+  function readUserData() {
+    const menuRef = ref(db, "orders/" + uid);
+
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
+
+      const completeOrders = data.order.filter((x) => x.complete === true);
+      const currentOrders = data.order.filter((x) => x.complete === false);
+
   
+      setCurrentOrders(currentOrders);
+      setPastOrders(completeOrders);
+
+      console.log(currentOrders)
+    });
+  }
 
   return (
     <ScreenUI>
-      <Header navigation={navigation}/>
-      
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <ContainerUI>
+      <Header navigation={navigation} />
 
-        <OrdersUI>Current Orders</OrdersUI>
+      <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
+        <ContainerUI>
+          <HeaderUI>Current Orders</HeaderUI>
 
-        <OrderCardContainer>
-          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-        </OrderCardContainer>
-          
-        <PastOrdersUI>Past Orders</PastOrdersUI>
+          <OrderCardContainer>
+            {currentOrders &&
+              currentOrders.map((order) => <OrderCard key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>)}
+          </OrderCardContainer>
 
-        <OrderCardContainer>
-          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-          <OrderCard onPress={() => navigation.navigate("Orders Summary")}/>
-        </OrderCardContainer>
+          <HeaderUI>Past Orders</HeaderUI>
 
-
-      </ContainerUI>
+          <OrderCardContainer>
+            {pastOrders &&
+              pastOrders.map((x) => <OrderCard  key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>)}
+          </OrderCardContainer>
+        </ContainerUI>
       </ScrollView>
     </ScreenUI>
   );

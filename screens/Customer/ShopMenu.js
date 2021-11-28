@@ -10,6 +10,10 @@ import { CartContext } from "../../comps/cart";
 import CartButton from "../../comps/Customer/CartButton";
 import Header from "../../comps/Customer/Header";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { LocationContext } from "../../comps/location";
+import Geocode from "react-geocode";
+import axios from "axios";
+import getDistance from "../../comps/getDistance";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -72,6 +76,50 @@ export default function ShopMenu({ route, navigation }) {
     }
   };
 
+  const { currentAddress, curLng, curLat } = useContext(LocationContext);
+
+  const [lng, setLong] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [distance, setDistance] = useState(null);
+
+  // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+  Geocode.setApiKey("AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY");
+
+  // set response language. Defaults to english.
+  Geocode.setLanguage("en");
+
+  // Get latitude & longitude from address.
+  Geocode.fromAddress(store.address).then(
+    (response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      setLong(lng);
+      setLat(lat);
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+
+  console.log(lng);
+  console.log(lat);
+
+  var config = {
+    method: "get",
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${lat}%2C${lng}&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`,
+    headers: {},
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(response.data.rows[0].elements[0].distance.text);
+
+      const distance = response.data.rows[0].elements[0].distance.text;
+      setDistance(distance);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   return (
     <>
       <ScreenUI>
@@ -84,7 +132,7 @@ export default function ShopMenu({ route, navigation }) {
           <TitleUI>
             {store.username} - {store.location}
           </TitleUI>
-          <DetailsUI>0.5km</DetailsUI>
+          <DetailsUI>{distance}</DetailsUI>
           <MenuFilter selection={selection} setSelection={setSelection} />
 
           <FilterTextUI>{selection}</FilterTextUI>
@@ -105,7 +153,7 @@ export default function ShopMenu({ route, navigation }) {
         </ContainerUI>
       </ScreenUI>
 
-      <CartButton navigation={navigation} />
+      <CartButton navigation={navigation} store={store} />
     </>
   );
 }

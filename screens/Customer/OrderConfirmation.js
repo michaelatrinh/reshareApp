@@ -12,6 +12,10 @@ import { CartContext } from "../../comps/cart";
 import Header from "../../comps/Customer/Header";
 import OrderComfirmation from "../../comps/Customer/OrderConfirmation";
 import Map from "../../assets/map.png";
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
+import { AuthContext } from "../../comps/auth";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -58,7 +62,7 @@ const MapCont = styled.Image`
   margin: 10% 0;
 `;
 export default function OrderConfirmation({ route, navigation }) {
-  const { cartTotal, pickupTime } = route.params;
+  const { cart, cartTotal, pickupTime, store, orderNumber } = route.params;
 
   return (
     <>
@@ -66,7 +70,12 @@ export default function OrderConfirmation({ route, navigation }) {
         <Header navigation={navigation} />
         <ContainerUI>
           <TitleUI>Thank you! Your order has successfully been placed.</TitleUI>
-          <OrderComfirmation cartTotal={cartTotal} pickupTime={pickupTime}/>
+          <OrderComfirmation
+            cartTotal={cartTotal}
+            pickupTime={pickupTime}
+            store={store}
+            orderNumber={orderNumber}
+          />
 
           <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont>
         </ContainerUI>

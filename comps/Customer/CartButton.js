@@ -30,7 +30,7 @@ const CartCountUI = styled.Text`
   left: 14px;
 `;
 
-export default function CartButton({ navigation }) {
+export default function CartButton({ navigation, store }) {
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart, cartCount } =
     useContext(CartContext);
 
@@ -40,7 +40,7 @@ export default function CartButton({ navigation }) {
   return (
     <AddToCartUI
       onPress={() => {
-        navigation.navigate("Cart");
+        navigation.navigate("Cart", {store: store});
       }}
     >
       <CartCountUI>{cartCount} Items</CartCountUI>
