@@ -24,14 +24,12 @@ import { auth } from "../../config/firebase";
 import PhoneCamera from "../../comps/Store/Camera";
 
 export default function AddItemsCamera({ navigation }) {
-  const snapPic = () => {
-    // takePictureAsync()
-    navigation.navigate("Add Item Details");
-  };
-
   return (
-    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
-      <PhoneCamera navigation={navigation} takePic={snapPic} />
+    <SafeAreaView 
+      style={styles.safeArea} 
+      edges={["left", "right"]} >
+      <PhoneCamera 
+        navigation={navigation} />
     </SafeAreaView>
   );
 }

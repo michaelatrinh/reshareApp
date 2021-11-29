@@ -4,12 +4,13 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import DropDownPicker from 'react-native-dropdown-picker';
 
+import { storage, getStorage, uploadBytes } from "firebase/storage";
+
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
-import { getStorage } from "firebase/storage";
 
 //components
 import Picture from "../../comps/Store/AddItemPicture";
@@ -49,11 +50,15 @@ export default function AddItemsDetails({ navigation, route }) {
   }, []);
 
   const [dateValue, setDateValue] = useState(null);
-  // value is in format YYYYMMDD
+  // value is in format MMDDYYYY
   const [dates, setDates] = useState([
-    { label: 'December 3, 2021', value: '20211203' },
-    { label: 'December 4, 2021', value: '20211204' },
-    { label: 'December 5, 2021', value: '20211205' },
+    { label: 'December 3, 2021', value: '12/03/2021' },
+    { label: 'December 4, 2021', value: '12/04/2021' },
+    { label: 'December 5, 2021', value: '12/05/2021' },
+    { label: 'December 6, 2021', value: '12/06/2021' },
+    { label: 'December 7, 2021', value: '12/07/2021' },
+    { label: 'December 8, 2021', value: '12/08/2021' },
+    { label: 'December 9, 2021', value: '12/09/2021' },
   ]);  
   const [categoryValue, setCategoryValue] = useState(null);
   const [categories, setCategories] = useState([
@@ -107,6 +112,24 @@ export default function AddItemsDetails({ navigation, route }) {
     return null;
   }
 
+  const uploadImage = async () => {
+    // const { uri } = {photoUri};
+    const filename = photoUri.substring(photoUri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : uri;
+
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri)
+
+    try {
+      await task;
+      addItem;
+    } catch (e) {
+      console.log(e);
+    }
+    
+  };
+
   const addItem = () => {
     //menu reset//
     /* update(ref(db, "stores/" + uid ), {
@@ -132,8 +155,8 @@ export default function AddItemsDetails({ navigation, route }) {
         expiry: dateValue,
         img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
         name: itemName,
-        price: itemDiscPrice,
-        priceog: itemOrigPrice,
+        price: "$" + itemDiscPrice,
+        priceog: "$" + itemOrigPrice,
         quantity: itemQuantity,
         type: categoryValue,
         weight: "1PC (100g - 120g)",
@@ -170,7 +193,7 @@ export default function AddItemsDetails({ navigation, route }) {
           <ReactNative.TextInput
             style={styles.textInput}
             placeholder="Type title"
-            value={setItemName} />
+            onChangeText={itemName => setItemName(itemName)} />
         </ReactNative.View>
 
         {/* Category Section */}
@@ -195,8 +218,11 @@ export default function AddItemsDetails({ navigation, route }) {
             setValue={setCategoryValue}
             setItems={setCategories}
             placeholder="Select a produce category"
-            textStyle={{
+            placeholderStyle={{
               color: "#C7C7CD"
+            }}
+            textStyle={{
+              color: "black"
             }}
             listItemLabelStyle={{
               color: "black"
@@ -204,7 +230,7 @@ export default function AddItemsDetails({ navigation, route }) {
             selectedItemLabelStyle={{
               color: "black"
             }}
-            zIndex={2} />
+            zIndex={3} />
         </ReactNative.View>
 
         {/* Expiry Section */}
@@ -229,8 +255,11 @@ export default function AddItemsDetails({ navigation, route }) {
             setValue={setDateValue}
             setItems={setDates}
             placeholder="Select an expiry date"
-            textStyle={{
+            placeholderStyle={{
               color: "#C7C7CD"
+            }}
+            textStyle={{
+              color: "black"
             }}
             listItemLabelStyle={{
               color: "black"
@@ -255,7 +284,7 @@ export default function AddItemsDetails({ navigation, route }) {
           <ReactNative.TextInput
             style={styles.textInput}
             placeholder="Type quantity"
-            value={setItemQuantity} />
+            onChangeText={itemQuantity => setItemQuantity(itemQuantity)} />
         </ReactNative.View>
 
         {/* Price Section */}
@@ -276,7 +305,7 @@ export default function AddItemsDetails({ navigation, route }) {
             <ReactNative.TextInput
               style={styles.priceTextInput}
               placeholder="Enter original price"
-              value={setItemOrigPrice} />
+              onChangeText={itemOrigPrice => setItemOrigPrice(itemOrigPrice)} />
           </ReactNative.View>
 
           {/* Discounted Price Input */}
@@ -293,7 +322,7 @@ export default function AddItemsDetails({ navigation, route }) {
             <ReactNative.TextInput
               style={styles.priceTextInput}
               placeholder="Enter discounted price"
-              value={setItemDiscPrice} />
+              onChangeText={itemDiscPrice => setItemDiscPrice(itemDiscPrice)} />
           </ReactNative.View>
         </ReactNative.View>
 
@@ -311,7 +340,9 @@ export default function AddItemsDetails({ navigation, route }) {
           <ReactNative.TextInput
             style={styles.descTextInput}
             placeholder="Enter description"
-            value={setItemDescription}
+            onChangeText={itemDescription => setItemDescription(itemDescription)}
+            // defaultValue={itemDescription}
+            // value={setItemDescription}
             multiline={true} />
         </ReactNative.View>
 
@@ -325,7 +356,8 @@ export default function AddItemsDetails({ navigation, route }) {
           style={styles.postBtnMainContainer} >
           <ReactNative.TouchableOpacity
             style={styles.postBtn}
-            onPress={()=>addItem()} >
+            // onPress={()=>addItem()} 
+            onPress={()=>uploadImage()} >
             <ReactNative.Text 
               style={styles.textInputHeader} >
                 POST
