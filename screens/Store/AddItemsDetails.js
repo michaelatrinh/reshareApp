@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext, useCallback } from "react";
 import * as ReactNative from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
+import DropDownPicker from 'react-native-dropdown-picker';
+
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 
@@ -31,6 +33,36 @@ export default function AddItemsDetails({ navigation, route }) {
   const [itemQuantity, setItemQuantity] = React.useState(10);
   const [itemOrigPrice, setItemOrigPrice] = React.useState(10);
   const [itemDiscPrice, setItemDiscPrice] = React.useState(10);
+
+  // dropdown picker states
+  const [categoryOpen, setCategoryOpen] = React.useState(false);
+  const [expiryOpen, setExpiryOpen] = React.useState(false);
+
+  //close other drop down pickers if one is clicked open
+  const onCategoryOpen = useCallback(() => {
+    // setCategoryOpen(!categoryOpen);
+    setExpiryOpen(false);
+  }, []);
+  const onExpiryOpen = useCallback(() => {
+    // setExpiryOpen(true);
+    setCategoryOpen(false);
+  }, []);
+
+  const [dateValue, setDateValue] = useState(null);
+  // value is in format YYYYMMDD
+  const [dates, setDates] = useState([
+    { label: 'December 3, 2021', value: '20211203' },
+    { label: 'December 4, 2021', value: '20211204' },
+    { label: 'December 5, 2021', value: '20211205' },
+  ]);  
+  const [categoryValue, setCategoryValue] = useState(null);
+  const [categories, setCategories] = useState([
+    { label: 'Fruits', value: 'Fruit' },
+    { label: 'Vegetables', value: 'Vegetable' },
+    { label: 'Dairy', value: 'Dairy' },
+    { label: 'Grains', value: 'Grains' },
+    { label: 'Canned', value: 'Canned' },
+  ]);
 
   const [menu, setMenu] = useState(null);
 
@@ -63,6 +95,7 @@ export default function AddItemsDetails({ navigation, route }) {
     });
   };
 
+  //fonts
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
     PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -96,13 +129,13 @@ export default function AddItemsDetails({ navigation, route }) {
       ...menu,
       {
         description: itemDescription,
-        expiry: "11/17/2021",
+        expiry: dateValue,
         img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
         name: itemName,
         price: itemDiscPrice,
         priceog: itemOrigPrice,
         quantity: itemQuantity,
-        type: "fruits",
+        type: categoryValue,
         weight: "1PC (100g - 120g)",
       },
     ]);
@@ -140,6 +173,40 @@ export default function AddItemsDetails({ navigation, route }) {
             value={setItemName} />
         </ReactNative.View>
 
+        {/* Category Section */}
+        <ReactNative.View
+          style={styles.textInputMainContainer} >
+            <ReactNative.View
+              style={styles.textInputHeaderContainer} >
+              <ReactNative.Text
+                style={styles.textInputHeader} >
+                  CATEGORY
+              </ReactNative.Text>
+            </ReactNative.View>
+
+          <DropDownPicker
+            style={styles.dropDown}
+            containerStyle={styles.dropDownContainer}
+            open={categoryOpen}
+            value={categoryValue}
+            items={categories}
+            setOpen={setCategoryOpen}
+            onOpen={onCategoryOpen}
+            setValue={setCategoryValue}
+            setItems={setCategories}
+            placeholder="Select a produce category"
+            textStyle={{
+              color: "#C7C7CD"
+            }}
+            listItemLabelStyle={{
+              color: "black"
+            }}
+            selectedItemLabelStyle={{
+              color: "black"
+            }}
+            zIndex={2} />
+        </ReactNative.View>
+
         {/* Expiry Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
@@ -150,11 +217,28 @@ export default function AddItemsDetails({ navigation, route }) {
                 EXPIRY
             </ReactNative.Text>
           </ReactNative.View>
-
-          <ReactNative.TextInput
-            style={styles.textInput}
-            placeholder="Type expiry date"
-            value={setItemExpiry} />
+          
+          <DropDownPicker
+            style={styles.dropDown}
+            containerStyle={styles.dropDownContainer}
+            open={expiryOpen}
+            value={dateValue}
+            items={dates}
+            setOpen={setExpiryOpen}
+            onOpen={onExpiryOpen}
+            setValue={setDateValue}
+            setItems={setDates}
+            placeholder="Select an expiry date"
+            textStyle={{
+              color: "#C7C7CD"
+            }}
+            listItemLabelStyle={{
+              color: "black"
+            }}
+            selectedItemLabelStyle={{
+              color: "black"
+            }}
+            zIndex={2} />
         </ReactNative.View>
 
         {/* Quantity section */}
@@ -286,6 +370,7 @@ const styles = ReactNative.StyleSheet.create({
   textInputMainContainer: {
     width: "100%",
     height: 72,
+    maxHeight: 72,
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 25,
@@ -302,6 +387,7 @@ const styles = ReactNative.StyleSheet.create({
   textInput: {
     width: "90%",
     height: 49,
+    maxHeight: 49,
     padding: 10,
     borderRadius: 8,
     backgroundColor: "#FFFFFF",
@@ -380,5 +466,29 @@ const styles = ReactNative.StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  //drop down picker
+  dropDownContainer: {
+    width: "90%",
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+    color: "#C7C7CD",
+    zIndex: 2,
+  },
+  dropDown: {
+    width: "100%",
+    height: 49,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+    color: "#C7C7CD"
   },
 });
