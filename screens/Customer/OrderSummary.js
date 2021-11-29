@@ -15,6 +15,10 @@ import ShopImage from "../../assets/store-img.png";
 import Header from "../../comps/Customer/Header";
 import StoreOrderCard from "../../comps/Customer/StoreOrderCard";
 import ItemSummaryCard from "../../comps/Customer/ItemSummaryCard";
+import { AuthContext } from "../../comps/auth";
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
 
 const ScreenUI = styled.View`
   height: 100%;
@@ -110,6 +114,34 @@ export default function Orders({
 }) {
 
   const {order} = route.params;
+
+  const [curOrder, setCurOrder] = useState([]);
+
+  const currentUser = useContext(AuthContext);
+  const uid = currentUser.currentUser.uid;
+
+  useEffect(() => {
+    readUserData(uid);
+  }, []);
+
+  //firebase read user data (name, location, type)
+  function readUserData(userId) {
+    const menuRef = ref(db, "orders/" + userId);
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data){
+        console.log(data.order.filter(x => x.number === order.number)[0].complete)
+      }
+    });
+  }
+
+
+  const handleUpdateInfo = () => {
+    update(ref(db, "orders/" + userId), {
+      order: updateOrder,
+    });
+  };
+
 
   console.log(order)
   return (

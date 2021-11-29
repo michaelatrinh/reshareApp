@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components/native";
 import { CartContext } from "../cart";
 import { Feather } from "@expo/vector-icons";
-import lime from "../../assets/lime.png";
+import lime from "../../assets/Login/login_apple.png";
 import { Image, Pressable, Text } from "react-native";
+import SignoutButton from "../SignoutButton";
 
 const ProfileDropdownUI = styled.View`
   display: flex;
@@ -12,7 +13,7 @@ const ProfileDropdownUI = styled.View`
   align-items: center;
   flex-direction: column;
   padding: 20% 0;
-  height: 50%;
+
   position: absolute;
   width: 100%;
   top: 0;
@@ -158,6 +159,8 @@ export default function ProfileDropdown({ setShowProfile }) {
             <EditTextUI>edit</EditTextUI>
           </EditUI>
         </RowUI>
+
+        <SignoutButton/>
       </ProfileDropdownUI>
     </>
   );
