@@ -230,6 +230,9 @@ export default function AddItemsDetails({ navigation, route }) {
             selectedItemLabelStyle={{
               color: "black"
             }}
+            dropDownContainerStyle={{
+              zIndex: 3,
+            }}
             zIndex={3} />
         </ReactNative.View>
 
@@ -422,6 +425,8 @@ const styles = ReactNative.StyleSheet.create({
     maxHeight: 49,
     padding: 10,
     borderRadius: 8,
+    borderColor: "black",
+    borderWidth: 1,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000000",
     shadowOpacity: 0.1,
@@ -440,6 +445,7 @@ const styles = ReactNative.StyleSheet.create({
   },
   priceContainer: {
     flexGrow: 1,
+    minWidth: "50%",
     height: 72,
     flexDirection: "column",
     justifyContent: "space-between",
@@ -455,6 +461,8 @@ const styles = ReactNative.StyleSheet.create({
     height: 49,
     padding: 10,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "black",
     backgroundColor: "#FFFFFF",
     shadowColor: "#000000",
     shadowOpacity: 0.1,
@@ -475,6 +483,8 @@ const styles = ReactNative.StyleSheet.create({
     height: 74,
     padding: 10,
     borderRadius: 8,
+    borderColor: "black",
+    borderWidth: 1,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000000",
     shadowOpacity: 0.1,
