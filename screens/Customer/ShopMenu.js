@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import styled from "styled-components/native";
 import ItemCard from "../../comps/Customer/ItemCard";
 import shopImage from "../../assets/store-img.png";
@@ -14,11 +21,21 @@ import { LocationContext } from "../../comps/location";
 import Geocode from "react-geocode";
 import axios from "axios";
 import getDistance from "../../comps/getDistance";
+import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { AuthContext } from "../../comps/auth";
+import { getDatabase, ref, onValue, set, update } from "firebase/database";
+
+import { db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { getStorage } from "firebase/storage";
 
 const ScreenUI = styled.View`
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   background-color: #fff;
+  min-height: 100%;
+  width: 100%;
 `;
 
 const ContainerUI = styled.View`
@@ -27,6 +44,8 @@ const ContainerUI = styled.View`
   justify-content: flex-start;
   width: 90%;
   min-height: 100%;
+  position: relative;
+  margin: 0 0 200px 0;
 `;
 
 const TitleUI = styled.Text`
@@ -44,11 +63,27 @@ const FilterTextUI = styled.Text`
 `;
 
 const DetailsUI = styled.Text`
-  margin: 0 0 10px 0;
   font-size: 14px;
 `;
 
-let stripePromise;
+const ImageContainerUI = styled.View`
+  height: 140px;
+  border-radius: 15px;
+`;
+
+const ImageUI = styled.Image`
+  height: 140px;
+  border-radius: 15px;
+`;
+
+const RowUI = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+`;
+
+/* let stripePromise;
 
 const getStripe = () => {
   if (!stripePromise) {
@@ -57,7 +92,7 @@ const getStripe = () => {
     );
   }
   return stripePromise;
-};
+}; */
 
 export default function ShopMenu({ route, navigation }) {
   const { store } = route.params;
@@ -100,9 +135,9 @@ export default function ShopMenu({ route, navigation }) {
     }
   );
 
-  console.log(lng);
+  /*   console.log(lng);
   console.log(lat);
-
+ */
   var config = {
     method: "get",
     url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${lat}%2C${lng}&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`,
@@ -111,7 +146,7 @@ export default function ShopMenu({ route, navigation }) {
 
   axios(config)
     .then(function (response) {
-      console.log(response.data.rows[0].elements[0].distance.text);
+      /*       console.log(response.data.rows[0].elements[0].distance.text); */
 
       const distance = response.data.rows[0].elements[0].distance.text;
       setDistance(distance);
@@ -120,40 +155,128 @@ export default function ShopMenu({ route, navigation }) {
       console.log(error);
     });
 
+  const win = Dimensions.get("window");
+
+/*   const currentUser = useContext(AuthContext);
+  const uid = currentUser.currentUser.uid;
+
+  const [savedStores, setSavedStores] = useState(null);
+
+  //firebase read user data (name, location, type)
+  function readUserData(userId) {
+    const menuRef = ref(db, "users/" + userId + "/favorite");
+
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSavedStores(data);
+        console.log(data);
+      } else {
+        update(ref(db, "users/" + uid + "/favorite"), {
+          stores: [store.uid],
+        });
+      }
+    });
+  }
+
+  //read user data on mount
+  useEffect(() => {
+    readUserData(uid);
+  }, []); */
+
+  const [saved, setSaved] = useState(false);
+
+  const saveStore = () => {
+    setSaved(!saved);
+/*     console.log(savedStores.stores.filter(x => x === store.uid)) */
+    
+  };
+
+
+
   return (
     <>
       <ScreenUI>
         <Header navigation={navigation} />
-        <ContainerUI>
-          <Image
-            source={shopImage}
-            style={{ width: "100%", height: 180, borderRadius: 15 }}
-          />
-          <TitleUI>
-            {store.username} - {store.location}
-          </TitleUI>
-          <DetailsUI>{distance}</DetailsUI>
-          <MenuFilter selection={selection} setSelection={setSelection} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: "center",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            backgroundColor: "white",
+            width: "100%",
+          }}
+        >
+          <ContainerUI>
+            <ImageContainerUI>
+              <ImageUI
+                source={{uri: store.img}}
+                resizeMode={"cover"}
+                style={{ width: win.width * 0.9 }}
+              />
+            </ImageContainerUI>
 
-          <FilterTextUI>{selection}</FilterTextUI>
+            <TitleUI>
+              {store.username} - {store.location}
+            </TitleUI>
 
-          <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              justifyContent: "flex-start",
-              backgroundColor: "white",
-              width: "100%",
-            }}
-          >
-            {store.menu &&
-              filterMenu(store.menu).map((item) => (
-                <ItemCard key={item.name} item={item} navigation={navigation} />
-              ))}
-          </ScrollView>
-        </ContainerUI>
+            <RowUI style={{ width: win.width * 0.9 }}>
+              <DetailsUI>{distance}</DetailsUI>
+              <Pressable
+                onPress={saveStore}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <DetailsUI>Save Store</DetailsUI>
+                {saved ? (
+                  <AntDesign
+                    style={{ marginLeft: 10 }}
+                    name="heart"
+                    size={24}
+                    color="black"
+                  />
+                ) : (
+                  <AntDesign
+                    style={{ marginLeft: 10 }}
+                    name="hearto"
+                    size={24}
+                    color="black"
+                  />
+                )}
+              </Pressable>
+            </RowUI>
+            <MenuFilter
+              selection={selection}
+              setSelection={setSelection}
+              win={win}
+            />
+
+            <FilterTextUI>{selection}</FilterTextUI>
+
+            <View>
+              {store.menu &&
+                filterMenu(store.menu).map((item) => (
+                  <ItemCard
+                    key={item.name}
+                    item={item}
+                    navigation={navigation}
+                  />
+                ))}
+            </View>
+          </ContainerUI>
+        </ScrollView>
       </ScreenUI>
 
-      <CartButton navigation={navigation} store={store} />
+      {cart.length > 0 ? (
+        <CartButton navigation={navigation} store={store} />
+      ) : (
+        <></>
+      )}
     </>
   );
 }

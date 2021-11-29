@@ -57,7 +57,7 @@ export default function ShopCardSmall({
       <>
         <Image
           onLoad={handleImageLoad}
-          source={shopImage}
+          source={{uri: v.img}}
           style={{ width: '100%', height: 78, borderRadius: 5 }}
         />
         <StoreDetailsUI>

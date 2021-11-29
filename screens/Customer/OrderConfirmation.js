@@ -16,6 +16,9 @@ import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
 import { AuthContext } from "../../comps/auth";
+import MapView, { Callout, Circle, Marker, Polyline } from "react-native-maps";
+import { LocationContext } from "../../comps/location";
+import MapViewDirections from "react-native-maps-directions";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -26,7 +29,7 @@ const ScreenUI = styled.View`
 const ContainerUI = styled.View`
   background-color: #fff;
   align-items: center;
-  width: 90%;
+  width: 100%;
   min-height: 100%;
 `;
 
@@ -64,6 +67,27 @@ const MapCont = styled.Image`
 export default function OrderConfirmation({ route, navigation }) {
   const { cart, cartTotal, pickupTime, store, orderNumber } = route.params;
 
+  const { currentAddress, curLng, curLat } = useContext(LocationContext);
+
+  useEffect(() => {}, []);
+
+  const origin = { latitude: curLat, longitude: curLng };
+  const destination = { latitude: store.lat, longitude: store.lng };
+  const GOOGLE_MAPS_APIKEY = "AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY";
+
+  const [mapRegion, setmapRegion] = useState(null);
+
+  const [destinationRegion, setDestinationRegion] = useState(null);
+
+  useEffect(() => {
+    setmapRegion({
+      latitude: curLat,
+      longitude: curLng,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.03,
+    });
+  }, []);
+
   return (
     <>
       <ScreenUI>
@@ -77,10 +101,40 @@ export default function OrderConfirmation({ route, navigation }) {
             orderNumber={orderNumber}
           />
 
-          <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont>
+          <MapView
+            style={{ width: "90%", height: 250, marginTop: 25 }}
+            initialRegion={mapRegion}
+            provider="google"
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+          >
+            <Marker
+              key={store.lat}
+              coordinate={{
+                latitude: store.lat,
+                longitude: store.lng,
+              }}
+              pinColor="purple" //set pin color
+            >
+              <Callout
+                onPress={() => navigation.navigate("Menu", { store: store })}
+              >
+                <Text>Visit {store.username}</Text>
+              </Callout>
+            </Marker>
+
+            <MapViewDirections
+              origin={origin}
+              destination={destination}
+              apikey={GOOGLE_MAPS_APIKEY}
+              strokeWidth={5}
+              strokeColor="#EE9837"
+            />
+          </MapView>
+          {/* <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont> */}
         </ContainerUI>
       </ScreenUI>
-      <GetDirection onPress={() => navigation.navigate("Map")}>
+      <GetDirection onPress={() => navigation.navigate("Map", {store: store})}>
         <ButtonText>GET DIRECTIONS</ButtonText>
       </GetDirection>
     </>

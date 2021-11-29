@@ -221,7 +221,7 @@ export default function Cart({ route, navigation }) {
   };
 
   const addOrder = () => {
-    setUpdateOrder([
+/*     setUpdateOrder([
       ...order,
       {
         number: orderNumber,
@@ -235,7 +235,7 @@ export default function Cart({ route, navigation }) {
         store: store.uid,
         complete: false
       },
-    ]);
+    ]); */
   };
 
   useEffect(() => {
