@@ -28,10 +28,15 @@ import MyItemsItem from "../../comps/Store/MyItemsItem";
 import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
 import { useIsFocused } from '@react-navigation/native';
 
+// //pages
+// import StoreAddItem from "./Navigation/StoreAddItemStack";
+
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
-export default function StoreDashboardScreen({ navigation }) {
+export default function StoreDashboardScreen({ 
+  navigation, 
+}) {
   //display states
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
@@ -111,17 +116,11 @@ export default function StoreDashboardScreen({ navigation }) {
     });
   };
 
-  const [emptyPage, setEmptyPage] = React.useState(false);
-
-  const addItems = () => {
-    navigation.navigate("AddItemsCamera");
-  };
-
   var newRemoveWindowDisplay = "none";
 
   var newGreyDisplay = "none";
 
-  const removeItemBtnPress = () => {
+  const removeItemBtnPress = (ny) => {
     setDisplayRemove(true);
   };
 
@@ -131,11 +130,16 @@ export default function StoreDashboardScreen({ navigation }) {
   };
 
   // when user pressed yes on Removal confirmation window
-  const handleYesPress = () => {
+  const handleYesPress = (itemKey) => {
     setDisplayRemove(false);
+    
+    // unfinished code trying to remove specified item from database menu list
+    return (dispatch) => {
+      firebase.database().ref('/menu/' + itemKey.remove());
+    }
 
-    // will need to add code to identify which item to remove and how
-    // @ @ @ @ @ @
+    //temporary demo code to remove item
+    
   };
 
   if (displayRemove) {
@@ -144,41 +148,24 @@ export default function StoreDashboardScreen({ navigation }) {
   }
 
   const handleAddButton = () => {
-    navigation.navigate("Add Item Camera");
+    navigation.navigate("Add Item");
   };
 
-  // ignore below if statement
-  if (emptyPage === true) {
-    return (
-      <ContainerUI>
-        <TopContainer>
-          <Greeting name={displayName} />
 
-          <MyItemsHeader />
-        </TopContainer>
-
-        <ReactNative.ScrollView
-          contentContainerStyle={styles.foodListScrollNothing}
-        >
-          <ReactNative.Text>
-            You do not have any ingredients added.
-          </ReactNative.Text>
-          <AddItemsButton title="Add Items" onPress={addItems} />
-        </ReactNative.ScrollView>
-      </ContainerUI>
-    );
-  }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
-      {/* <ContainerUI> */}
-      <GreyBackground style={styles.greyBg} greyDisplay={newGreyDisplay} />
+    <SafeAreaView 
+      style={styles.safeArea}
+      edges={["left", "right"]} >
+      
+      <GreyBackground 
+        style={styles.greyBg} 
+        greyDisplay={newGreyDisplay} />
       <RemoveWindow
         removeWindowDisplay={newRemoveWindowDisplay}
         noOnPress={handleNoPress}
         yesOnPress={handleYesPress}
-        onXPress={handleNoPress}
-      />
+        onXPress={handleNoPress} />
 
       <TopContainer>
         <Greeting name={displayName} />
@@ -197,7 +184,7 @@ export default function StoreDashboardScreen({ navigation }) {
               quantity="6"
               price="$0.39"
               bgColour="#DFEFB9"
-              removeBtnPress={removeItemBtnPress}
+              removeBtnPress={()=>removeItemBtnPress(item.key)}
             />
           ))
         ) : (
@@ -236,24 +223,6 @@ const styles = ReactNative.StyleSheet.create({
     minHeight: deviceHeight,
   },
 });
-
-const ContainerUI = styled.View`
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
-
-const AddItemsButton = styled.Button`
-  flex: 1;
-  background-color: #ddd;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 50px;
-  text-align: center;
-  margin: 10px 0;
-`;
 
 const TopContainer = styled.View`
   justify-content: space-between;

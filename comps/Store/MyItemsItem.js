@@ -14,7 +14,9 @@ export default function MyItemsItem({
   foodPic,
   removeBtnPress=()=>{},
   bgColour,
-  item
+  item,
+  
+  removeFoodItemDisplay="flex",
 }){
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -27,7 +29,7 @@ export default function MyItemsItem({
   }
 
   return (
-    <Container>
+    <Container removeFoodItemDisplay={removeFoodItemDisplay}>
       <FoodImgContainer>
         <ReactNative.Image source={{uri: item.img}} style={styles.image(bgColour)} />
       </FoodImgContainer>
@@ -107,7 +109,7 @@ const Container = styled.View`
   width: 90%;
   justify-content: space-evenly;
   margin-bottom: 38px;
-  
+  display: ${props=>props.removeFoodItemDisplay}
 `;
 
   const FoodImgContainer = styled.View`

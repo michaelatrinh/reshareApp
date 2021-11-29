@@ -5,7 +5,7 @@ import * as ReactNative from "react-native";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { storage, getStorage, ref, uploadBytes } from "firebase/storage";
 
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
@@ -67,10 +67,39 @@ export default function PhoneCamera({ navigation }) {
           setSnappedImg(photo);
           console.log(photo.uri);
           
+          // // uploading photo to firebase storage
+          // const { uri } = snappedImg;
+          // const filename = uri.substring(uri.lastIndexOf('/') + 1);
+          // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+          // setUploading(true);
+          // setTransferred(0);
+
+          // const task = storage()
+          //   .ref(filename)
+          //   .putFile(uploadUri);
+
+          // // set progress state
+          // task.on('state_changed', snapshot => {
+          //   setTransferred(
+          //     Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+          //   );
+          // });
+
+          // try {
+          //   task;
+          // } catch (e) {
+          //   console.error(e);
+          // }
+
+          // setUploading(false);
+          
           navigation.navigate("Add Item Details", { photoUri: photo.uri });
         });
     }
   };
+
+
 
   return (
     <ReactNative.View style={styles.container}>

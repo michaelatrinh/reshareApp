@@ -49,7 +49,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
             activeOpacity={0.5}
           >
-            <ReactNative.Text style={{ color: isFocused ? "#57BA68" : "#DFEFB9" }}>
+            <ReactNative.Text style={{ color: isFocused ? "#EE9837" : "#FDE9C2" }}>
               {label == "Home" ? (
                 <Feather name="home" size={24} />
               ) : label == "Add Item" ? (

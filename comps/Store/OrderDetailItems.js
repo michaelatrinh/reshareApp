@@ -70,7 +70,7 @@ export default function OrderDetailItems({
         <OrderId>{order.number}</OrderId>
       </Order>
       <Time>
-        <PickUpTime>{pickUpTime}</PickUpTime>
+        <PickUpTime>{order.pickupTime}</PickUpTime>
       </Time>
       <Status>
         <StatusBg bgcolor={bgcolor}>
