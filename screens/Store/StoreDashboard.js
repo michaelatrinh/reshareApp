@@ -28,10 +28,15 @@ import MyItemsItem from "../../comps/Store/MyItemsItem";
 import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
 import { useIsFocused } from '@react-navigation/native';
 
+// //pages
+// import StoreAddItem from "./Navigation/StoreAddItemStack";
+
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
-export default function StoreDashboardScreen({ navigation }) {
+export default function StoreDashboardScreen({ 
+  navigation, 
+}) {
   //display states
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
@@ -111,12 +116,6 @@ export default function StoreDashboardScreen({ navigation }) {
     });
   };
 
-  const [emptyPage, setEmptyPage] = React.useState(false);
-
-  const addItems = () => {
-    navigation.navigate("AddItemsCamera");
-  };
-
   var newRemoveWindowDisplay = "none";
 
   var newGreyDisplay = "none";
@@ -144,30 +143,10 @@ export default function StoreDashboardScreen({ navigation }) {
   }
 
   const handleAddButton = () => {
-    navigation.navigate("Add Item Camera");
+    navigation.navigate("Add Item");
   };
 
-  // ignore below if statement
-  if (emptyPage === true) {
-    return (
-      <ContainerUI>
-        <TopContainer>
-          <Greeting name={displayName} />
 
-          <MyItemsHeader />
-        </TopContainer>
-
-        <ReactNative.ScrollView
-          contentContainerStyle={styles.foodListScrollNothing}
-        >
-          <ReactNative.Text>
-            You do not have any ingredients added.
-          </ReactNative.Text>
-          <AddItemsButton title="Add Items" onPress={addItems} />
-        </ReactNative.ScrollView>
-      </ContainerUI>
-    );
-  }
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>

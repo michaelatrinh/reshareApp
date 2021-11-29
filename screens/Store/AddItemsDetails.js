@@ -95,14 +95,13 @@ export default function AddItemsDetails({ navigation, route }) {
     setMenu([
       ...menu,
       {
-        description:
-          "this is description about the ingredients! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        description: itemDescription,
         expiry: "11/17/2021",
         img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
-        name: "Orange",
-        price: 0.25,
-        priceog: 1,
-        quantity: 8,
+        name: itemName,
+        price: itemDiscPrice,
+        priceog: itemOrigPrice,
+        quantity: itemQuantity,
         type: "fruits",
         weight: "1PC (100g - 120g)",
       },
@@ -112,7 +111,10 @@ export default function AddItemsDetails({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={["left", "right"]}>
+    <SafeAreaView 
+      style={styles.safeArea} 
+      edges={["left", "right"]}
+    >
       <ReactNative.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewInside}
@@ -122,30 +124,131 @@ export default function AddItemsDetails({ navigation, route }) {
         <Picture photoUri={photoUri} />
 
         {/* Produce Title Section */}
-        <TextInput header="TITLE" inputPlaceholder="Type title" />
+        <ReactNative.View
+          style={styles.textInputMainContainer} >
+          <ReactNative.View 
+            style={styles.textInputHeaderContainer} >
+            <ReactNative.Text 
+              style={styles.textInputHeader} >
+                TITLE
+            </ReactNative.Text>
+          </ReactNative.View>
+
+          <ReactNative.TextInput
+            style={styles.textInput}
+            placeholder="Type title"
+            value={setItemName} />
+        </ReactNative.View>
 
         {/* Expiry Section */}
-        <TextInput header="EXPIRY" inputPlaceholder="Select the expiry date" />
+        <ReactNative.View
+          style={styles.textInputMainContainer} >
+          <ReactNative.View 
+            style={styles.textInputHeaderContainer} >
+            <ReactNative.Text 
+              style={styles.textInputHeader} >
+                EXPIRY
+            </ReactNative.Text>
+          </ReactNative.View>
+
+          <ReactNative.TextInput
+            style={styles.textInput}
+            placeholder="Type expiry date"
+            value={setItemExpiry} />
+        </ReactNative.View>
 
         {/* Quantity section */}
-        <TextInput header="QUANTITY" inputPlaceholder="Type quantity" />
+        <ReactNative.View
+          style={styles.textInputMainContainer} >
+          <ReactNative.View
+            style={styles.textInputHeaderContainer} >
+            <ReactNative.Text
+              style={styles.textInputHeader} >
+                QUANTITY
+            </ReactNative.Text>
+          </ReactNative.View>
+
+          <ReactNative.TextInput
+            style={styles.textInput}
+            placeholder="Type quantity"
+            value={setItemQuantity} />
+        </ReactNative.View>
 
         {/* Price Section */}
-        <PriceInput
-          header1="ORIGINAL PRICE"
-          header2="DISCOUNTED PRICE"
-          inputPlaceholder1="Enter original price"
-          inputPlaceholder2="Enter discounted price"
-        />
+        <ReactNative.View 
+          style={styles.priceMainContainer} >
+          
+          {/* Original Price Input */}
+          <ReactNative.View 
+            style={styles.priceContainer} >
+            <ReactNative.View 
+              style={styles.priceHeaderContainer} >
+              <ReactNative.Text 
+                style={styles.textInputHeader} >
+                  ORIGINAL PRICE
+              </ReactNative.Text>
+            </ReactNative.View>
+
+            <ReactNative.TextInput
+              style={styles.priceTextInput}
+              placeholder="Enter original price"
+              value={setItemOrigPrice} />
+          </ReactNative.View>
+
+          {/* Discounted Price Input */}
+          <ReactNative.View 
+            style={styles.priceContainer} >
+            <ReactNative.View 
+              style={styles.priceHeaderContainer} >
+              <ReactNative.Text 
+                style={styles.textInputHeader} >
+                  DISCOUNTED PRICE
+              </ReactNative.Text>
+            </ReactNative.View>
+
+            <ReactNative.TextInput
+              style={styles.priceTextInput}
+              placeholder="Enter discounted price"
+              value={setItemDiscPrice} />
+          </ReactNative.View>
+        </ReactNative.View>
 
         {/* Description Section */}
-        <DescInput header="DESCRIPTION" inputPlaceholder="Enter description" />
+        <ReactNative.View 
+          style={styles.descMainContainer} >
+          <ReactNative.View 
+            style={styles.textInputHeaderContainer}>
+            <ReactNative.Text 
+              style={styles.textInputHeader} >
+                DESCRIPTION
+            </ReactNative.Text>
+          </ReactNative.View>
+
+          <ReactNative.TextInput
+            style={styles.descTextInput}
+            placeholder="Enter description"
+            value={setItemDescription}
+            multiline={true} />
+        </ReactNative.View>
 
         {/* Post Button */}
-        <ReactNative.Pressable style={{ margin: 50 }} onPress={() => addItem()}>
+        {/* <ReactNative.Pressable 
+          style={{ margin: 50 }} 
+          onPress={() => addItem()} >
           <ReactNative.Text>add</ReactNative.Text>
-        </ReactNative.Pressable>
-        {/* </ReactNative.View> */}
+        </ReactNative.Pressable> */}
+        <ReactNative.View 
+          style={styles.postBtnMainContainer} >
+          <ReactNative.TouchableOpacity
+            style={styles.postBtn}
+            onPress={()=>addItem()} >
+            <ReactNative.Text 
+              style={styles.textInputHeader} >
+                POST
+            </ReactNative.Text>
+          </ReactNative.TouchableOpacity>
+        </ReactNative.View>
+
       </ReactNative.ScrollView>
     </SafeAreaView>
   );
@@ -177,5 +280,105 @@ const styles = ReactNative.StyleSheet.create({
     justifyContent: "space-between",
     height: deviceHeight * 1.05,
     width: deviceWidth * 0.9,
+  },
+
+  // text inputs
+  textInputMainContainer: {
+    width: "100%",
+    height: 72,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 25,
+  },
+  textInputHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: "90%",
+  },
+  textInputHeader: {
+    fontFamily: "UbuntuBold",
+    fontSize: 12,
+  },
+  textInput: {
+    width: "90%",
+    height: 49,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+  },
+
+  //price inputs
+  priceMainContainer: {
+    width: "100%",
+    height: 72,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 25,
+  },
+  priceContainer: {
+    flexGrow: 1,
+    height: 72,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  priceHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: "80%",
+  },
+  priceTextInput: {
+    width: "80%",
+    height: 49,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+  },
+
+  //desc input
+  descMainContainer: {
+    width: "100%",
+    height: 99,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 25,
+  },
+  descTextInput: {
+    width: "90%",
+    height: 74,
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 14,
+  },
+
+  //post btn
+  postBtnMainContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    maxHeight: 100,
+    margin: 33,
+  },
+  postBtn: {
+    backgroundColor: "#DFEFB9",
+    width: "40%",
+    height: 42,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

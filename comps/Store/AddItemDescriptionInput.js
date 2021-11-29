@@ -1,3 +1,5 @@
+// RETIRED
+
 import { useLinkProps } from '@react-navigation/native';
 import * as React from 'react';
 import * as ReactNative from 'react-native';
