@@ -154,11 +154,14 @@ export default function AddItemsDetails({ navigation, route }) {
   // Code below is attempting to upload picture taken from user to firebase storage
   const uploadImage = async () => {
     const m = photoUri;
-    const filename = m.substring(m.lastIndexOf("/"));
+    const fileNameSlashIndex = m.substring(m.lastIndexOf("/") + 1);
+    
+    console.log("\n" + "FILE NAME SLASH INDEX IS: " + fileNameSlashIndex + "\n");
+    
     // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
-    const uploadURI = filename.replace("file://", "");
+    // const uploadURI = fileName.replace("file://", "");
 
-    const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + uploadURI);
+    const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + fileNameSlashIndex);
   
     const imageDLRef1 = CloudStorage.ref(cloud, "userGenerated/" + tempUri);
 
@@ -179,16 +182,19 @@ export default function AddItemsDetails({ navigation, route }) {
       //   })
 
       return (
-        await CloudStorage.uploadBytes(userGeneratedPicturesRef, uploadURI, metadata)
+        // uploading image to storage code
+        await CloudStorage.uploadBytes(userGeneratedPicturesRef, fileNameSlashIndex, metadata)
           .then((snapshot) => {
-            console.log("UPLOAD SUCCESS!");
-            setTempUri(uploadURI);
+            console.log("\n" + "UPLOAD SUCCESS!" + "\n");
+            setTempUri(fileNameSlashIndex);
 
+            // code to try and download the url of the image from the storage
             CloudStorage.getDownloadURL(imageDLRef1)
               .then((url) => {
                 setImageUri(url);
-                console.log("IMAGE URI IS: " + imageUri);
-
+                console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
+                
+                addItem();
               })
         })
       )
@@ -197,23 +203,6 @@ export default function AddItemsDetails({ navigation, route }) {
     }
     
   };
-
-  // code below is tryna download image
-  const imageDLRef = CloudStorage.ref(cloud, "userGenerated/" + imageUri);
-
-  const downloadImage = async () => {
-    try {
-      await CloudStorage.getDownloadURL(imageDLRef)
-        .then((url) => {
-          setImageUri(url);
-          console.log("IMAGE URI IS: " + imageUri);
-        })
-
-        addItem();
-    } catch (e) {
-      console.log("Downloading image error =>", e);
-    }
-  }
 
   const addItem = () => {
     //menu reset//

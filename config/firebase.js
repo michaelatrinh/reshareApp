@@ -29,4 +29,4 @@ export default firebase;
 //export firebase database and auth and storage
 export const db = getDatabase();
 export const auth = getAuth();
-export const cloud = CloudStorage.getStorage(firebase);
+export const cloud = CloudStorage.getStorage();
