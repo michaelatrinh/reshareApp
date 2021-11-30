@@ -4,11 +4,9 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-// import storage from "@react-native-firebase/storage";
-
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
-import { storage, getStorage } from "@firebase/storage";
+import * as CloudStorage from "firebase/storage";
 
 import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
@@ -26,6 +24,7 @@ var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function AddItemsDetails({ navigation, route }) {
   const { photoUri } = route.params;
+  const [imageUri, setImageUri] = React.useState(null);
 
   const currentUser = useContext(AuthContext);
   const uid = currentUser.currentUser.uid;
@@ -112,42 +111,59 @@ export default function AddItemsDetails({ navigation, route }) {
 
   if (!loaded) {
     return null;
-  }
+  };
 
-  // const storage = Storage.storage();
-
+  // Code below is attempting to upload picture taken from user to firebase storage
   const uploadImage = async () => {
-    // const newPic = "";
     const m = photoUri;
     const filename = m.substring(m.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
+    // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
+    const uploadURI = filename.replace("file://" + filename);
 
-    try{
-      await firebase
-        .storage()
-        .ref(filename)
-        .putFile(uploadUri)
-        .then((snapshot) => {
-          console.log(`${filename} has been successfully uploaded.`);
-        })
+    const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + uploadURI);
+    const metadata = {
+      contentType: 'image/jpg',
+    };
+    
+    try {
+      // await firebase
+      //   // CloudStorage.storage()
+      //   // .cloud()
+      //   // .storage()
+      //   uploadBytes(userGeneratedPicturesRef, )
+      //   .ref(filename)
+      //   .putFile(uploadUri)
+      //   .then((snapshot) => {
+      //     console.log(`${filename} has been successfully uploaded.`);
+      //   })
       
-      addItem;
+      await CloudStorage.uploadBytes(userGeneratedPicturesRef, uploadURI, metadata)
+        .then((snapshot) => {
+          console.log("UPLOAD SUCCESS!");
+          setImageUri(userGeneratedPicturesRef);
+          console.log("IMAGE URI HERE: " + imageUri);
+        });
+
+      // downloadImage();
+      addItem();
     } catch (e){
       console.log("Uploading image error =>", e);
     }
-
-    // const task = storage()
-    //   .ref(filename)
-    //   .putFile(uploadUri)
-
-    // try {
-    //   await task;
-    //   addItem;
-    // } catch (e) {
-    //   console.log(e);
-    // }
     
   };
+
+  // code below is tryna download image
+  const downloadImage = async () => {
+    try {
+      await CloudStorage.getDownloadURL(ref(userGeneratedPicturesRef, uploadURI))
+        .then((url) => {
+          setImageUri(url);
+          console.log(imageUri);
+        })
+    } catch {
+      console.log("Error downloading image");
+    }
+  }
 
   const addItem = () => {
     //menu reset//
