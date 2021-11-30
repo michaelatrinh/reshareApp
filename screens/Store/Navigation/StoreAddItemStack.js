@@ -10,7 +10,7 @@ export default function StoreHomeStack({ route, navigation }){
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Add Item Camera"
+        name="Camera"
         component={StoreAddItem}
         options={{
           headerShadowVisible: false, // applied here
@@ -18,7 +18,7 @@ export default function StoreHomeStack({ route, navigation }){
       />
 
       <Stack.Screen
-        name="Add Item Details"
+        name="Details"
         component={AddItemsDetails}
         options={{
           headerShadowVisible: false,

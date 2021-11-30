@@ -94,7 +94,7 @@ export default function PhoneCamera({ navigation }) {
 
           // setUploading(false);
           
-          navigation.navigate("Add Item Details", { photoUri: photo.uri });
+          navigation.navigate("Details", { photoUri: photo.uri });
         });
     }
   };

@@ -4,13 +4,15 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { storage, getStorage, uploadBytes } from "firebase/storage";
+// import storage from "@react-native-firebase/storage";
 
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
+import { storage, getStorage } from "@firebase/storage";
 
-import { db } from "../../config/firebase";
+import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
+import { cloud } from "../../config/firebase";
 
 //components
 import Picture from "../../comps/Store/AddItemPicture";
@@ -112,21 +114,38 @@ export default function AddItemsDetails({ navigation, route }) {
     return null;
   }
 
+  // const storage = Storage.storage();
+
   const uploadImage = async () => {
-    // const { uri } = {photoUri};
-    const filename = photoUri.substring(photoUri.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : uri;
+    // const newPic = "";
+    const m = photoUri;
+    const filename = m.substring(m.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
 
-    const task = storage()
-      .ref(filename)
-      .putFile(uploadUri)
-
-    try {
-      await task;
+    try{
+      await firebase
+        .storage()
+        .ref(filename)
+        .putFile(uploadUri)
+        .then((snapshot) => {
+          console.log(`${filename} has been successfully uploaded.`);
+        })
+      
       addItem;
-    } catch (e) {
-      console.log(e);
+    } catch (e){
+      console.log("Uploading image error =>", e);
     }
+
+    // const task = storage()
+    //   .ref(filename)
+    //   .putFile(uploadUri)
+
+    // try {
+    //   await task;
+    //   addItem;
+    // } catch (e) {
+    //   console.log(e);
+    // }
     
   };
 
@@ -207,6 +226,7 @@ export default function AddItemsDetails({ navigation, route }) {
               </ReactNative.Text>
             </ReactNative.View>
 
+          {/* Drop down picker comp imported from: https://hossein-zare.github.io/react-native-dropdown-picker-website/ */}
           <DropDownPicker
             style={styles.dropDown}
             containerStyle={styles.dropDownContainer}
@@ -246,7 +266,8 @@ export default function AddItemsDetails({ navigation, route }) {
                 EXPIRY
             </ReactNative.Text>
           </ReactNative.View>
-          
+
+          {/* Drop down picker comp imported from: https://hossein-zare.github.io/react-native-dropdown-picker-website/ */}
           <DropDownPicker
             style={styles.dropDown}
             containerStyle={styles.dropDownContainer}
