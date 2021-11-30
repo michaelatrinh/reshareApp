@@ -29,9 +29,12 @@ export default function MyItemsItem({
   }
 
   return (
-    <Container removeFoodItemDisplay={removeFoodItemDisplay}>
+    <Container 
+      removeFoodItemDisplay={removeFoodItemDisplay} >
       <FoodImgContainer>
-        <ReactNative.Image source={{uri: item.img}} style={styles.image(bgColour)} />
+        <ReactNative.Image 
+          source={{uri: item.img}} 
+          style={styles.image} />
       </FoodImgContainer>
 
       <TextContainer>
@@ -43,12 +46,23 @@ export default function MyItemsItem({
 
       <BtnsContainer>
         <BtnsContainer02>
-          <ReactNative.TouchableOpacity style={styles.editBtn} activeOpacity={0.5}>
-            <ReactNative.Text style={styles.editBtnText}>EDIT</ReactNative.Text>
+          <ReactNative.TouchableOpacity 
+            style={styles.editBtn} 
+            activeOpacity={0.5}>
+            <ReactNative.Text 
+              style={styles.editBtnText} >
+                EDIT
+            </ReactNative.Text>
           </ReactNative.TouchableOpacity>        
           
-          <ReactNative.TouchableOpacity style={styles.removeBtn} activeOpacity={0.5} onPress={removeBtnPress}>
-            <ReactNative.Text style={styles.removeBtnText}>REMOVE</ReactNative.Text>
+          <ReactNative.TouchableOpacity 
+            style={styles.removeBtn} 
+            activeOpacity={0.5} 
+            onPress={removeBtnPress} >
+            <ReactNative.Text 
+              style={styles.removeBtnText} >
+                REMOVE
+            </ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </BtnsContainer02>
       </BtnsContainer>
@@ -57,12 +71,11 @@ export default function MyItemsItem({
 }
 
 const styles = ReactNative.StyleSheet.create({
-  image: (bgColour) => { return {
-    backgroundColor: bgColour,
+  image:{
+    backgroundColor: "#FFFFFF",
     width: 101,
     height: 91,
     resizeMode: "contain",
-  }
   },
   text:{
     fontFamily: "PoppinsSemiBold",
@@ -138,3 +151,17 @@ const Container = styled.View`
       justify-content: space-between;
       max-height: 56px;
     `;
+
+// KEEP CODE BELOW FOR REFERRAL LATER
+//
+// image: (bgColour) => { return {
+// backgroundColor: bgColour,
+//   width: 101,
+//     height: 91,
+//       resizeMode: "contain",
+//   }
+//   },
+// text: {
+//   fontFamily: "PoppinsSemiBold",
+//     fontSize: 12,
+//   },

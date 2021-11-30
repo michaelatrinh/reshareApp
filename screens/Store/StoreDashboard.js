@@ -156,7 +156,7 @@ export default function StoreDashboardScreen({
   return (
     <SafeAreaView 
       style={styles.safeArea}
-      edges={["left", "right"]} >
+      edges={["left", "right", "bottom"]} >
       
       <GreyBackground 
         style={styles.greyBg} 
@@ -173,7 +173,8 @@ export default function StoreDashboardScreen({
         <MyItemsHeader onAddPress={handleAddButton} />
       </TopContainer>
 
-      <ReactNative.ScrollView contentContainerStyle={styles.foodListScroll}>
+      <ReactNative.ScrollView 
+        contentContainerStyle={styles.foodListScroll} >
         {menu ? (
           menu.map((item) => (
             <MyItemsItem
@@ -211,11 +212,12 @@ const styles = ReactNative.StyleSheet.create({
     height: deviceHeight,
   },
   foodListScroll: {
+    flexGrow: 1,
     alignItems: "center",
     backgroundColor: "white",
     width: deviceWidth,
     // minHeight: deviceHeight,
-    marginBottom: "-33%",
+    paddingBottom: "10%",
     marginTop: "3%",
   },
   greyBg: {

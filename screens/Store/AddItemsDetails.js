@@ -25,6 +25,7 @@ var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 export default function AddItemsDetails({ navigation, route }) {
   const { photoUri } = route.params;
   const [imageUri, setImageUri] = React.useState(null);
+  const [tempUri, setTempUri] = React.useState(null);
 
   const currentUser = useContext(AuthContext);
   const uid = currentUser.currentUser.uid;
@@ -113,14 +114,54 @@ export default function AddItemsDetails({ navigation, route }) {
     return null;
   };
 
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+
+  //     let result = await cloud.ref("userGenerated/").child().listAll();
+  //     let urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
+
+  //     return Promise.all(urlPromises);
+
+  //   }
+
+  //   const loadImages = async () => {
+  //     const urls = await fetchImages();
+  //     setFiles(urls);
+  //   }
+  //   loadImages();
+  // }, []);
+
+  // React.useEffect(() => {
+  //   for(var i = 0; 10 >= i >= 0; i++){
+  //     const imageRef = cloud.ref("userGenerated/").child([i]);
+  //     const urlPromise = imageRef.getDownloadURL();
+
+  //     imageUriFunction(urlPromise);
+  //   };
+
+  //   return function imageUriFunction(x){
+  //     setImageUri(x);
+
+  //   }
+    
+  // }, []);
+
+  // React.useEffect(() => {
+  //   const userGeneratedArray = null;
+  //   const promises = this.state.userGeneratedArray.map(())
+  // })
+
   // Code below is attempting to upload picture taken from user to firebase storage
   const uploadImage = async () => {
     const m = photoUri;
-    const filename = m.substring(m.lastIndexOf('/') + 1);
+    const filename = m.substring(m.lastIndexOf("/"));
     // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
-    const uploadURI = filename.replace("file://" + filename);
+    const uploadURI = filename.replace("file://", "");
 
     const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + uploadURI);
+  
+    const imageDLRef1 = CloudStorage.ref(cloud, "userGenerated/" + tempUri);
+
     const metadata = {
       contentType: 'image/jpg',
     };
@@ -136,16 +177,21 @@ export default function AddItemsDetails({ navigation, route }) {
       //   .then((snapshot) => {
       //     console.log(`${filename} has been successfully uploaded.`);
       //   })
-      
-      await CloudStorage.uploadBytes(userGeneratedPicturesRef, uploadURI, metadata)
-        .then((snapshot) => {
-          console.log("UPLOAD SUCCESS!");
-          setImageUri(userGeneratedPicturesRef);
-          console.log("IMAGE URI HERE: " + imageUri);
-        });
 
-      // downloadImage();
-      addItem();
+      return (
+        await CloudStorage.uploadBytes(userGeneratedPicturesRef, uploadURI, metadata)
+          .then((snapshot) => {
+            console.log("UPLOAD SUCCESS!");
+            setTempUri(uploadURI);
+
+            CloudStorage.getDownloadURL(imageDLRef1)
+              .then((url) => {
+                setImageUri(url);
+                console.log("IMAGE URI IS: " + imageUri);
+
+              })
+        })
+      )
     } catch (e){
       console.log("Uploading image error =>", e);
     }
@@ -153,15 +199,19 @@ export default function AddItemsDetails({ navigation, route }) {
   };
 
   // code below is tryna download image
+  const imageDLRef = CloudStorage.ref(cloud, "userGenerated/" + imageUri);
+
   const downloadImage = async () => {
     try {
-      await CloudStorage.getDownloadURL(ref(userGeneratedPicturesRef, uploadURI))
+      await CloudStorage.getDownloadURL(imageDLRef)
         .then((url) => {
           setImageUri(url);
-          console.log(imageUri);
+          console.log("IMAGE URI IS: " + imageUri);
         })
-    } catch {
-      console.log("Error downloading image");
+
+        addItem();
+    } catch (e) {
+      console.log("Downloading image error =>", e);
     }
   }
 
@@ -188,7 +238,7 @@ export default function AddItemsDetails({ navigation, route }) {
       {
         description: itemDescription,
         expiry: dateValue,
-        img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
+        img: imageUri,
         name: itemName,
         price: "$" + itemDiscPrice,
         priceog: "$" + itemOrigPrice,
