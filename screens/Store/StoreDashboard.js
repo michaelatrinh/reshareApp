@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
 import * as ReactNative from "react-native";
-import { Text } from "react-native";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
 
 import { initializeApp } from "@firebase/app";
 
@@ -55,6 +56,10 @@ export default function StoreDashboardScreen({
 
   const [navLocation, setNavLocation] = useState("home");
 
+  // menu item ref states
+  const [menuDbRef, setMenuDbRef] = useState(null);
+  const [menuItemKey, setMenuItemKey] = useState(null);
+
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
 
@@ -71,7 +76,6 @@ export default function StoreDashboardScreen({
     readUserData(currentUser.uid);
     setMenu(menu)
   }, [isFocused]);
-
 
   //firebase read user data (name, location, type)
   function readUserData(userId) {
@@ -108,10 +112,11 @@ export default function StoreDashboardScreen({
       //data[i].url = downloaded url
       //then set menu
       
-      setMenu(data);
+      setMenu(data)
 
-      
     });
+
+    setMenuDbRef(menuRef);
   }
 
   // firebase read store data (menu, itemNum, type)
@@ -125,12 +130,28 @@ export default function StoreDashboardScreen({
     });
   };
 
-  var newRemoveWindowDisplay = "none";
+  // FONTS
+  const [loaded] = useFonts({
+    Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
+    PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
+    Ubuntu: require("../../assets/fonts/Ubuntu/Ubuntu-Regular.ttf"),
+    UbuntuMedium: require("../../assets/fonts/Ubuntu/Ubuntu-Medium.ttf")
+  });
 
+  if (!loaded) {
+    return null;
+  }
+
+  // variable to display Remove Confirmation Window or not
+  var newRemoveWindowDisplay = "none";
+  // variable to display Grey Overlay Background or not
   var newGreyDisplay = "none";
 
-  const removeItemBtnPress = (ny) => {
+  const removeItemBtnPress = (itemKey) => {
     setDisplayRemove(true);
+    setMenuItemKey(itemKey);
+    
+    console.log("\n" + "MENU ITEM KEY STATE: " + menuItemKey + "\n");
   };
 
   // when user pressed no on Removal confirmation window
@@ -139,19 +160,27 @@ export default function StoreDashboardScreen({
   };
 
   // when user pressed yes on Removal confirmation window
-  const handleYesPress = (itemKey) => {
+  const handleYesPress = () => {
     setDisplayRemove(false);
+    let n = menuDbRef;
+    let o = menuItemKey;
+    // let p = n + o;
+    let p = ref(db, n + "/" + o);
+
+    try {
+      p.remove();
+    } catch (e) {
+      console.log("REMOVAL ERROR =>", e);
+    }
     
     // unfinished code trying to remove specified item from database menu list
-    return (dispatch) => {
-      firebase.database().ref('/menu/' + itemKey.remove());
-    }
-
-    //temporary demo code to remove item
-    
+    // return (dispatch) => {
+    //   firebase.database().ref('/menu/' + itemKey.remove());
+    // }
   };
 
-  if (displayRemove) {
+  // remove window and grey overlay bg value changes on state change
+  if(displayRemove){
     newRemoveWindowDisplay = "flex";
     newGreyDisplay = "flex";
   }
@@ -170,11 +199,57 @@ export default function StoreDashboardScreen({
       <GreyBackground 
         style={styles.greyBg} 
         greyDisplay={newGreyDisplay} />
-      <RemoveWindow
-        removeWindowDisplay={newRemoveWindowDisplay}
-        noOnPress={handleNoPress}
-        yesOnPress={handleYesPress}
-        onXPress={handleNoPress} />
+
+      {/* Remove Confirmation Window */}
+      <ReactNative.View
+        style={styles.removeWindowMainContainer(newRemoveWindowDisplay)} >
+        <ReactNative.View
+          style={styles.removeWindowCont} >
+
+          {/* first container: contains "x" icon */}
+          <ReactNative.View
+            style={styles.firstContainer} >
+            <Feather
+              name="x-circle"
+              size={11}
+              style={styles.x}
+              onPress={handleNoPress} />
+          </ReactNative.View>
+
+          {/* second container: contains main text */}
+          <ReactNative.View
+            style={styles.secondContainer} >
+            <ReactNative.Text 
+              style={styles.removeWindowText} >
+                Are you sure you want to remove this item from listings?
+            </ReactNative.Text>
+          </ReactNative.View>
+
+          {/* third container: contains "yes" and "no" buttons */}
+          <ReactNative.View
+            style={styles.thirdContainer} >
+            <ReactNative.TouchableOpacity
+              style={styles.no}
+              activeOpacity={0.5}
+              onPress={handleNoPress} >
+              <ReactNative.Text 
+                style={styles.removeBtnText} >
+                  NO
+              </ReactNative.Text>
+            </ReactNative.TouchableOpacity>
+
+            <ReactNative.TouchableOpacity
+              style={styles.yes}
+              activeOpacity={0.5}
+              onPress={handleYesPress} >
+              <ReactNative.Text 
+                style={styles.removeBtnText} >
+                  YES
+              </ReactNative.Text>
+            </ReactNative.TouchableOpacity>
+          </ReactNative.View>
+        </ReactNative.View>
+      </ReactNative.View>
 
       <TopContainer>
         <Greeting name={displayName} />
@@ -196,6 +271,7 @@ export default function StoreDashboardScreen({
               bgColour="#DFEFB9"
 /*               removeBtnPress={()=>removeItemBtnPress(item.key)} */
 removeBtnPress={()=> console.log(Object.keys(item))}
+
             />
           ))
         ) : (
@@ -233,6 +309,77 @@ const styles = ReactNative.StyleSheet.create({
   greyBg: {
     minWidth: deviceWidth,
     minHeight: deviceHeight,
+  },
+
+  // remove confirmation window
+  removeWindowMainContainer: (d) => { return {
+    width: 210,
+    height: 163,
+    // boxShadow: "4px 2px 4px rgba(0, 0, 0, 0.25)",
+    shadowColor: "#000000",
+    shadowOpacity: 0.25,
+    shadowOffset: {width: 4, height: 2},
+    shadowRadius: 4,
+    display: d,
+    zIndex: 3,
+    position: "absolute",
+    }
+  },
+  removeWindowCont: {
+    width: 210,
+    height: 163,
+    backgroundColor: "#FBFBFB",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  firstContainer: {
+    flexGrow: 1,
+    flexDirection: "row",
+    width: "100%",
+  },
+  x: {
+    top: "5%",
+    left: "25%",
+  },
+  secondContainer: {
+    flexGrow: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    maxWidth: "80%",
+  },
+  removeWindowText: {
+    fontFamily: "Poppins",
+    fontSize: 12,
+    textAlign: "center",
+  },
+  thirdContainer: {
+    flexGrow: 1,
+    flexDirection: "row",
+    width: "80%",
+    justifyContent: "space-between",
+  },
+  no: {
+    width: 77,
+    height: 27,
+    backgroundColor: "#FFE0E0",
+    borderRadius: 10,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  removeBtnText: {
+    fontSize: 12,
+    fontFamily: "UbuntuMedium",
+  },
+  yes: {
+    width: 77,
+    height: 27,
+    backgroundColor: "#DBEABA",
+    borderRadius: 10,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
