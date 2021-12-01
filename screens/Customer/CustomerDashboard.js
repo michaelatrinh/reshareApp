@@ -5,15 +5,7 @@ import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
-import {
-  getAuth,
-  onAuthStateChanged,
-  FacebookAuthProvider,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
@@ -23,6 +15,8 @@ import ShopSlider from "../../comps/Customer/ShopSlider";
 import Header from "../../comps/Customer/Header";
 import { LocationContext } from "../../comps/location";
 import { Feather } from "@expo/vector-icons";
+import axios from "axios";
+import RecommenedSlider from "../../comps/Customer/RecommenedSlider";
 
 const Tab = createBottomTabNavigator();
 
@@ -51,46 +45,37 @@ const UserDetailsUI = styled.Text`
 export default function CustomerDashboard({ route, navigation }) {
   //display states
   const [displayName, setDisplayName] = useState("");
-  const [displayLocation, setDisplayLocation] = useState("");
-  const [displayType, setDisplayType] = useState("");
   const [displayStores, setDisplayStores] = useState("");
 
-  //input states
-  const [inputName, setInputName] = useState("");
-  const [inputLocation, setInputLocation] = useState("");
-
-  const [navLocation, setNavLocation] = useState("home");
 
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
 
-  const { currentAddress, lng, lat } = useContext(LocationContext);
+  //get address from location context
+  const { currentAddress, curLng, curLat } = useContext(LocationContext);
 
   //read user data on mount
   useEffect(() => {
     readUserData(currentUser.uid);
   }, []);
 
+  const [filteredStores, setFilteredStores] = useState("");
+
+  useEffect(() => {
+    const filtered = Object.values(displayStores).sort(function (a, b) {
+      return a.distance - b.distance;
+    });
+    setFilteredStores(filtered);
+  }, [displayStores]);
+
   //firebase read user data (name, location, type)
-  function readUserData(userId) {
+  async function readUserData(userId) {
     const nameRef = ref(db, "users/" + userId + "/username");
-    const locationRef = ref(db, "users/" + userId + "/location");
-    const typeRef = ref(db, "users/" + userId + "/type");
     const storesRef = ref(db, "stores/");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
       setDisplayName(data);
-    });
-
-    onValue(locationRef, (snapshot) => {
-      const data = snapshot.val();
-      setDisplayLocation(data);
-    });
-
-    onValue(typeRef, (snapshot) => {
-      const data = snapshot.val();
-      setDisplayType(data);
     });
 
     onValue(storesRef, (snapshot) => {
@@ -99,14 +84,37 @@ export default function CustomerDashboard({ route, navigation }) {
     });
   }
 
-  //firebase update user data (name, location, type)
-  const handleUpdateInfo = () => {
-    update(ref(db, "users/" + uid), {
-      email: email,
-      location: inputLocation,
-      username: inputName,
-    });
-  };
+  /*   const [storeArr, setStoreArr] = useState([]);
+
+  const getDistance = async (stores) => {
+    for (var i = 0; i < Object.values(stores).length; i++) {
+      let url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${
+        Object.values(stores)[i].lat
+      }%2C${
+        Object.values(stores)[i].lng
+      }&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`;
+
+      var config = {
+        method: "get",
+        url: url,
+        headers: {},
+      };
+
+      const curStore = Object.values(stores)[i];
+      let arr = [];
+
+      await axios(config)
+        .then(function (response) {
+          const distance = response.data.rows[0].elements[0].distance.text;
+          curStore.distance = distance;
+          console.log(distance)
+          arr.push(curStore);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }; */
 
   return (
     <>
@@ -127,27 +135,25 @@ export default function CustomerDashboard({ route, navigation }) {
               navigation.navigate("Map");
             }}
           >
-            <UserDetailsUI style={{marginRight: 10}}>
+            <UserDetailsUI style={{ marginRight: 10 }}>
               <Feather name="map-pin" size={24} style={{ color: "#EE9837" }} />
             </UserDetailsUI>
 
-            <UserDetailsUI>
-              {currentAddress}
-            </UserDetailsUI>
+            <UserDetailsUI>{currentAddress}</UserDetailsUI>
           </MapButtonUI>
 
           <ShopSlider
-            displayStores={displayStores}
+            displayStores={displayStores && displayStores}
             heading="Stores you love!"
             navigation={navigation}
           />
           <ShopSlider
-            displayStores={displayStores}
+            displayStores={filteredStores && filteredStores}
             heading="Stores near you!"
             navigation={navigation}
           />
           <ShopSlider
-            displayStores={displayStores}
+            displayStores={displayStores && displayStores}
             heading="Today’s recommendations!"
             navigation={navigation}
           />

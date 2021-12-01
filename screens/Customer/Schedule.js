@@ -161,18 +161,6 @@ const pickupTimes = [
   "3:30pm",
   "3:45pm",
   "4:00pm",
-  "4:15pm",
-  "4:30pm",
-  "4:45pm",
-  "5:00pm",
-  "5:15pm",
-  "5:30pm",
-  "5:45pm",
-  "6:00pm",
-  "6:15pm",
-  "6:30pm",
-  "6:45pm",
-  "7:00pm",
 ];
 
 const ButtonCont = styled.View``;
@@ -237,7 +225,7 @@ export default function Cart({ route, navigation }) {
   };
 
   const addOrder = () => {
-/*     setUpdateOrder([
+    setUpdateOrder([
       ...order,
       {
         number: orderNumber,
@@ -251,7 +239,7 @@ export default function Cart({ route, navigation }) {
         store: store.uid,
         complete: false
       },
-    ]); */
+    ]);
   };
 
   useEffect(() => {

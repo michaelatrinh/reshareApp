@@ -67,7 +67,7 @@ export default function ShopCard({
   console.log(lng);
   console.log(lat);
 
-  var config = {
+/*   var config = {
     method: "get",
     url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${lat}%2C${lng}&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`,
     headers: {},
@@ -75,14 +75,16 @@ export default function ShopCard({
 
   axios(config)
     .then(function (response) {
+      
       console.log(response.data.rows[0].elements[0].distance.text);
 
       const distance = response.data.rows[0].elements[0].distance.text;
+
       setDistance(distance);
     })
     .catch(function (error) {
       console.log(error);
-    });
+    }); */
 
   return (
     <StoreContainerUI
@@ -105,7 +107,7 @@ export default function ShopCard({
         <StoreDetailsUI>
           {store.username} - {store.location}
         </StoreDetailsUI>
-        <DistanceUI>{distance}</DistanceUI>
+        <DistanceUI>{store.distance} km</DistanceUI>
       </RowUI>
     </StoreContainerUI>
   );

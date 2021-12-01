@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import ShopCardSmall from "./ShopCardSmall";
 import { ScrollView } from "react-native";
 import SkeletonCardSmall from "./SkeletonCardSmall";
+import RecommenedCard from "./RecommendCard";
 
 const ContainerUI = styled.View`
   margin: 0 0 30px 0;
@@ -35,7 +36,7 @@ const ExpandUI = styled.Text`
   font-size: 11px;
 `;
 
-export default function ShopSlider({
+export default function RecommenedSlider({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
@@ -43,7 +44,13 @@ export default function ShopSlider({
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const length = Object.keys(displayStores).length;
-  
+
+  const stores = Object.values(displayStores)
+
+  if (displayStores) {
+    console.log(stores[0].menu);
+  }
+
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
   });
@@ -88,20 +95,13 @@ export default function ShopSlider({
           )
         }
 
-        {
-          //show stores once images loaded
-          Object.entries(displayStores).map(([key, v]) => {
-            return (
-              <ShopCardSmall
-                setImagesLoaded={setImagesLoaded}
-                imagesLoaded={imagesLoaded}
-                key={key}
-                v={v}
-                navigation={navigation}
-              />
-            );
+        {/* {stores ? (
+          stores.menu.map(v => {
+            return <Text>{v.name}</Text>;
           })
-        }
+        ) : (
+          <></>
+        )} */}
       </ScrollView>
     </>
   );
