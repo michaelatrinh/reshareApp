@@ -4,7 +4,6 @@ import styled from "styled-components/native";
 import lime from "../../assets/icon.png";
 
 export default function Picture({ photoUri }) {
-  console.log(photoUri + "uri is passed");
   return (
     <>
       {photoUri ? (

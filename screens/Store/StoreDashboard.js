@@ -88,6 +88,8 @@ export default function StoreDashboardScreen({
     const itemExpiryRef = ref(db, "store/" + userId + "/menu" + [] + "/expiry");
     const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price"); */
 
+    
+
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
       setDisplayName(data);
@@ -111,6 +113,7 @@ export default function StoreDashboardScreen({
       //then set menu
       
       setMenu(data)
+
     });
 
     setMenuDbRef(menuRef);
@@ -262,7 +265,13 @@ export default function StoreDashboardScreen({
               key={item.name}
               title={item.name}
               item={item}
-              removeBtnPress={()=>removeItemBtnPress(item)}
+              expiry="Dec 31"
+              quantity="6"
+              price="$0.39"
+              bgColour="#DFEFB9"
+/*               removeBtnPress={()=>removeItemBtnPress(item.key)} */
+removeBtnPress={()=> console.log(Object.keys(item))}
+
             />
           ))
         ) : (

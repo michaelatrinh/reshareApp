@@ -40,9 +40,11 @@ export default function ShopBrowsing({ route, navigation }) {
   const [inputName, setInputName] = useState("");
   const [inputLocation, setInputLocation] = useState("");
 
-  const [selection, setSelection] = useState("saved");
+  const [selection, setSelection] = useState("near");
 
   const [search, setSearch] = useState("");
+
+  const [savedStores, setSavedStores] = useState("");
 
   useEffect(() => {
     console.log(search);
@@ -73,6 +75,7 @@ export default function ShopBrowsing({ route, navigation }) {
     const locationRef = ref(db, "users/" + userId + "/location");
     const typeRef = ref(db, "users/" + userId + "/type");
     const storesRef = ref(db, "stores/");
+    const savedRef = ref(db, "users/" + userId + "/saved");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -93,6 +96,11 @@ export default function ShopBrowsing({ route, navigation }) {
       const data = snapshot.val();
       setDisplayStores(data);
     });
+
+    onValue(savedRef, (snapshot) => {
+      const data = snapshot.val();
+      setSavedStores(data);
+    });
   }
 
   const [filteredStores, setFilteredStores] = useState("");
@@ -103,6 +111,13 @@ export default function ShopBrowsing({ route, navigation }) {
     });
     setFilteredStores(filtered);
   }, [displayStores]);
+
+  const filteredSavedStores = Object.keys(displayStores)
+  .filter(key => savedStores.includes(key))
+  .reduce((obj, key) => {
+    obj[key] = displayStores[key];
+    return obj;
+  }, {});  
 
   /*   console.log(displayStores);
   console.log(currentUser.uid); */
@@ -126,7 +141,7 @@ export default function ShopBrowsing({ route, navigation }) {
         }}
       >
         {selection === "saved"
-          ? Object.values(displayStores)
+          ? Object.values(filteredSavedStores)
               .filter((x) => {
                 if (search === "") {
                   return x;

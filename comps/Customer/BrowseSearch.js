@@ -73,19 +73,19 @@ export default function BrowseSearch({
       <RowUI>
         <TagUI
           style={{
-            backgroundColor: selection == "saved" ? "#fde9c2" : "#ffffff",
-          }}
-          onPress={() => setSelection("saved")}
-        >
-          <TagTextUI>stores saved</TagTextUI>
-        </TagUI>
-        <TagUI
-          style={{
             backgroundColor: selection == "near" ? "#fde9c2" : "#ffffff",
           }}
           onPress={() => setSelection("near")}
         >
           <TagTextUI>stores near you</TagTextUI>
+        </TagUI>
+        <TagUI
+          style={{
+            backgroundColor: selection == "saved" ? "#fde9c2" : "#ffffff",
+          }}
+          onPress={() => setSelection("saved")}
+        >
+          <TagTextUI>stores saved</TagTextUI>
         </TagUI>
 
         {/*         <TagUI

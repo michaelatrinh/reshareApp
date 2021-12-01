@@ -42,7 +42,11 @@ export default function ShopSlider({
 }) {
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
+  
+
   const length = Object.keys(displayStores).length;
+
+  
   
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
@@ -68,16 +72,31 @@ export default function ShopSlider({
       </RowUI>
 
       <ScrollView
-        horizontal={true}
+        horizontal={imagesLoaded && length > 1 ? true : false}
+        scrollEnabled={imagesLoaded ? true : false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           display: "flex",
           flexDirection: "row",
           marginBottom: 30,
-          left: "5%",
+          paddingLeft: "5%",
+          paddingRight: "5%",
+
+         
         }}
       >
         {
+          //skeleton loading
+          imagesLoaded >= length ? (
+            <></>
+          ) : (
+            Object.entries(displayStores).map(([key, v]) => {
+              return <SkeletonCardSmall key={key} />;
+            })
+          )
+        }
+
+{
           //skeleton loading
           imagesLoaded >= length ? (
             <></>

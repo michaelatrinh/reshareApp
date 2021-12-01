@@ -12,11 +12,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
-import * as fireStore from "firebase/storage";
+import * as CloudStorage from "firebase/storage";
 
 import firebase, { db } from "../../config/firebase";
-
-import "firebase/storage";
 import { auth } from "../../config/firebase";
 import { cloud } from "../../config/firebase";
 
@@ -26,6 +24,8 @@ import TextInput from "../../comps/Store/AddItemTextInput";
 import PriceInput from "../../comps/Store/AddItemPricesTextInput";
 import DescInput from "../../comps/Store/AddItemDescriptionInput";
 import PostBtn from "../../comps/Store/AddItemPostBtn";
+
+
 
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
@@ -81,8 +81,6 @@ export default function AddItemsDetails({ navigation, route }) {
 
   const [menu, setMenu] = useState(null);
 
-  const [imageUrl, setImageUrl] = useState(null);
-
   //firebase read user data (name, location, type)
   function readUserData(userId) {
     const menuRef = ref(db, "stores/" + userId + "/menu");
@@ -106,14 +104,6 @@ export default function AddItemsDetails({ navigation, route }) {
     }
   }, [menu]);
 
-  useEffect(() => {
-    if (imageUrl) {
-      console.log(imageUrl);
-
-      addItem();
-    }
-  }, [imageUrl]);
-
   const handleUpdateInfo = () => {
     update(ref(db, "stores/" + uid), {
       menu: menu,
@@ -132,42 +122,147 @@ export default function AddItemsDetails({ navigation, route }) {
     return null;
   }
 
-  console.log(photoUri);
+  // useEffect(() => {
+  //   const fetchImages = async () => {
 
-  const handleFireBaseUpload = async () => {
+  //     let result = await cloud.ref("userGenerated/").child().listAll();
+  //     let urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
+
+  //     return Promise.all(urlPromises);
+
+  //   }
+
+  //   const loadImages = async () => {
+  //     const urls = await fetchImages();
+  //     setFiles(urls);
+  //   }
+  //   loadImages();
+  // }, []);
+
+  // React.useEffect(() => {
+  //   for(var i = 0; 10 >= i >= 0; i++){
+  //     const imageRef = cloud.ref("userGenerated/").child([i]);
+  //     const urlPromise = imageRef.getDownloadURL();
+
+  //     imageUriFunction(urlPromise);
+  //   };
+
+  //   return function imageUriFunction(x){
+  //     setImageUri(x);
+
+  //   }
+
+  // }, []);
+
+  // React.useEffect(() => {
+  //   const userGeneratedArray = null;
+  //   const promises = this.state.userGeneratedArray.map(())
+  // })
+
+  // Code below is attempting to upload picture taken from user to firebase storage
+  const uploadImage = async () => {
     const m = photoUri;
     const res = await fetch(m);
     const blob = await res.blob();
+    m;
 
-    const fileName = m.substring(m.lastIndexOf("/") + 1);
-    const storage = fireStore.getStorage();
-    const storageRef = fireStore.ref(storage, "userGenerated/" + fileName);
+    const fileNameSlashIndex = m.substring(m.lastIndexOf("/") + 1);
+    console.log(
+      "\n" + "FILE NAME SLASH INDEX IS: " + fileNameSlashIndex + "\n"
+    );
+    // const fileName = m.slice(fileNameSlashIndex);
+    // console.log("FILE NAME IS: " + fileName);
+    // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
+    // const uploadURI = fileName.replace("file://", "");
+
+    const userGeneratedPicturesRef = CloudStorage.ref(
+      cloud,
+      "userGenerated/" + fileNameSlashIndex
+    );
+
+    const imageDLRef1 = await CloudStorage.ref(
+      cloud,
+      "userGenerated/" + tempUri
+    );
 
     const metadata = {
-      contentType: "image/jpeg",
+      contentType: "image/jpg",
     };
 
-    await fireStore.uploadBytes(storageRef, blob, metadata).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
+    // try {
+
+    //   return (
+    await CloudStorage.uploadBytes(
+      userGeneratedPicturesRef,
+      blob,
+      metadata
+    ).then((snapshot) => {
+      console.log("\n" + "UPLOAD SUCCESS!" + "\n");
+      setTempUri(fileNameSlashIndex);
     });
 
-    const url = await fireStore.getDownloadURL(storageRef);
+    CloudStorage.getDownloadURL(imageDLRef1).then((url) => {
+      // setImageUri(url);
+      console.log("\n" + "IMAGE URI IS: " + url + "\n");
+    });
 
-    setImageUrl(url);
+    //   )
+    // } catch (e) {
+    //   console.log("Uploading image error =>", e);
+    // }
   };
 
-  const addItem = () => {
-    console.log("\n" + "IMAGE URI IS: " + imageUrl + "\n");
+  // // code below is tryna download image
+  // const imageDLRef = CloudStorage.ref(cloud, "userGenerated/" + imageUri);
 
+  // const downloadImage = async () => {
+  //   try {
+  //     await CloudStorage.getDownloadURL(imageDLRef)
+  //       .then((url) => {
+  //         setImageUri(url);
+  //         console.log("IMAGE URI IS: " + imageUri);
+  //       })
+
+  //       addItem();
+  //   } catch (e) {
+  //     console.log("Downloading image error =>", e);
+  //   }
+  // }
+
+  const addItem = () => {
+    console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
+    //menu reset//
+    /* update(ref(db, "stores/" + uid ), {
+      address: "4399 Lougheed Hwy., Burnaby, BC V5C 3Y7",
+      email: "h@gmail.com",
+      img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/stores%2Fsaveon.png?alt=media&token=5e804ef7-f431-4fcf-8f8f-84c120be4ef8",
+      lat: 49.26703,
+      lng: -123.0069,
+      location: "Brentwood",
+      menu: [
+        {
+          description:
+          "this is description about the ingredients! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        expiry: "11/17/2021",
+        img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
+        name: "Carrot",
+        price: 0.25,
+        priceog: 1,
+        quantity: 8,
+        type: "fruits",
+        weight: "1PC (100g - 120g)",
+        },
+      ]
+    }); */
     setMenu([
       ...menu,
       {
         description: itemDescription,
         expiry: dateValue,
-        img: imageUrl,
+        img: imageUri,
         name: itemName,
-        price: "$" + itemDiscPrice,
-        priceog: "$" + itemOrigPrice,
+        price: itemDiscPrice,
+        priceog: itemOrigPrice,
         quantity: itemQuantity,
         type: categoryValue,
         weight: "1PC (100g - 120g)",
@@ -355,7 +450,7 @@ export default function AddItemsDetails({ navigation, route }) {
           <ReactNative.TouchableOpacity
             style={styles.postBtn}
             // onPress={()=>addItem()}
-            onPress={handleFireBaseUpload}
+            onPress={() => uploadImage()}
           >
             <ReactNative.Text style={styles.textInputHeader}>
               POST
