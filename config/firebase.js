@@ -8,8 +8,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  produce, //may cause errors -Michael
 } from "firebase/auth";
+import * as CloudStorage from "firebase/storage";
 
 //firebase configuration
 const firebaseConfig = {
@@ -26,6 +26,7 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 export default firebase;
 
-//export firebase database and auth
+//export firebase database and auth and storage
 export const db = getDatabase();
 export const auth = getAuth();
+export const cloud = CloudStorage.getStorage();

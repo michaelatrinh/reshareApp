@@ -2,6 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StoreOrders from "../StoreOrders";
 import OrderPage from "../StoreOrderPage";
+import OrderSummary from "../StoreOrderSummary";
 
 import NavButtons from "../../../comps/Customer/Header";
 
@@ -21,18 +22,24 @@ export default function StoreHomeStack({ route, navigation }){
           headerShadowVisible: false,
           headerTitle: () => false,
           // applied here
-        }}
-    />
+        }} />
 
-<Stack.Screen
+      <Stack.Screen
         name="Order Page"
         component={OrderPage}
         options={{
           headerShadowVisible: false,
           headerTitle: () => false,
           // applied here
-        }}
-    />
+        }} />
+
+      <Stack.Screen 
+        name="Order Summary"
+        component={OrderSummary}
+        options={{
+          headerShadowVisible: false,
+        }} />
+
     </Stack.Navigator>
   )
 }

@@ -4,13 +4,13 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { storage, getStorage, uploadBytes } from "firebase/storage";
-
 import { AuthContext } from "../../comps/auth";
 import { getDatabase, ref, onValue, set, update } from "firebase/database";
+import * as CloudStorage from "firebase/storage";
 
-import { db } from "../../config/firebase";
+import firebase, { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
+import { cloud } from "../../config/firebase";
 
 //components
 import Picture from "../../comps/Store/AddItemPicture";
@@ -24,6 +24,8 @@ var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function AddItemsDetails({ navigation, route }) {
   const { photoUri } = route.params;
+  const [imageUri, setImageUri] = React.useState(null);
+  const [tempUri, setTempUri] = React.useState(null);
 
   const currentUser = useContext(AuthContext);
   const uid = currentUser.currentUser.uid;
@@ -59,7 +61,7 @@ export default function AddItemsDetails({ navigation, route }) {
     { label: 'December 7, 2021', value: '12/07/2021' },
     { label: 'December 8, 2021', value: '12/08/2021' },
     { label: 'December 9, 2021', value: '12/09/2021' },
-  ]);  
+  ]);
   const [categoryValue, setCategoryValue] = useState(null);
   const [categories, setCategories] = useState([
     { label: 'Fruits', value: 'Fruit' },
@@ -110,27 +112,111 @@ export default function AddItemsDetails({ navigation, route }) {
 
   if (!loaded) {
     return null;
-  }
-
-  const uploadImage = async () => {
-    // const { uri } = {photoUri};
-    const filename = photoUri.substring(photoUri.lastIndexOf('/') + 1);
-    const uploadUri = Platform.OS === 'ios' ? photoUri.replace('file://', '') : uri;
-
-    const task = storage()
-      .ref(filename)
-      .putFile(uploadUri)
-
-    try {
-      await task;
-      addItem;
-    } catch (e) {
-      console.log(e);
-    }
-    
   };
 
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+
+  //     let result = await cloud.ref("userGenerated/").child().listAll();
+  //     let urlPromises = result.items.map(imageRef => imageRef.getDownloadURL());
+
+  //     return Promise.all(urlPromises);
+
+  //   }
+
+  //   const loadImages = async () => {
+  //     const urls = await fetchImages();
+  //     setFiles(urls);
+  //   }
+  //   loadImages();
+  // }, []);
+
+  // React.useEffect(() => {
+  //   for(var i = 0; 10 >= i >= 0; i++){
+  //     const imageRef = cloud.ref("userGenerated/").child([i]);
+  //     const urlPromise = imageRef.getDownloadURL();
+
+  //     imageUriFunction(urlPromise);
+  //   };
+
+  //   return function imageUriFunction(x){
+  //     setImageUri(x);
+
+  //   }
+
+  // }, []);
+
+  // React.useEffect(() => {
+  //   const userGeneratedArray = null;
+  //   const promises = this.state.userGeneratedArray.map(())
+  // })
+
+  // Code below is attempting to upload picture taken from user to firebase storage
+  const uploadImage = async () => {
+    const m = photoUri;
+    const res = await fetch(m);
+    const blob = await res.blob();
+
+    const fileNameSlashIndex = m.substring(m.lastIndexOf("/") + 1);
+    console.log("\n" + "FILE NAME SLASH INDEX IS: " + fileNameSlashIndex + "\n");
+    // const fileName = m.slice(fileNameSlashIndex);
+    // console.log("FILE NAME IS: " + fileName);
+    // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
+    // const uploadURI = fileName.replace("file://", "");
+
+    const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + fileNameSlashIndex);
+
+    const imageDLRef1 = await CloudStorage.ref(cloud, "userGenerated/" + tempUri);
+
+    const metadata = {
+      contentType: 'image/jpg',
+    };
+
+    // try {
+
+    //   return (
+    await CloudStorage.uploadBytes(userGeneratedPicturesRef, blob, metadata)
+      .then((snapshot) => {
+        console.log("\n" + "UPLOAD SUCCESS!" + "\n");
+        setTempUri(fileNameSlashIndex);
+      })
+
+
+
+      CloudStorage.getDownloadURL(imageDLRef1)
+        .then((url) => {
+          // setImageUri(url);
+          console.log("\n" + "IMAGE URI IS: " + url + "\n");
+
+        })
+  
+    //   )
+    // } catch (e) {
+    //   console.log("Uploading image error =>", e);
+    // }
+
+  };
+
+  // // code below is tryna download image
+  // const imageDLRef = CloudStorage.ref(cloud, "userGenerated/" + imageUri);
+
+  // const downloadImage = async () => {
+  //   try {
+  //     await CloudStorage.getDownloadURL(imageDLRef)
+  //       .then((url) => {
+  //         setImageUri(url);
+  //         console.log("IMAGE URI IS: " + imageUri);
+  //       })
+
+  //       addItem();
+  //   } catch (e) {
+  //     console.log("Downloading image error =>", e);
+  //   }
+  // }
+
   const addItem = () => {
+
+    console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
     //menu reset//
     /* update(ref(db, "stores/" + uid ), {
       address: "4399 Lougheed Hwy., Burnaby, BC V5C 3Y7",
@@ -159,7 +245,7 @@ export default function AddItemsDetails({ navigation, route }) {
       {
         description: itemDescription,
         expiry: dateValue,
-        img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/orange.png?alt=media&token=47f37ae5-5164-4c6f-a800-f56a0c12c3c8",
+        img: imageUri,
         name: itemName,
         price: itemDiscPrice,
         priceog: itemOrigPrice,
@@ -173,8 +259,8 @@ export default function AddItemsDetails({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView 
-      style={styles.safeArea} 
+    <SafeAreaView
+      style={styles.safeArea}
       edges={["left", "right"]}
     >
       <ReactNative.ScrollView
@@ -188,11 +274,11 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Produce Title Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer} >
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                TITLE
+              TITLE
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -205,14 +291,15 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Category Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-            <ReactNative.View
-              style={styles.textInputHeaderContainer} >
-              <ReactNative.Text
-                style={styles.textInputHeader} >
-                  CATEGORY
-              </ReactNative.Text>
-            </ReactNative.View>
+          <ReactNative.View
+            style={styles.textInputHeaderContainer} >
+            <ReactNative.Text
+              style={styles.textInputHeader} >
+              CATEGORY
+            </ReactNative.Text>
+          </ReactNative.View>
 
+          {/* Drop down picker comp imported from: https://hossein-zare.github.io/react-native-dropdown-picker-website/ */}
           <DropDownPicker
             style={styles.dropDown}
             containerStyle={styles.dropDownContainer}
@@ -245,14 +332,15 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Expiry Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer} >
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                EXPIRY
+              EXPIRY
             </ReactNative.Text>
           </ReactNative.View>
-          
+
+          {/* Drop down picker comp imported from: https://hossein-zare.github.io/react-native-dropdown-picker-website/ */}
           <DropDownPicker
             style={styles.dropDown}
             containerStyle={styles.dropDownContainer}
@@ -286,7 +374,7 @@ export default function AddItemsDetails({ navigation, route }) {
             style={styles.textInputHeaderContainer} >
             <ReactNative.Text
               style={styles.textInputHeader} >
-                QUANTITY
+              QUANTITY
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -297,17 +385,17 @@ export default function AddItemsDetails({ navigation, route }) {
         </ReactNative.View>
 
         {/* Price Section */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.priceMainContainer} >
-          
+
           {/* Original Price Input */}
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.priceContainer} >
-            <ReactNative.View 
+            <ReactNative.View
               style={styles.priceHeaderContainer} >
-              <ReactNative.Text 
+              <ReactNative.Text
                 style={styles.textInputHeader} >
-                  ORIGINAL PRICE
+                ORIGINAL PRICE
               </ReactNative.Text>
             </ReactNative.View>
 
@@ -318,13 +406,13 @@ export default function AddItemsDetails({ navigation, route }) {
           </ReactNative.View>
 
           {/* Discounted Price Input */}
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.priceContainer} >
-            <ReactNative.View 
+            <ReactNative.View
               style={styles.priceHeaderContainer} >
-              <ReactNative.Text 
+              <ReactNative.Text
                 style={styles.textInputHeader} >
-                  DISCOUNTED PRICE
+                DISCOUNTED PRICE
               </ReactNative.Text>
             </ReactNative.View>
 
@@ -336,13 +424,13 @@ export default function AddItemsDetails({ navigation, route }) {
         </ReactNative.View>
 
         {/* Description Section */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.descMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer}>
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                DESCRIPTION
+              DESCRIPTION
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -361,15 +449,15 @@ export default function AddItemsDetails({ navigation, route }) {
           onPress={() => addItem()} >
           <ReactNative.Text>add</ReactNative.Text>
         </ReactNative.Pressable> */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.postBtnMainContainer} >
           <ReactNative.TouchableOpacity
             style={styles.postBtn}
             // onPress={()=>addItem()} 
-            onPress={()=>uploadImage()} >
-            <ReactNative.Text 
+            onPress={() => uploadImage()} >
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                POST
+              POST
             </ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </ReactNative.View>
