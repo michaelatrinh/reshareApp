@@ -262,7 +262,7 @@ export default function StoreDashboardScreen({
               key={item.name}
               title={item.name}
               item={item}
-              removeBtnPress={()=>removeItemBtnPress(item.key)}
+              removeBtnPress={()=>removeItemBtnPress(item)}
             />
           ))
         ) : (
