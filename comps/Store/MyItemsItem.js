@@ -167,11 +167,11 @@ const BtnsContainer = styled.View`
 //
 // image: (bgColour) => { return {
 // backgroundColor: bgColour,
-//   width: 101,
-//     height: 91,
-//       resizeMode: "contain",
+// width: 101,
+// height: 91,
+// resizeMode: "contain",
 //   }
-//   },
+// },
 // text: {
 //   fontFamily: "PoppinsSemiBold",
 //     fontSize: 12,
