@@ -6,9 +6,21 @@ import StoreDashboardScreen from "../StoreDashboard";
 
 const Stack = createNativeStackNavigator();
 
-export default function StoreHomeStack({ route, navigation }){
+export default function StoreHomeStack({ 
+  route, navigation
+}){
+  const config = {
+    screens : {
+      Details : {
+        initialRouteName : "Camera"
+      }
+    }
+  }
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName="Camera" 
+      options={config} >
       <Stack.Screen
         name="Camera"
         component={StoreAddItem}

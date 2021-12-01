@@ -101,6 +101,11 @@ export default function StoreDashboardScreen({
 
     onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
+
+      //loop the menu, use the image name and getDownloadURL
+      //data[i].url = downloaded url
+      //then set menu
+      
       setMenu(data);
     });
   }

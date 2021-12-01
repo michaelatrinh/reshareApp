@@ -61,7 +61,7 @@ export default function AddItemsDetails({ navigation, route }) {
     { label: 'December 7, 2021', value: '12/07/2021' },
     { label: 'December 8, 2021', value: '12/08/2021' },
     { label: 'December 9, 2021', value: '12/09/2021' },
-  ]);  
+  ]);
   const [categoryValue, setCategoryValue] = useState(null);
   const [categories, setCategories] = useState([
     { label: 'Fruits', value: 'Fruit' },
@@ -143,7 +143,7 @@ export default function AddItemsDetails({ navigation, route }) {
   //     setImageUri(x);
 
   //   }
-    
+
   // }, []);
 
   // React.useEffect(() => {
@@ -154,57 +154,69 @@ export default function AddItemsDetails({ navigation, route }) {
   // Code below is attempting to upload picture taken from user to firebase storage
   const uploadImage = async () => {
     const m = photoUri;
+    const res = await fetch(m);
+    const blob = await res.blob();
+
     const fileNameSlashIndex = m.substring(m.lastIndexOf("/") + 1);
-    
     console.log("\n" + "FILE NAME SLASH INDEX IS: " + fileNameSlashIndex + "\n");
-    
+    // const fileName = m.slice(fileNameSlashIndex);
+    // console.log("FILE NAME IS: " + fileName);
     // const uploadUri = Platform.OS === 'ios' ? m.replace('file://', '') : m;
     // const uploadURI = fileName.replace("file://", "");
 
     const userGeneratedPicturesRef = CloudStorage.ref(cloud, "userGenerated/" + fileNameSlashIndex);
-  
-    const imageDLRef1 = CloudStorage.ref(cloud, "userGenerated/" + tempUri);
+
+    const imageDLRef1 = await CloudStorage.ref(cloud, "userGenerated/" + tempUri);
 
     const metadata = {
       contentType: 'image/jpg',
     };
-    
-    try {
-      // await firebase
-      //   // CloudStorage.storage()
-      //   // .cloud()
-      //   // .storage()
-      //   uploadBytes(userGeneratedPicturesRef, )
-      //   .ref(filename)
-      //   .putFile(uploadUri)
-      //   .then((snapshot) => {
-      //     console.log(`${filename} has been successfully uploaded.`);
-      //   })
 
-      return (
-        // uploading image to storage code
-        await CloudStorage.uploadBytes(userGeneratedPicturesRef, fileNameSlashIndex, metadata)
-          .then((snapshot) => {
-            console.log("\n" + "UPLOAD SUCCESS!" + "\n");
-            setTempUri(fileNameSlashIndex);
+    // try {
 
-            // code to try and download the url of the image from the storage
-            CloudStorage.getDownloadURL(imageDLRef1)
-              .then((url) => {
-                setImageUri(url);
-                console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
-                
-                addItem();
-              })
+    //   return (
+    await CloudStorage.uploadBytes(userGeneratedPicturesRef, blob, metadata)
+      .then((snapshot) => {
+        console.log("\n" + "UPLOAD SUCCESS!" + "\n");
+        setTempUri(fileNameSlashIndex);
+      })
+
+
+    if (imageDLRef1) {
+      CloudStorage.getDownloadURL(imageDLRef1)
+        .then((url) => {
+          // setImageUri(url);
+          console.log("\n" + "IMAGE URI IS: " + url + "\n");
+
         })
-      )
-    } catch (e){
-      console.log("Uploading image error =>", e);
     }
-    
+    //   )
+    // } catch (e) {
+    //   console.log("Uploading image error =>", e);
+    // }
+
   };
 
+  // // code below is tryna download image
+  // const imageDLRef = CloudStorage.ref(cloud, "userGenerated/" + imageUri);
+
+  // const downloadImage = async () => {
+  //   try {
+  //     await CloudStorage.getDownloadURL(imageDLRef)
+  //       .then((url) => {
+  //         setImageUri(url);
+  //         console.log("IMAGE URI IS: " + imageUri);
+  //       })
+
+  //       addItem();
+  //   } catch (e) {
+  //     console.log("Downloading image error =>", e);
+  //   }
+  // }
+
   const addItem = () => {
+
+    console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
     //menu reset//
     /* update(ref(db, "stores/" + uid ), {
       menu: [
@@ -241,8 +253,8 @@ export default function AddItemsDetails({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView 
-      style={styles.safeArea} 
+    <SafeAreaView
+      style={styles.safeArea}
       edges={["left", "right"]}
     >
       <ReactNative.ScrollView
@@ -256,11 +268,11 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Produce Title Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer} >
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                TITLE
+              TITLE
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -273,13 +285,13 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Category Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-            <ReactNative.View
-              style={styles.textInputHeaderContainer} >
-              <ReactNative.Text
-                style={styles.textInputHeader} >
-                  CATEGORY
-              </ReactNative.Text>
-            </ReactNative.View>
+          <ReactNative.View
+            style={styles.textInputHeaderContainer} >
+            <ReactNative.Text
+              style={styles.textInputHeader} >
+              CATEGORY
+            </ReactNative.Text>
+          </ReactNative.View>
 
           {/* Drop down picker comp imported from: https://hossein-zare.github.io/react-native-dropdown-picker-website/ */}
           <DropDownPicker
@@ -314,11 +326,11 @@ export default function AddItemsDetails({ navigation, route }) {
         {/* Expiry Section */}
         <ReactNative.View
           style={styles.textInputMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer} >
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                EXPIRY
+              EXPIRY
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -356,7 +368,7 @@ export default function AddItemsDetails({ navigation, route }) {
             style={styles.textInputHeaderContainer} >
             <ReactNative.Text
               style={styles.textInputHeader} >
-                QUANTITY
+              QUANTITY
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -367,17 +379,17 @@ export default function AddItemsDetails({ navigation, route }) {
         </ReactNative.View>
 
         {/* Price Section */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.priceMainContainer} >
-          
+
           {/* Original Price Input */}
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.priceContainer} >
-            <ReactNative.View 
+            <ReactNative.View
               style={styles.priceHeaderContainer} >
-              <ReactNative.Text 
+              <ReactNative.Text
                 style={styles.textInputHeader} >
-                  ORIGINAL PRICE
+                ORIGINAL PRICE
               </ReactNative.Text>
             </ReactNative.View>
 
@@ -388,13 +400,13 @@ export default function AddItemsDetails({ navigation, route }) {
           </ReactNative.View>
 
           {/* Discounted Price Input */}
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.priceContainer} >
-            <ReactNative.View 
+            <ReactNative.View
               style={styles.priceHeaderContainer} >
-              <ReactNative.Text 
+              <ReactNative.Text
                 style={styles.textInputHeader} >
-                  DISCOUNTED PRICE
+                DISCOUNTED PRICE
               </ReactNative.Text>
             </ReactNative.View>
 
@@ -406,13 +418,13 @@ export default function AddItemsDetails({ navigation, route }) {
         </ReactNative.View>
 
         {/* Description Section */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.descMainContainer} >
-          <ReactNative.View 
+          <ReactNative.View
             style={styles.textInputHeaderContainer}>
-            <ReactNative.Text 
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                DESCRIPTION
+              DESCRIPTION
             </ReactNative.Text>
           </ReactNative.View>
 
@@ -431,15 +443,15 @@ export default function AddItemsDetails({ navigation, route }) {
           onPress={() => addItem()} >
           <ReactNative.Text>add</ReactNative.Text>
         </ReactNative.Pressable> */}
-        <ReactNative.View 
+        <ReactNative.View
           style={styles.postBtnMainContainer} >
           <ReactNative.TouchableOpacity
             style={styles.postBtn}
             // onPress={()=>addItem()} 
-            onPress={()=>uploadImage()} >
-            <ReactNative.Text 
+            onPress={() => uploadImage()} >
+            <ReactNative.Text
               style={styles.textInputHeader} >
-                POST
+              POST
             </ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </ReactNative.View>
