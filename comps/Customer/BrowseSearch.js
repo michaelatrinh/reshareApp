@@ -24,7 +24,7 @@ const TagUI = styled.Pressable`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 50%;
   border-radius: 10px;
   height: 28px;
 `;
@@ -50,9 +50,11 @@ export default function BrowseSearch({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
+  selection,
+  setSelection,
+  search,
+  setSearch,
 }) {
-  const [selection, setSelection] = useState("saved");
-
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
   });
@@ -61,11 +63,13 @@ export default function BrowseSearch({
     return null;
   }
 
-  console.log(displayStores);
+  const handleInput = (e) => {
+    setSearch(e.toLowerCase())
+  }
 
   return (
     <ContainerUI>
-      <SearchBarUI />
+      <SearchBarUI defaultValue={search} onChangeText={handleInput} />
       <RowUI>
         <TagUI
           style={{
@@ -84,14 +88,14 @@ export default function BrowseSearch({
           <TagTextUI>stores near you</TagTextUI>
         </TagUI>
 
-        <TagUI
+        {/*         <TagUI
           style={{
             backgroundColor: selection == "recommended" ? "#fde9c2" : "#ffffff",
           }}
           onPress={() => setSelection("recommended")}
         >
           <TagTextUI>recommended</TagTextUI>
-        </TagUI>
+        </TagUI> */}
       </RowUI>
     </ContainerUI>
   );

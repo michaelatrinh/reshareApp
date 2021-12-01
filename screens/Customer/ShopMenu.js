@@ -96,6 +96,7 @@ const getStripe = () => {
 
 export default function ShopMenu({ route, navigation }) {
   const { store } = route.params;
+  const { currentUser } = useContext(AuthContext);
 
   const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
     useContext(CartContext);
@@ -138,7 +139,7 @@ export default function ShopMenu({ route, navigation }) {
   /*   console.log(lng);
   console.log(lat);
  */
-  var config = {
+  /*   var config = {
     method: "get",
     url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${lat}%2C${lng}&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`,
     headers: {},
@@ -146,7 +147,7 @@ export default function ShopMenu({ route, navigation }) {
 
   axios(config)
     .then(function (response) {
-      /*       console.log(response.data.rows[0].elements[0].distance.text); */
+            console.log(response.data.rows[0].elements[0].distance.text);
 
       const distance = response.data.rows[0].elements[0].distance.text;
       setDistance(distance);
@@ -155,9 +156,9 @@ export default function ShopMenu({ route, navigation }) {
       console.log(error);
     });
 
-  const win = Dimensions.get("window");
+   */
 
-/*   const currentUser = useContext(AuthContext);
+  /*   const currentUser = useContext(AuthContext);
   const uid = currentUser.currentUser.uid;
 
   const [savedStores, setSavedStores] = useState(null);
@@ -184,15 +185,59 @@ export default function ShopMenu({ route, navigation }) {
     readUserData(uid);
   }, []); */
 
+  useEffect(() => {
+    readUserData(currentUser.uid);
+  }, []);
+
+  function readUserData(userId) {
+    const menuRef = ref(db, "users/" + userId + "/saved");
+
+    onValue(menuRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setSavedStores(data);
+        console.log(data);
+      }
+    });
+  }
+
   const [saved, setSaved] = useState(false);
+  const [savedStores, setSavedStores] = useState(null);
+
+  const handleUpdateInfo = () => {
+    update(ref(db, "users/" + currentUser.uid), {
+      saved: savedStores,
+    });
+  };
+
+  useEffect(() => {
+    if (savedStores) {
+      handleUpdateInfo();
+    }
+
+    if (savedStores && savedStores.includes(store.uid)) {
+      setSaved(true);
+    }
+  }, [savedStores]);
 
   const saveStore = () => {
     setSaved(!saved);
-/*     console.log(savedStores.stores.filter(x => x === store.uid)) */
-    
+    console.log(savedStores);
+    if (savedStores) {
+      setSavedStores([...savedStores, store.uid]);
+    } else {
+      setSavedStores([store.uid]);
+    }
   };
 
+  const handleSave = () => {
+    if (saved) {
+    } else {
+      saveStore();
+    }
+  };
 
+  const win = Dimensions.get("window");
 
   return (
     <>
@@ -212,7 +257,7 @@ export default function ShopMenu({ route, navigation }) {
           <ContainerUI>
             <ImageContainerUI>
               <ImageUI
-                source={{uri: store.img}}
+                source={{ uri: store.img }}
                 resizeMode={"cover"}
                 style={{ width: win.width * 0.9 }}
               />
@@ -223,9 +268,9 @@ export default function ShopMenu({ route, navigation }) {
             </TitleUI>
 
             <RowUI style={{ width: win.width * 0.9 }}>
-              <DetailsUI>{distance}</DetailsUI>
+              <DetailsUI>{store.distance} km</DetailsUI>
               <Pressable
-                onPress={saveStore}
+                onPress={handleSave}
                 style={{
                   flexDirection: "row",
                   justifyContent: "center",

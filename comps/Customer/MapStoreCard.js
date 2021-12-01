@@ -34,7 +34,7 @@ const ColumnUI = styled.View`
 export default function MapStoreCard({ store, route, destination, active, navigation}) {
 
   return (
-    <RowUI style={{backgroundColor: active ? '#57BA68' :  'white'}} onPress={() => navigation.navigate('Menu', {store: store})}>
+    <RowUI style={{backgroundColor: active ? '#EE9837' :  'white'}} onPress={() => navigation.navigate('Menu', {store: store})}>
       <ColumnUI>
         <Text style={{color: active ? 'white' :  'black'}}>
           {store.username} - {store.location}

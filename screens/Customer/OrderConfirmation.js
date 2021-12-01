@@ -19,6 +19,7 @@ import { AuthContext } from "../../comps/auth";
 import MapView, { Callout, Circle, Marker, Polyline } from "react-native-maps";
 import { LocationContext } from "../../comps/location";
 import MapViewDirections from "react-native-maps-directions";
+import * as Linking from "expo-linking";
 
 const ScreenUI = styled.View`
   align-items: center;
@@ -83,10 +84,12 @@ export default function OrderConfirmation({ route, navigation }) {
     setmapRegion({
       latitude: curLat,
       longitude: curLng,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.03,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05,
     });
   }, []);
+
+  console.log(store.address.split(" ").join("+"));
 
   return (
     <>
@@ -114,7 +117,7 @@ export default function OrderConfirmation({ route, navigation }) {
                 latitude: store.lat,
                 longitude: store.lng,
               }}
-              pinColor="purple" //set pin color
+              pinColor="#57BA68" //set pin color
             >
               <Callout
                 onPress={() => navigation.navigate("Menu", { store: store })}
@@ -134,7 +137,17 @@ export default function OrderConfirmation({ route, navigation }) {
           {/* <MapCont source={Map} style={{ width: 375, height: 250 }}></MapCont> */}
         </ContainerUI>
       </ScreenUI>
-      <GetDirection onPress={() => navigation.navigate("Map", {store: store})}>
+      <GetDirection
+        onPress={() =>
+          Linking.openURL(
+            `https://www.google.com/maps/dir/${curLat},${curLng}/${store.address
+              .split(" ")
+              .join(
+                "+"
+              )}/@${curLat},${curLng},16z/data=!4m5!4m4!1m1!4e1!1m0!3e0`
+          )
+        }
+      >
         <ButtonText>GET DIRECTIONS</ButtonText>
       </GetDirection>
     </>

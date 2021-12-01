@@ -31,10 +31,9 @@ export default function StoreDashboardScreen({ navigation }) {
       const data = snapshot.val();
 
       Object.keys(data).forEach(function (key) {
-/*         console.log("fuck");
-        console.log(data[key].order.filter((x) => x.store === uid)); */
 
         setOrders(data[key].order.filter((x) => x.store === uid));
+        
       });
     });
   }

@@ -40,6 +40,25 @@ export default function ShopBrowsing({ route, navigation }) {
   const [inputName, setInputName] = useState("");
   const [inputLocation, setInputLocation] = useState("");
 
+  const [selection, setSelection] = useState("saved");
+
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    console.log(search);
+
+    if (filteredStores) {
+      const stores = Object.values(filteredStores)
+        .filter((x) => x.username.toLowerCase().includes(search))
+        .map((x) => x);
+      console.log(
+        Object.values(filteredStores)
+          .filter((x) => x.username.toLowerCase().includes(search))
+          .map((x) => x)
+      );
+    }
+  }, [search]);
+
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
 
@@ -76,12 +95,26 @@ export default function ShopBrowsing({ route, navigation }) {
     });
   }
 
-  console.log(displayStores);
-  console.log(currentUser.uid);
+  const [filteredStores, setFilteredStores] = useState("");
+
+  useEffect(() => {
+    const filtered = Object.values(displayStores).sort(function (a, b) {
+      return a.distance - b.distance;
+    });
+    setFilteredStores(filtered);
+  }, [displayStores]);
+
+  /*   console.log(displayStores);
+  console.log(currentUser.uid); */
   return (
     <>
       <Header navigation={navigation} />
-      <BrowseSearch />
+      <BrowseSearch
+        search={search}
+        setSearch={setSearch}
+        selection={selection}
+        setSelection={setSelection}
+      />
 
       <ScrollView
         contentContainerStyle={{
@@ -92,9 +125,39 @@ export default function ShopBrowsing({ route, navigation }) {
           minHeight: "100%",
         }}
       >
-        {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCard key={key} store={v} navigation={navigation} />;
-        })}
+        {selection === "saved"
+          ? Object.values(displayStores)
+              .filter((x) => {
+                if (search === "") {
+                  return x;
+                } else if (x.username.toLowerCase().includes(search)) {
+                  return x;
+                }
+              })
+              .map((v) => {
+                return (
+                  <ShopCard
+                    key={v.username}
+                    store={v}
+                    navigation={navigation}
+                  />
+                );
+              })
+          : selection === "near"
+          ? Object.values(filteredStores)
+              .filter((x) => {
+                if (search === "") {
+                  return x;
+                } else if (x.username.toLowerCase().includes(search)) {
+                  return x;
+                }
+              })
+              .map((v) => {
+                return <ShopCard key={v.username} store={v} navigation={navigation} />;
+              })
+          : Object.entries(displayStores).map(([key, v]) => {
+              return <ShopCard key={key} store={v} navigation={navigation} />;
+            })}
       </ScrollView>
     </>
   );
