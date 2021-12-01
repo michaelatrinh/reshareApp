@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components/native";
 import { CartContext } from "../cart";
 import { Feather } from "@expo/vector-icons";
-import lime from "../../assets/icon.png";
+import lime from "../../assets/Login/login_apple.png";
 import { Image, Pressable } from "react-native";
 import ProfileDropdown from "./ProfileDropdown";
 
@@ -94,9 +94,9 @@ export default function HeaderRight({ navigation }) {
         <></>
       )}
       <HeaderUI>
-        <Pressable onPress={() => seShowNotification(true)}>
+{/*         <Pressable onPress={() => seShowNotification(true)}>
           <Feather name="bell" size={24} color="black" />
-        </Pressable>
+        </Pressable> */}
         <ProfileButtonUI onPress={() => setShowProfile(true)}>
           <Image source={lime} style={{ width: 48, height: 48 }} />
         </ProfileButtonUI>

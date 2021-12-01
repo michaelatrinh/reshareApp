@@ -149,6 +149,23 @@ const PickupTimeUI = styled.TouchableOpacity`
 `;
 
 const pickupTimes = [
+  "1:15pm",
+  "1:30pm",
+  "1:45pm",
+  "2:00pm",
+  "2:15pm",
+  "2:30pm",
+  "2:45pm",
+  "3:00pm",
+  "3:15pm",
+  "3:30pm",
+  "3:45pm",
+  "4:00pm",
+  "4:15pm",
+  "4:30pm",
+  "4:45pm",
+  "5:00pm",
+  "5:15pm",
   "5:30pm",
   "5:45pm",
   "6:00pm",
@@ -156,7 +173,6 @@ const pickupTimes = [
   "6:30pm",
   "6:45pm",
   "7:00pm",
-  "7:15pm",
 ];
 
 const ButtonCont = styled.View``;
@@ -221,7 +237,7 @@ export default function Cart({ route, navigation }) {
   };
 
   const addOrder = () => {
-    setUpdateOrder([
+/*     setUpdateOrder([
       ...order,
       {
         number: orderNumber,
@@ -235,7 +251,7 @@ export default function Cart({ route, navigation }) {
         store: store.uid,
         complete: false
       },
-    ]);
+    ]); */
   };
 
   useEffect(() => {

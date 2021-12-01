@@ -17,12 +17,12 @@ import {
 import { db } from "../../config/firebase";
 import { auth } from "../../config/firebase";
 import { AuthContext } from "../../comps/auth";
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Greeting from "../../comps/Greeting";
 import ShopSlider from "../../comps/Customer/ShopSlider";
 import Header from "../../comps/Customer/Header";
 import { LocationContext } from "../../comps/location";
+import { Feather } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,14 +36,16 @@ const ContainerUI = styled.View`
 const MapButtonUI = styled.Pressable`
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   background: white;
   width: 100%;
   margin: 30px 0;
+  justify-content: center;
+  align-items: center;
 `;
 
 const UserDetailsUI = styled.Text`
-  margin: 0 0 10px 0;
+  display: flex;
 `;
 
 export default function CustomerDashboard({ route, navigation }) {
@@ -112,9 +114,9 @@ export default function CustomerDashboard({ route, navigation }) {
       <ScrollView
         contentContainerStyle={{
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           backgroundColor: "white",
-          height: '100%'
+          minHeight: "100%",
         }}
       >
         <ContainerUI>
@@ -125,7 +127,13 @@ export default function CustomerDashboard({ route, navigation }) {
               navigation.navigate("Map");
             }}
           >
-            <UserDetailsUI>Your Location: {currentAddress}</UserDetailsUI>
+            <UserDetailsUI style={{marginRight: 10}}>
+              <Feather name="map-pin" size={24} style={{ color: "#EE9837" }} />
+            </UserDetailsUI>
+
+            <UserDetailsUI>
+              {currentAddress}
+            </UserDetailsUI>
           </MapButtonUI>
 
           <ShopSlider

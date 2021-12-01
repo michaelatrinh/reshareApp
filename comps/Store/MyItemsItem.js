@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as ReactNative from 'react-native';
-import styled from 'styled-components/native';
-import { useFonts } from 'expo-font';
+import * as React from "react";
+import * as ReactNative from "react-native";
+import styled from "styled-components/native";
+import { useFonts } from "expo-font";
 
-var deviceWidth = ReactNative.Dimensions.get('window').width; //full width
-var deviceHeight = ReactNative.Dimensions.get('window').height; //full height
+var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
+var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function MyItemsItem({
   title,
@@ -12,12 +12,12 @@ export default function MyItemsItem({
   quantity,
   price,
   foodPic,
-  removeBtnPress=()=>{},
+  removeBtnPress = () => {},
   bgColour,
   item,
-  
-  removeFoodItemDisplay="flex",
-}){
+
+  removeFoodItemDisplay = "flex",
+}) {
   const [loaded] = useFonts({
     Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
     PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
@@ -32,20 +32,27 @@ export default function MyItemsItem({
     <Container 
       removeFoodItemDisplay={removeFoodItemDisplay} >
       <FoodImgContainer>
+
         <ReactNative.Image 
           source={{uri: item.img}} 
           style={styles.image} />
+
       </FoodImgContainer>
 
       <TextContainer>
         <ReactNative.Text style={styles.text}>{item.name}</ReactNative.Text>
-        <ReactNative.Text style={styles.text02}>Best before {item.expiry}</ReactNative.Text>
-        <ReactNative.Text style={styles.text02}>Quantity Left: {item.quantity}</ReactNative.Text>
+        <ReactNative.Text style={styles.text02}>
+          Best before {item.expiry}
+        </ReactNative.Text>
+        <ReactNative.Text style={styles.text02}>
+          Quantity Left: {item.quantity}
+        </ReactNative.Text>
         <ReactNative.Text style={styles.text03}>{item.price}</ReactNative.Text>
       </TextContainer>
 
       <BtnsContainer>
         <BtnsContainer02>
+
           <ReactNative.TouchableOpacity 
             style={styles.editBtn} 
             activeOpacity={0.5}>
@@ -62,6 +69,7 @@ export default function MyItemsItem({
             <ReactNative.Text 
               style={styles.removeBtnText} >
                 REMOVE
+
             </ReactNative.Text>
           </ReactNative.TouchableOpacity>
         </BtnsContainer02>
@@ -71,50 +79,52 @@ export default function MyItemsItem({
 }
 
 const styles = ReactNative.StyleSheet.create({
+
   image:{
     backgroundColor: "#FFFFFF",
     width: 101,
     height: 91,
     resizeMode: "contain",
+
   },
-  text:{
+  text: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 12,
-  },  
-  text02:{
+  },
+  text02: {
     fontFamily: "Poppins",
     fontSize: 9,
     color: "#656565",
   },
-  text03:{
+  text03: {
     fontFamily: "PoppinsSemiBold",
     fontSize: 14,
-    color: "#FE0000"
+    color: "#FE0000",
   },
-  editBtn:{
+  editBtn: {
     width: 87,
     height: 24,
     backgroundColor: "#DFEFB9",
     borderRadius: 22.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  editBtnText:{
+  editBtnText: {
     fontFamily: "Ubuntu",
     fontSize: 8,
   },
-  removeBtn:{
+  removeBtn: {
     width: 87,
     height: 24,
     backgroundColor: "#F2BCBC",
     borderRadius: 22.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  removeBtnText:{
+  removeBtnText: {
     fontFamily: "Ubuntu",
     fontSize: 8,
-  }
+  },
 });
 
 const Container = styled.View`
@@ -122,28 +132,29 @@ const Container = styled.View`
   width: 90%;
   justify-content: space-evenly;
   margin-bottom: 38px;
-  display: ${props=>props.removeFoodItemDisplay}
+  display: ${(props) => props.removeFoodItemDisplay};
 `;
 
-  const FoodImgContainer = styled.View`
-    flex-grow: 1;
-  `;
+const FoodImgContainer = styled.View`
+  flex-grow: 1;
+`;
 
-  const TextContainer = styled.View`
-    flex-grow: 4;
-    flex-direction: column;
-    height: 91px;
-    justify-content: space-around;
-    align-items: flex-start;
-  `;
+const TextContainer = styled.View`
+  flex-grow: 4;
+  flex-direction: column;
+  height: 91px;
+  justify-content: space-around;
+  align-items: flex-start;
+`;
 
-  const BtnsContainer = styled.View`
-    flex-grow: 1;
-    flex-direction: column;
-    height: 91px;
-    justify-content: flex-end;
-    align-items: flex-end;
-  `;
+const BtnsContainer = styled.View`
+  flex-grow: 1;
+  flex-direction: column;
+  height: 91px;
+  justify-content: flex-end;
+  align-items: flex-end;
+`;
+
 
     const BtnsContainer02 = styled.View`
       flex-grow: 1;
@@ -165,3 +176,4 @@ const Container = styled.View`
 //   fontFamily: "PoppinsSemiBold",
 //     fontSize: 12,
 //   },
+

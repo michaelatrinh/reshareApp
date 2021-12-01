@@ -25,7 +25,7 @@ export default function ItemSlider({ item }) {
     //   }}
     // ></ScrollView>
     <Main>
-      <Image source={{ uri: item.img }} style={{ width: 200, height: 200 }} />
+      <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} />
     </Main>
   );
 }

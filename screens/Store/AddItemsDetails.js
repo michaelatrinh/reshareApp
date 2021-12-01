@@ -219,6 +219,12 @@ export default function AddItemsDetails({ navigation, route }) {
     console.log("\n" + "IMAGE URI IS: " + imageUri + "\n");
     //menu reset//
     /* update(ref(db, "stores/" + uid ), {
+      address: "4399 Lougheed Hwy., Burnaby, BC V5C 3Y7",
+      email: "h@gmail.com",
+      img: "https://firebasestorage.googleapis.com/v0/b/reshare-eb40c.appspot.com/o/stores%2Fsaveon.png?alt=media&token=5e804ef7-f431-4fcf-8f8f-84c120be4ef8",
+      lat: 49.26703,
+      lng: -123.0069,
+      location: "Brentwood",
       menu: [
         {
           description:
@@ -231,7 +237,7 @@ export default function AddItemsDetails({ navigation, route }) {
         quantity: 8,
         type: "fruits",
         weight: "1PC (100g - 120g)",
-        }
+        },
       ]
     }); */
     setMenu([
@@ -241,8 +247,8 @@ export default function AddItemsDetails({ navigation, route }) {
         expiry: dateValue,
         img: imageUri,
         name: itemName,
-        price: "$" + itemDiscPrice,
-        priceog: "$" + itemOrigPrice,
+        price: itemDiscPrice,
+        priceog: itemOrigPrice,
         quantity: itemQuantity,
         type: categoryValue,
         weight: "1PC (100g - 120g)",
@@ -619,6 +625,7 @@ const styles = ReactNative.StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 14,
+    zIndex: 2333,
     color: "#C7C7CD"
   },
 });

@@ -55,14 +55,18 @@ export default function Orders({ route, navigation }) {
     onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
 
+      if(data){
       const completeOrders = data.order.filter((x) => x.complete === true);
       const currentOrders = data.order.filter((x) => x.complete === false);
 
   
+
       setCurrentOrders(currentOrders);
       setPastOrders(completeOrders);
 
       console.log(currentOrders)
+
+      }
     });
   }
 
@@ -75,15 +79,15 @@ export default function Orders({ route, navigation }) {
           <HeaderUI>Current Orders</HeaderUI>
 
           <OrderCardContainer>
-            {currentOrders &&
-              currentOrders.map((order) => <OrderCard key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>)}
+            {currentOrders ?
+              currentOrders.map((order) => <OrderCard key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>) : <Text>No orders yet!</Text>}
           </OrderCardContainer>
 
           <HeaderUI>Past Orders</HeaderUI>
 
           <OrderCardContainer>
-            {pastOrders &&
-              pastOrders.map((x) => <OrderCard  key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>)}
+            {pastOrders ?
+              pastOrders.map((x) => <OrderCard  key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>) : <Text>No orders yet!</Text>}
           </OrderCardContainer>
         </ContainerUI>
       </ScrollView>
