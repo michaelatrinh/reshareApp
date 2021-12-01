@@ -5,21 +5,17 @@ import * as ReactNative from "react-native";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { storage, getStorage, ref, uploadBytes } from "firebase/storage";
 
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
 export default function PhoneCamera({ navigation }) {
-  
   const cameraRef = React.useRef(null);
 
   const [hasPermission, setHasPermission] = React.useState(null);
 
   const [snappedImg, setSnappedImg] = React.useState(null);
   const [type, setType] = React.useState(Camera.Constants.Type.back);
-
-  const [cameraSnap, setCameraSnap] = React.useState(null);
 
   // camera api asks phone permission to use phone's camera
   React.useEffect(() => {
@@ -47,14 +43,14 @@ export default function PhoneCamera({ navigation }) {
   // photo gallery access function
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.3,
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      navigation.navigate("Details", { photoUri: result.uri });
     }
   };
 
@@ -62,11 +58,14 @@ export default function PhoneCamera({ navigation }) {
   const takePicture = async () => {
     if (cameraRef) {
       const picture = await cameraRef.current
-        .takePictureAsync()
+        .takePictureAsync({
+          aspect: [1, 1],
+          quality: 0.3,
+        })
         .then((photo) => {
           setSnappedImg(photo);
-          console.log(photo.uri);
-          
+
+
           // // uploading photo to firebase storage
           // const { uri } = snappedImg;
           // const filename = uri.substring(uri.lastIndexOf('/') + 1);
@@ -93,13 +92,11 @@ export default function PhoneCamera({ navigation }) {
           // }
 
           // setUploading(false);
-          
+
           navigation.navigate("Details", { photoUri: photo.uri });
         });
     }
   };
-
-
 
   return (
     <ReactNative.View style={styles.container}>

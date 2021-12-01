@@ -46,6 +46,7 @@ export default function CustomerDashboard({ route, navigation }) {
   //display states
   const [displayName, setDisplayName] = useState("");
   const [displayStores, setDisplayStores] = useState("");
+  const [savedStores, setSavedStores] = useState("");
 
 
   //get current user from auth context
@@ -68,10 +69,13 @@ export default function CustomerDashboard({ route, navigation }) {
     setFilteredStores(filtered);
   }, [displayStores]);
 
+
+
   //firebase read user data (name, location, type)
   async function readUserData(userId) {
     const nameRef = ref(db, "users/" + userId + "/username");
     const storesRef = ref(db, "stores/");
+    const savedRef = ref(db, "users/" + userId + "/saved");
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -82,7 +86,19 @@ export default function CustomerDashboard({ route, navigation }) {
       const data = snapshot.val();
       setDisplayStores(data);
     });
+
+    onValue(savedRef, (snapshot) => {
+      const data = snapshot.val();
+      setSavedStores(data);
+    });
   }
+
+  const filteredSavedStores = Object.keys(displayStores)
+  .filter(key => savedStores.includes(key))
+  .reduce((obj, key) => {
+    obj[key] = displayStores[key];
+    return obj;
+  }, {});  
 
   /*   const [storeArr, setStoreArr] = useState([]);
 
@@ -142,11 +158,7 @@ export default function CustomerDashboard({ route, navigation }) {
             <UserDetailsUI>{currentAddress}</UserDetailsUI>
           </MapButtonUI>
 
-          <ShopSlider
-            displayStores={displayStores && displayStores}
-            heading="Stores you love!"
-            navigation={navigation}
-          />
+
           <ShopSlider
             displayStores={filteredStores && filteredStores}
             heading="Stores near you!"
@@ -155,6 +167,11 @@ export default function CustomerDashboard({ route, navigation }) {
           <ShopSlider
             displayStores={displayStores && displayStores}
             heading="Today’s recommendations!"
+            navigation={navigation}
+          />
+                    <ShopSlider
+            displayStores={displayStores && filteredSavedStores}
+            heading="Stores you love!"
             navigation={navigation}
           />
         </ContainerUI>

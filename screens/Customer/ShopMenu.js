@@ -221,7 +221,7 @@ export default function ShopMenu({ route, navigation }) {
   }, [savedStores]);
 
   const saveStore = () => {
-    setSaved(!saved);
+    setSaved(true);
     console.log(savedStores);
     if (savedStores) {
       setSavedStores([...savedStores, store.uid]);
@@ -230,8 +230,14 @@ export default function ShopMenu({ route, navigation }) {
     }
   };
 
+   
+
   const handleSave = () => {
     if (saved) {
+      setSaved(false);
+      const remove = savedStores.filter(x => x != store.uid)
+      setSavedStores(remove)
+
     } else {
       saveStore();
     }
