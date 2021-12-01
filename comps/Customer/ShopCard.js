@@ -3,6 +3,9 @@ import { useFonts } from "expo-font";
 import styled from "styled-components/native";
 import shopImage from "../../assets/store-img.png";
 import { Image, Pressable } from "react-native";
+import { LocationContext } from "../location";
+import Geocode from "react-geocode";
+import axios from "axios";
 
 const StoreDetailsUI = styled.Text`
   color: #fe5d5d;
@@ -35,27 +38,62 @@ export default function ShopCard({
   heading = "Today's Recommendations!",
   displayStores,
   navigation,
-  distance = "0.5",
-  v,
+  store,
 }) {
-  const [loaded] = useFonts({
-    Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
-  });
+  const { currentAddress, curLng, curLat } = useContext(LocationContext);
 
-  if (!loaded) {
-    return null;
-  }
+  const [lng, setLong] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [distance, setDistance] = useState(null);
+
+  // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
+  Geocode.setApiKey("AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY");
+
+  // set response language. Defaults to english.
+  Geocode.setLanguage("en");
+
+  // Get latitude & longitude from address.
+  Geocode.fromAddress(store.address).then(
+    (response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      setLong(lng);
+      setLat(lat);
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+
+  console.log(lng);
+  console.log(lat);
+
+  var config = {
+    method: "get",
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${curLat}%2C${curLng}&destinations=${lat}%2C${lng}&key=AIzaSyBKDzfaPIYxv1yBdca_ldICCqRT_zTUqZY`,
+    headers: {},
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(response.data.rows[0].elements[0].distance.text);
+
+      const distance = response.data.rows[0].elements[0].distance.text;
+      setDistance(distance);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   return (
     <StoreContainerUI
       onPress={() => {
         navigation.navigate("Menu", {
-          store: v,
+          store: store,
         });
       }}
     >
       <Image
-        source={shopImage}
+        source={{uri: store.img}}
         style={{
           width: "100%",
           height: 129,
@@ -64,8 +102,10 @@ export default function ShopCard({
         }}
       />
       <RowUI>
-        <StoreDetailsUI>{v.username}</StoreDetailsUI>
-        <DistanceUI>{distance}km</DistanceUI>
+        <StoreDetailsUI>
+          {store.username} - {store.location}
+        </StoreDetailsUI>
+        <DistanceUI>{distance}</DistanceUI>
       </RowUI>
     </StoreContainerUI>
   );

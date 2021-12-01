@@ -18,7 +18,7 @@ const BottomCol = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
 `;

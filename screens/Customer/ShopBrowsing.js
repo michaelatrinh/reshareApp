@@ -80,7 +80,7 @@ export default function ShopBrowsing({ route, navigation }) {
   console.log(currentUser.uid);
   return (
     <>
-         <Header navigation={navigation}/>
+      <Header navigation={navigation} />
       <BrowseSearch />
 
       <ScrollView
@@ -93,7 +93,7 @@ export default function ShopBrowsing({ route, navigation }) {
         }}
       >
         {Object.entries(displayStores).map(([key, v]) => {
-          return <ShopCard key={key} v={v} navigation={navigation} />;
+          return <ShopCard key={key} store={v} navigation={navigation} />;
         })}
       </ScrollView>
     </>
