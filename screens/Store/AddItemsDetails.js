@@ -182,14 +182,14 @@ export default function AddItemsDetails({ navigation, route }) {
       })
 
 
-    if (imageDLRef1) {
+
       CloudStorage.getDownloadURL(imageDLRef1)
         .then((url) => {
           // setImageUri(url);
           console.log("\n" + "IMAGE URI IS: " + url + "\n");
 
         })
-    }
+  
     //   )
     // } catch (e) {
     //   console.log("Uploading image error =>", e);
