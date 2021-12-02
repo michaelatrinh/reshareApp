@@ -1,24 +1,24 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components/native";
-import { ScrollView, Text, View, Pressable, Alert } from "react-native";
+import { ScrollView, Text, View, Pressable, Alert, Image } from "react-native";
 import { CartContext } from "../cart";
+import ItemSlider from "./ItemSlider";
 
-const Main = styled.View`
+const Main = styled.ScrollView`
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+
   border: none;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
   width: 100%;
-  height: 399px;
-  padding: 20px;
+  height: 100%;
+  padding: 15px 5% 0px 5%;
+
 `;
 
 const TopCol = styled.View`
   display: flex;
   width: 100%;
-  height: 215px;
+
   justify-content: center;
 `;
 
@@ -30,27 +30,30 @@ const Title = styled.Text`
 const Quantity = styled.Text`
   font-size: 17px;
   color: #4da95d;
-  margin-bottom: 20px;
+  margin: 0 0 30px 0;
+ 
 `;
 
 const Description = styled.Text`
   font-size: 12px;
-  margin-bottom: 25px;
+ 
   color: #656565;
+  margin: 0 0 30px 0;
 `;
 
 const ExpiryDate = styled.Text`
   font-size: 16px;
   color: #656565;
+  margin: 0 0 30px 0;
 `;
 
 const SecondCol = styled.View`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 76px;
   justify-content: space-between;
-  padding-top: 15px;
+  margin: 0 0 100px 0;
+
 `;
 const LeftRow = styled.View`
   display: flex;
@@ -79,8 +82,7 @@ const QuantityButton = styled.Pressable`
 
 const RightRow = styled.View`
   display: flex;
-  ${"" /* width: 128px; */}
-  height: 76px;
+
   flex-direction: column;
 `;
 
@@ -89,7 +91,7 @@ const RightRowTop = styled.View`
   width: 100px;
   flex-direction: row;
   justify-content: space-between;
-  height: 20px;
+  margin: 0 0 10px 0;
 `;
 const PriceText = styled.Text`
   color: #fe0000;
@@ -105,39 +107,12 @@ const RightRowBottom = styled.View`
   width: 100px;
   justify-content: flex-end;
   align-items: flex-end;
-  height: 20px;
 `;
 const Save = styled.Text`
   font-size: 12px;
   color: #4da95d;
 `;
 
-const ThirdCol = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 75px;
-`;
-
-const AddToCart = styled.TouchableOpacity`
-  background-color: #4da95d;
-  width: 90%;
-  height: 43px;
-  position: absolute;
-  bottom: 25px;
-  left: 5%;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const CartText = styled.Text`
-  font-size: 12px;
-  color: #ffffff;
-`;
 
 //test item
 const sampleItem = {
@@ -147,62 +122,16 @@ const sampleItem = {
   quantity: 1,
 };
 
-export default function MenuItemDetail({ navigation, item }) {
-  const { cartTotal, setCartTotal, cart, setCart, addItemToCart } =
-    useContext(CartContext);
-
-  const [quantity, setQuantity] = useState(1);
+export default function MenuItemDetail({ navigation, item, quantity, addQuantity, subtractQuantity}) {
 
   //format price to two decimal
   const price = item.price.toFixed(2);
   const priceOg = item.priceog.toFixed(2);
 
-  //subtract quanity with min limit of 1
-  const subtractQuantity = () => {
-    if (quantity < 2) {
-      return;
-    } else {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  //add quantity with max limit of item quantity
-  const addQuantity = () => {
-    if (quantity >= item.quantity) {
-      Alert.alert("Only " + item.quantity + " in stock!");
-      return;
-    } else {
-      setQuantity(quantity + 1);
-    }
-  };
-
-  //add to cart
-  const handleAddToCart = (item) => {
-    //item from menu
-    let itemName = item.name;
-    //item in cart
-    let cartItem = cart.find((item) => item.name === itemName);
-
-    console.log(cartItem);
-    //check if cart includes item being added
-    if (cart.includes(item)) {
-      //increase quanity
-      cartItem.quantity += quantity;
-      //re-render cart
-      setCart([...cart]);
-      //back to menu
-      navigation.goBack(null);
-    } else {
-      //item in cart
-      item.quantity = quantity;
-      addItemToCart(item);
-      navigation.goBack(null);
-    }
-  };
-
   return (
     <>
       <Main>
+     
         <TopCol>
           <Title>{item.name}</Title>
           <Quantity>{item.weight}</Quantity>
@@ -231,12 +160,9 @@ export default function MenuItemDetail({ navigation, item }) {
             </RightRowBottom>
           </RightRow>
         </SecondCol>
-        <ThirdCol></ThirdCol>
+
       </Main>
 
-      <AddToCart onPress={() => handleAddToCart(item)}>
-        <CartText>ADD TO CART</CartText>
-      </AddToCart>
     </>
   );
 }

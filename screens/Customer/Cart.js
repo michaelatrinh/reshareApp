@@ -1,6 +1,13 @@
 import Header from "../../comps/Customer/Header";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 import styled from "styled-components/native";
 import { CartContext } from "../../comps/cart";
 import CartList from "../../comps/Customer/CartList";
@@ -128,42 +135,45 @@ export default function Cart({ route, navigation }) {
   const total = cartTotal.toFixed(2);
 
   const handleChekout = () => {
-    if(cart.length > 0){
-    navigation.navigate("Schedule", { store: store });
+    if (cart.length > 0) {
+      navigation.navigate("Schedule", { store: store });
     } else {
-      Alert.alert("Your cart is empty!")
+      Alert.alert("Your cart is empty!");
     }
   };
 
   return (
     <>
-      <ScreenUI>
-        <Header navigation={navigation} />
-        <ContainerUI>
-          <Top>
-            <TitleUI>Your Cart</TitleUI>
+      <Header navigation={navigation} />
+      <SafeAreaView>
+        <ScreenUI>
+          <ContainerUI>
+            <Top>
+              <TitleUI>Your Cart</TitleUI>
 
-            <CartCont>
-              {cart &&
-                cart.map((item) => (
-                  <CartList
-                    key={item.name}
-                    item={item}
-                    removeItem={removeItem}
-                  ></CartList>
-                ))}
-              <Total style={{ marginTop: 10 }}>
-                <Text>{cart.length} items</Text>
-                <Text>total ${total}</Text>
-              </Total>
-            </CartCont>
-          </Top>
-        </ContainerUI>
-      </ScreenUI>
+              <CartCont>
+                {cart &&
+                  cart.map((item) => (
+                    <CartList
+                      key={item.name}
+                      item={item}
+                      removeItem={removeItem}
+                    ></CartList>
+                  ))}
+                <Total style={{ marginTop: 10 }}>
+                  <Text>{cart.length} items</Text>
+                  <Text>total ${total}</Text>
+                </Total>
+              </CartCont>
+            </Top>
+          </ContainerUI>
+        </ScreenUI>
+      </SafeAreaView>
 
       <OrderMore onPress={() => navigation.goBack(null)}>
         <OrderMoreText>Order More</OrderMoreText>
       </OrderMore>
+
       <Checkout onPress={handleChekout}>
         <CheckoutText>SCHEDULE PICKUP</CheckoutText>
         <Price>

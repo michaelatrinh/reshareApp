@@ -10,7 +10,7 @@ const Main = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 40%;
+  height: 50%;
 `;
 export default function ItemSlider({ item }) {
   return (
@@ -25,7 +25,7 @@ export default function ItemSlider({ item }) {
     //   }}
     // ></ScrollView>
     <Main>
-      <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} />
+      <Image source={{ uri: item.img }} style={{ width: '100%', height: '50%' }} />
     </Main>
   );
 }

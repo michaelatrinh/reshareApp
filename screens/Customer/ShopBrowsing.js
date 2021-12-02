@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView, SafeAreaView} from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 import Header from "../../comps/Customer/Header";
@@ -124,6 +124,7 @@ export default function ShopBrowsing({ route, navigation }) {
   return (
     <>
       <Header navigation={navigation} />
+      <SafeAreaView style={{flex: 1}}>
       <BrowseSearch
         search={search}
         setSearch={setSearch}
@@ -174,6 +175,7 @@ export default function ShopBrowsing({ route, navigation }) {
               return <ShopCard key={key} store={v} navigation={navigation} />;
             })}
       </ScrollView>
+      </SafeAreaView>
     </>
   );
 }
