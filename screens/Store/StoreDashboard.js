@@ -1,14 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
 import * as ReactNative from "react-native";
+import { Text } from "react-native";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
 
 import { initializeApp } from "@firebase/app";
 
-import { getDatabase, ref, onValue, set } from "@firebase/database";
+import { getDatabase, ref, onValue, set, update } from "@firebase/database";
 import {
   getAuth,
   onAuthStateChanged,
@@ -27,7 +26,7 @@ import Greeting from "../../comps/Greeting";
 import MyItemsHeader from "../../comps/Store/MyItemsHeader";
 import MyItemsItem from "../../comps/Store/MyItemsItem";
 import RemoveWindow from "../../comps/Store/RemoveItemConfirmation";
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 
 // //pages
 // import StoreAddItem from "./Navigation/StoreAddItemStack";
@@ -35,9 +34,7 @@ import { useIsFocused } from '@react-navigation/native';
 var deviceWidth = ReactNative.Dimensions.get("window").width; //full width
 var deviceHeight = ReactNative.Dimensions.get("window").height; //full height
 
-export default function StoreDashboardScreen({ 
-  navigation, 
-}) {
+export default function StoreDashboardScreen({ navigation }) {
   //display states
   const [displayName, setDisplayName] = React.useState("");
   const [displayLocation, setDisplayLocation] = React.useState("");
@@ -56,25 +53,21 @@ export default function StoreDashboardScreen({
 
   const [navLocation, setNavLocation] = useState("home");
 
-  // menu item ref states
-  const [menuDbRef, setMenuDbRef] = useState(null);
-  const [menuItemKey, setMenuItemKey] = useState(null);
-
   //get current user from auth context
   const { currentUser } = useContext(AuthContext);
 
-    // This hook returns `true` if the screen is focused, `false` otherwise
-    const isFocused = useIsFocused();
+  // This hook returns `true` if the screen is focused, `false` otherwise
+  const isFocused = useIsFocused();
 
   //read user data on mount
   useEffect(() => {
     readUserData(currentUser.uid);
-    setMenu(menu)
+    setMenu(menu);
   }, []);
 
   useEffect(() => {
     readUserData(currentUser.uid);
-    setMenu(menu)
+    setMenu(menu);
   }, [isFocused]);
 
   //firebase read user data (name, location, type)
@@ -87,8 +80,6 @@ export default function StoreDashboardScreen({
     const itemNameRef = ref(db, "store/" + userId + "/menu" + [] + "/name");
     const itemExpiryRef = ref(db, "store/" + userId + "/menu" + [] + "/expiry");
     const itemPriceRef = ref(db, "store/" + userId + "/menu" + [] + "/price"); */
-
-    
 
     onValue(nameRef, (snapshot) => {
       const data = snapshot.val();
@@ -111,12 +102,9 @@ export default function StoreDashboardScreen({
       //loop the menu, use the image name and getDownloadURL
       //data[i].url = downloaded url
       //then set menu
-      
-      setMenu(data)
 
+      setMenu(data);
     });
-
-    setMenuDbRef(menuRef);
   }
 
   // firebase read store data (menu, itemNum, type)
@@ -130,28 +118,16 @@ export default function StoreDashboardScreen({
     });
   };
 
-  // FONTS
-  const [loaded] = useFonts({
-    Poppins: require("../../assets/fonts/Poppins/Poppins-Regular.ttf"),
-    PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf"),
-    Ubuntu: require("../../assets/fonts/Ubuntu/Ubuntu-Regular.ttf"),
-    UbuntuMedium: require("../../assets/fonts/Ubuntu/Ubuntu-Medium.ttf")
-  });
-
-  if (!loaded) {
-    return null;
-  }
-
-  // variable to display Remove Confirmation Window or not
   var newRemoveWindowDisplay = "none";
-  // variable to display Grey Overlay Background or not
+
   var newGreyDisplay = "none";
 
-  const removeItemBtnPress = (itemKey) => {
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [newMenu, setNewMenu] = useState(null);
+
+  const removeItemBtnPress = (name) => {
     setDisplayRemove(true);
-    setMenuItemKey(itemKey);
-    
-    console.log("\n" + "MENU ITEM KEY STATE: " + menuItemKey + "\n");
+    setItemToDelete(name);
   };
 
   // when user pressed no on Removal confirmation window
@@ -160,27 +136,26 @@ export default function StoreDashboardScreen({
   };
 
   // when user pressed yes on Removal confirmation window
-  const handleYesPress = () => {
+  const handleYesPress = (itemKey) => {
     setDisplayRemove(false);
-    let n = menuDbRef;
-    let o = menuItemKey;
-    // let p = n + o;
-    let p = ref(db, n + "/" + o);
 
-    try {
-      p.remove();
-    } catch (e) {
-      console.log("REMOVAL ERROR =>", e);
-    }
-    
-    // unfinished code trying to remove specified item from database menu list
-    // return (dispatch) => {
-    //   firebase.database().ref('/menu/' + itemKey.remove());
-    // }
+    const newArr = menu.filter((item) => item.name !== itemToDelete);
+
+    setNewMenu(newArr);
+
+    console.log(newArr);
   };
 
-  // remove window and grey overlay bg value changes on state change
-  if(displayRemove){
+  useEffect(() => {
+    if (newMenu) {
+      update(ref(db, "stores/" + currentUser.uid), {
+        menu: newMenu,
+      });
+      setNewMenu(null);
+    }
+  }, [newMenu]);
+
+  if (displayRemove) {
     newRemoveWindowDisplay = "flex";
     newGreyDisplay = "flex";
   }
@@ -189,67 +164,15 @@ export default function StoreDashboardScreen({
     navigation.navigate("Add Item");
   };
 
-
-
   return (
-    <SafeAreaView 
-      style={styles.safeArea}
-      edges={["left", "right", "bottom"]} >
-      
-      <GreyBackground 
-        style={styles.greyBg} 
-        greyDisplay={newGreyDisplay} />
-
-      {/* Remove Confirmation Window */}
-      <ReactNative.View
-        style={styles.removeWindowMainContainer(newRemoveWindowDisplay)} >
-        <ReactNative.View
-          style={styles.removeWindowCont} >
-
-          {/* first container: contains "x" icon */}
-          <ReactNative.View
-            style={styles.firstContainer} >
-            <Feather
-              name="x-circle"
-              size={11}
-              style={styles.x}
-              onPress={handleNoPress} />
-          </ReactNative.View>
-
-          {/* second container: contains main text */}
-          <ReactNative.View
-            style={styles.secondContainer} >
-            <ReactNative.Text 
-              style={styles.removeWindowText} >
-                Are you sure you want to remove this item from listings?
-            </ReactNative.Text>
-          </ReactNative.View>
-
-          {/* third container: contains "yes" and "no" buttons */}
-          <ReactNative.View
-            style={styles.thirdContainer} >
-            <ReactNative.TouchableOpacity
-              style={styles.no}
-              activeOpacity={0.5}
-              onPress={handleNoPress} >
-              <ReactNative.Text 
-                style={styles.removeBtnText} >
-                  NO
-              </ReactNative.Text>
-            </ReactNative.TouchableOpacity>
-
-            <ReactNative.TouchableOpacity
-              style={styles.yes}
-              activeOpacity={0.5}
-              onPress={handleYesPress} >
-              <ReactNative.Text 
-                style={styles.removeBtnText} >
-                  YES
-              </ReactNative.Text>
-            </ReactNative.TouchableOpacity>
-          </ReactNative.View>
-        </ReactNative.View>
-      </ReactNative.View>
+    <SafeAreaView style={styles.safeArea} edges={["left", "right", "bottom"]}>
+      <GreyBackground style={styles.greyBg} greyDisplay={newGreyDisplay} />
+      <RemoveWindow
+        removeWindowDisplay={newRemoveWindowDisplay}
+        noOnPress={handleNoPress}
+        yesOnPress={handleYesPress}
+        onXPress={handleNoPress}
+      />
 
       <TopContainer>
         <Greeting name={displayName} />
@@ -257,8 +180,7 @@ export default function StoreDashboardScreen({
         <MyItemsHeader onAddPress={handleAddButton} />
       </TopContainer>
 
-      <ReactNative.ScrollView 
-        contentContainerStyle={styles.foodListScroll} >
+      <ReactNative.ScrollView contentContainerStyle={styles.foodListScroll}>
         {menu ? (
           menu.map((item) => (
             <MyItemsItem
@@ -269,9 +191,7 @@ export default function StoreDashboardScreen({
               quantity="6"
               price="$0.39"
               bgColour="#DFEFB9"
-/*               removeBtnPress={()=>removeItemBtnPress(item.key)} */
-removeBtnPress={()=> console.log(Object.keys(item))}
-
+              removeBtnPress={() => removeItemBtnPress(item.name)}
             />
           ))
         ) : (
@@ -309,77 +229,6 @@ const styles = ReactNative.StyleSheet.create({
   greyBg: {
     minWidth: deviceWidth,
     minHeight: deviceHeight,
-  },
-
-  // remove confirmation window
-  removeWindowMainContainer: (d) => { return {
-    width: 210,
-    height: 163,
-    // boxShadow: "4px 2px 4px rgba(0, 0, 0, 0.25)",
-    shadowColor: "#000000",
-    shadowOpacity: 0.25,
-    shadowOffset: {width: 4, height: 2},
-    shadowRadius: 4,
-    display: d,
-    zIndex: 3,
-    position: "absolute",
-    }
-  },
-  removeWindowCont: {
-    width: 210,
-    height: 163,
-    backgroundColor: "#FBFBFB",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  firstContainer: {
-    flexGrow: 1,
-    flexDirection: "row",
-    width: "100%",
-  },
-  x: {
-    top: "5%",
-    left: "25%",
-  },
-  secondContainer: {
-    flexGrow: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    maxWidth: "80%",
-  },
-  removeWindowText: {
-    fontFamily: "Poppins",
-    fontSize: 12,
-    textAlign: "center",
-  },
-  thirdContainer: {
-    flexGrow: 1,
-    flexDirection: "row",
-    width: "80%",
-    justifyContent: "space-between",
-  },
-  no: {
-    width: 77,
-    height: 27,
-    backgroundColor: "#FFE0E0",
-    borderRadius: 10,
-
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  removeBtnText: {
-    fontSize: 12,
-    fontFamily: "UbuntuMedium",
-  },
-  yes: {
-    width: 77,
-    height: 27,
-    backgroundColor: "#DBEABA",
-    borderRadius: 10,
-
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
