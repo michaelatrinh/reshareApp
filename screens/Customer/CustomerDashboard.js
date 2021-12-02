@@ -93,12 +93,14 @@ export default function CustomerDashboard({ route, navigation }) {
     });
   }
 
-  const filteredSavedStores = Object.keys(displayStores)
-  .filter(key => savedStores.includes(key))
+
+  let filteredSavedStores = Object.keys(displayStores)
+  .filter(key => savedStores && savedStores.includes(key))
   .reduce((obj, key) => {
     obj[key] = displayStores[key];
     return obj;
   }, {});  
+  
 
   /*   const [storeArr, setStoreArr] = useState([]);
 
