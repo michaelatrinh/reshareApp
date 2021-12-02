@@ -113,7 +113,7 @@ export default function ShopBrowsing({ route, navigation }) {
   }, [displayStores]);
 
   const filteredSavedStores = Object.keys(displayStores)
-  .filter(key => savedStores.includes(key))
+  .filter(key => savedStores && savedStores.includes(key))
   .reduce((obj, key) => {
     obj[key] = displayStores[key];
     return obj;
