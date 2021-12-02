@@ -27,8 +27,7 @@ const ContainerUI = styled.View`
 `;
 
 const OrderCardContainer = styled.View`
-
-display: flex;
+  display: flex;
 `;
 
 const HeaderUI = styled.Text`
@@ -55,42 +54,69 @@ export default function Orders({ route, navigation }) {
     onValue(menuRef, (snapshot) => {
       const data = snapshot.val();
 
-      if(data){
-      const completeOrders = data.order.filter((x) => x.complete === true);
-      const currentOrders = data.order.filter((x) => x.complete === false);
+      if (data) {
+        const completeOrders = data.order.filter((x) => x.complete === true);
+        const currentOrders = data.order.filter((x) => x.complete === false);
 
-  
+        setCurrentOrders(currentOrders);
+        setPastOrders(completeOrders);
 
-      setCurrentOrders(currentOrders);
-      setPastOrders(completeOrders);
-
-      console.log(currentOrders)
-
+        console.log(currentOrders);
       }
     });
   }
 
   return (
-    <ScreenUI>
-      <Header navigation={navigation} />
+    <>
+    <Header navigation={navigation} />
+      <ScreenUI>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ width: "100%" }}
+        >
+          <ContainerUI>
+            <HeaderUI>Current Orders</HeaderUI>
 
-      <ScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
-        <ContainerUI>
-          <HeaderUI>Current Orders</HeaderUI>
+            <OrderCardContainer>
+              {currentOrders ? (
+                currentOrders.map((order) => (
+                  <OrderCard
+                    key={order.number}
+                    order={order}
+                    store={order.name}
+                    location={order.location}
+                    time={order.pickupTime}
+                    itemsOrdered={order.cart.length}
+                    navigation={navigation}
+                  />
+                ))
+              ) : (
+                <Text>No orders yet!</Text>
+              )}
+            </OrderCardContainer>
 
-          <OrderCardContainer>
-            {currentOrders ?
-              currentOrders.map((order) => <OrderCard key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>) : <Text>No orders yet!</Text>}
-          </OrderCardContainer>
+            <HeaderUI>Past Orders</HeaderUI>
 
-          <HeaderUI>Past Orders</HeaderUI>
-
-          <OrderCardContainer>
-            {pastOrders ?
-              pastOrders.map((x) => <OrderCard  key={order.number} order={order} store={order.name} location={order.location} time={order.pickupTime} itemsOrdered={order.cart.length} navigation={navigation}/>) : <Text>No orders yet!</Text>}
-          </OrderCardContainer>
-        </ContainerUI>
-      </ScrollView>
-    </ScreenUI>
+            <OrderCardContainer>
+              {pastOrders ? (
+                pastOrders.map((x) => (
+                  <OrderCard
+                    key={order.number}
+                    order={order}
+                    store={order.name}
+                    location={order.location}
+                    time={order.pickupTime}
+                    itemsOrdered={order.cart.length}
+                    navigation={navigation}
+                  />
+                ))
+              ) : (
+                <Text>No orders yet!</Text>
+              )}
+            </OrderCardContainer>
+          </ContainerUI>
+        </ScrollView>
+      </ScreenUI>
+    </>
   );
 }

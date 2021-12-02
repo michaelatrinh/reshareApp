@@ -10,7 +10,7 @@ import {
 import styled from "styled-components/native";
 import ItemCard from "../../comps/Customer/ItemCard";
 import shopImage from "../../assets/store-img.png";
-import { Image } from "react-native";
+import { Image, SafeAreaView } from "react-native";
 import MenuFilter from "../../comps/Customer/MenuFilter";
 import { CartProvider } from "../../comps/cart";
 import { CartContext } from "../../comps/cart";
@@ -230,14 +230,11 @@ export default function ShopMenu({ route, navigation }) {
     }
   };
 
-   
-
   const handleSave = () => {
     if (saved) {
       setSaved(false);
-      const remove = savedStores.filter(x => x != store.uid)
-      setSavedStores(remove)
-
+      const remove = savedStores.filter((x) => x != store.uid);
+      setSavedStores(remove);
     } else {
       saveStore();
     }
@@ -247,81 +244,83 @@ export default function ShopMenu({ route, navigation }) {
 
   return (
     <>
-      <ScreenUI>
-        <Header navigation={navigation} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            backgroundColor: "white",
-            width: "100%",
-          }}
-        >
-          <ContainerUI>
-            <ImageContainerUI>
-              <ImageUI
-                source={{ uri: store.img }}
-                resizeMode={"cover"}
-                style={{ width: win.width * 0.9 }}
+      <Header navigation={navigation} />
+      <SafeAreaView style={{flex: 1}}>
+        <ScreenUI>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              backgroundColor: "white",
+              width: "100%",
+            }}
+          >
+            <ContainerUI>
+              <ImageContainerUI>
+                <ImageUI
+                  source={{ uri: store.img }}
+                  resizeMode={"cover"}
+                  style={{ width: win.width * 0.9 }}
+                />
+              </ImageContainerUI>
+
+              <TitleUI>
+                {store.username} - {store.location}
+              </TitleUI>
+
+              <RowUI style={{ width: win.width * 0.9 }}>
+                <DetailsUI>{store.distance} km</DetailsUI>
+                <Pressable
+                  onPress={handleSave}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <DetailsUI>Save Store</DetailsUI>
+                  {saved ? (
+                    <AntDesign
+                      style={{ marginLeft: 10 }}
+                      name="heart"
+                      size={24}
+                      color="black"
+                    />
+                  ) : (
+                    <AntDesign
+                      style={{ marginLeft: 10 }}
+                      name="hearto"
+                      size={24}
+                      color="black"
+                    />
+                  )}
+                </Pressable>
+              </RowUI>
+              <MenuFilter
+                selection={selection}
+                setSelection={setSelection}
+                win={win}
               />
-            </ImageContainerUI>
 
-            <TitleUI>
-              {store.username} - {store.location}
-            </TitleUI>
+              <FilterTextUI>{selection}</FilterTextUI>
 
-            <RowUI style={{ width: win.width * 0.9 }}>
-              <DetailsUI>{store.distance} km</DetailsUI>
-              <Pressable
-                onPress={handleSave}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <DetailsUI>Save Store</DetailsUI>
-                {saved ? (
-                  <AntDesign
-                    style={{ marginLeft: 10 }}
-                    name="heart"
-                    size={24}
-                    color="black"
-                  />
-                ) : (
-                  <AntDesign
-                    style={{ marginLeft: 10 }}
-                    name="hearto"
-                    size={24}
-                    color="black"
-                  />
-                )}
-              </Pressable>
-            </RowUI>
-            <MenuFilter
-              selection={selection}
-              setSelection={setSelection}
-              win={win}
-            />
-
-            <FilterTextUI>{selection}</FilterTextUI>
-
-            <View>
-              {store.menu &&
-                filterMenu(store.menu).map((item) => (
-                  <ItemCard
-                    key={item.name}
-                    item={item}
-                    navigation={navigation}
-                  />
-                ))}
-            </View>
-          </ContainerUI>
-        </ScrollView>
-      </ScreenUI>
+              <View>
+                {store.menu &&
+                  filterMenu(store.menu).map((item) => (
+                    <ItemCard
+                      key={item.name}
+                      item={item}
+                      navigation={navigation}
+                    />
+                  ))}
+              </View>
+            </ContainerUI>
+          </ScrollView>
+        </ScreenUI>
+      </SafeAreaView>
 
       {cart.length > 0 ? (
         <CartButton navigation={navigation} store={store} />

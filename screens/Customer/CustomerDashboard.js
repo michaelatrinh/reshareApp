@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView, SafeAreaView} from "react-native";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components/native";
 
@@ -135,6 +135,7 @@ export default function CustomerDashboard({ route, navigation }) {
   return (
     <>
       <Header navigation={navigation} back={false} />
+      <SafeAreaView style={{flex: 1}}>
       <ScrollView
         contentContainerStyle={{
           alignItems: "center",
@@ -143,6 +144,7 @@ export default function CustomerDashboard({ route, navigation }) {
           minHeight: "100%",
         }}
       >
+
         <ContainerUI>
           <Greeting name={displayName} />
 
@@ -176,6 +178,7 @@ export default function CustomerDashboard({ route, navigation }) {
           />
         </ContainerUI>
       </ScrollView>
+      </SafeAreaView>
     </>
   );
 }

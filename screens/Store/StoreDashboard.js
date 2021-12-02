@@ -122,9 +122,11 @@ export default function StoreDashboardScreen({ navigation }) {
 
   var newGreyDisplay = "none";
 
+  //set item to delete on removeItemBtnPress
   const [itemToDelete, setItemToDelete] = useState(null);
   const [newMenu, setNewMenu] = useState(null);
 
+  //show popup and set item to delete to item.name
   const removeItemBtnPress = (name) => {
     setDisplayRemove(true);
     setItemToDelete(name);
@@ -139,13 +141,16 @@ export default function StoreDashboardScreen({ navigation }) {
   const handleYesPress = (itemKey) => {
     setDisplayRemove(false);
 
+    //filter menu with item.name
     const newArr = menu.filter((item) => item.name !== itemToDelete);
 
+    //set new menu array
     setNewMenu(newArr);
 
     console.log(newArr);
   };
 
+  //when menu array is set and newmenu exists update firebase and set newMenu back to null
   useEffect(() => {
     if (newMenu) {
       update(ref(db, "stores/" + currentUser.uid), {
