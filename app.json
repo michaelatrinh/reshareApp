@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "reshare-app",
+    "name": "Reshare",
     "slug": "reshare-app",
+    "description": "Reshare is a grocery app that lets grocery stores sell excess inventory at a discounted price, while helping lower-income individuals have access to quality ingredients.\nWe aim to help the planet, low-income individuals and families, and grocery stores.",
     "owner": "reshare",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/reshare-logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
